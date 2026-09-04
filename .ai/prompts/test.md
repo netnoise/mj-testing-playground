@@ -18,7 +18,7 @@ Turn the brief's hypothesis into assertions.
 
 **A passing test is not evidence.** Before you finish, read your own test diff
 and ask of each spec: what would have to break for this to fail? The repo's own
-`src/app/app.component.spec.ts:20` is `expect(app).toBeTruthy()` — it passes,
+`src/app/app.component.spec.ts:24` is `expect(app).toBeTruthy()` — it passes,
 looks like diligence, and verifies nothing. Report vacuous specs in `test.json`
 as `vacuous: N`; zero specs added is `vacuous: null`, never a pass.
 

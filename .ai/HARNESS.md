@@ -55,7 +55,7 @@ that only ran `fast` or `full` and is being reported as if the app had been exer
 
 - **`VERIFY: PASS`** on its own. Read the test diff. A spec whose only assertion is
   `expect(x).toBeTruthy()` passes, looks like diligence and verifies nothing —
-  `src/app/app.component.spec.ts:20` is that shape.
+  `src/app/app.component.spec.ts:24` is that shape.
 - **`status: completed`.** Compare against `git diff --stat`. A clean exit with zero
   edits is a failed run wearing a success label.
 - **A metric that improved after you edited its config.** See door 7.
