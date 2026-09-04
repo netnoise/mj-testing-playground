@@ -1,0 +1,46 @@
+# The harness, in data. Prompts read this; humans edit it.
+version: 0.1.0
+
+doors:
+  one_way:
+    - dependency_change        # package.json, package-lock.json
+    - migration
+    - external_contract
+    - test_deleted_or_weakened
+    - auth_secrets_payments
+    - outside_repo_or_shared_ref
+    - gate_scope_config        # door 7 — see paths below
+  gate_scope_paths:
+    - karma.conf.js
+    - angular.json
+    - tslint.json
+    - tsconfig*.json
+    - .ai/harness/verify.sh
+
+gates:
+  fast: lint
+  full: lint + headless specs
+  deep: full + production build
+  runtime: null                # Playwright, deferred to its own session
+
+budgets:
+  default:
+    minutes: 45
+    files: 12
+  enforced_by: .claude/hooks/budget.mjs
+  state: .ai/run/<slug>/state.json    # single writer: the hook
+
+flows:
+  fix:  [recall, understand, implement, test, record]
+  tiny: [implement, verify]
+
+model_routing:
+  # Route by "can this be wrong in a way nothing downstream catches",
+  # not by whether it feels like typing.
+  large: [understand, implement, test, record]   # record makes checkable claims
+  small: [digest, handoff, resume, recall, keep]
+  overspend_on: understand                       # a bad brief is paid for by every step under it
+
+journal:
+  rule: "record a step if redoing it costs more than recording it, or if it changed the tree"
+  skip: [read_only_exploration, steps_under_a_minute]

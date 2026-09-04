@@ -34,3 +34,15 @@ These come from `tslint.json` / `angular.json` and will fail lint/build if viola
 - `src/environments/` — `environment.ts` is replaced by `environment.prod.ts` in the production build via `fileReplacements` in `angular.json`.
 - `e2e/` — Protractor specs (`*.e2e-spec.ts`) and page objects (`*.po.ts`); has its own `tsconfig.json`.
 - `tsconfig.app.json` (app build) and `tsconfig.spec.json` (Karma) both extend the root `tsconfig.json`.
+
+## The .ai harness
+
+This repo uses the `.ai` harness. Read `.ai/HARNESS.md` before any non-trivial
+change, and follow it. Structure and invariants live in `.ai/MODEL.md`; runnable
+prompts in `.ai/prompts/`; the design write-up in `docs/vibe-harness.html`.
+
+The gate is `bash .ai/harness/verify.sh [fast|full|deep]` — it is the only gate
+contract. `deep` does not prove the app boots; there is no runtime oracle yet.
+
+This file remains the single owner of build commands and code conventions.
+Nothing in `.ai/` restates them.
