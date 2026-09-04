@@ -1,0 +1,8 @@
+<ng-container *ngIf="(models$ | async) as models">
+  <ul *ngIf="models.length; else empty">
+    <li *ngFor="let model of models">{{ model }}</li>
+  </ul>
+  <ng-template #empty>
+    <p>Select a brand to see its models.</p>
+  </ng-template>
+</ng-container>
