@@ -15,7 +15,7 @@ rm -f /tmp/.cite_fail
 checked=0
 for doc in "$@"; do
   [ -f "$doc" ] || continue
-  grep -oE '[A-Za-z0-9_][A-Za-z0-9_./-]*\.[A-Za-z]+:[0-9]+' "$doc" 2>/dev/null | sort -u | while IFS= read -r cite; do
+  grep -oE '\.?[A-Za-z0-9_][A-Za-z0-9_./-]*\.[A-Za-z]+:[0-9]+' "$doc" 2>/dev/null | sort -u | while IFS= read -r cite; do
     path=${cite%:*}; line=${cite##*:}
     if [ ! -f "$path" ]; then
       echo "BAD  $doc -> $cite (no such file)"; echo x >> /tmp/.cite_fail
