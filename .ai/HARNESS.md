@@ -28,9 +28,9 @@ that does not depend on the answer.
 4. Deleting or weakening an existing test
 5. Anything under auth, secrets, payments
 6. Writing outside the repo; pushing to a shared branch; rewriting history
-7. **Editing the config that defines a gate's own scope** — `karma.conf.js`,
-   `angular.json` test/lint options, `tslint.json`, `tsconfig*.json`,
-   `.ai/harness/verify.sh`
+7. **Editing the config that defines a gate's own scope** — `jest.config.js`,
+   `setup-jest.ts`, `playwright.config.ts`, `.eslintrc.json`, `angular.json`,
+   `tsconfig*.json`, `.ai/harness/verify.sh`, `.claude/hooks/budget.mjs` itself
 
 Door 7 exists because the symptom is a *better* number. A gate metric that improves
 after the gate's own config was edited is not evidence.
@@ -41,12 +41,15 @@ after the gate's own config was edited is not evidence.
 
 | tier | runs | when |
 |---|---|---|
-| `fast` | lint | after a unit of work |
-| `full` | lint + headless specs | before every commit |
-| `deep` | + production build | once before handing back |
+| `fast` | lint (eslint) | after a unit of work |
+| `full` | fast + `jest --ci` | before every commit |
+| `deep` | full + production build + `playwright test` | once before handing back |
 
-`deep` prints `RUNTIME: NOT CONFIGURED` and sets `unverified_at_runtime`. Nothing in
-this repo proves the app boots. **Green is not running.**
+`deep` is the real runtime oracle: Playwright's `webServer` boots the app and
+`e2e/app.spec.ts` drives it in a real browser. A green `deep` means something
+actually executed, not just compiled — the `unverified_at_runtime` state this section
+used to warn about no longer applies to `deep` itself. It still applies to anything
+that only ran `fast` or `full` and is being reported as if the app had been exercised.
 
 ## Never trust
 

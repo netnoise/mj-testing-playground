@@ -39,8 +39,10 @@ if (!process.env.HARNESS_DOOR_OPEN && rel === '.ai/MODEL.md') {
 
 // --- Door 7: gate-scope config. Always on, run or no run. ----------------
 // The symptom of this failure is a BETTER number, so no gate can catch it.
-const GATE_SCOPE = ['karma.conf.js', 'angular.json', 'tslint.json', 'tsconfig*.json',
-                    '.ai/harness/verify.sh'];
+// Angular 14 toolchain: jest/playwright/eslint replaced karma/tslint (0003).
+const GATE_SCOPE = ['jest.config.js', 'setup-jest.ts', 'playwright.config.ts',
+                    '.eslintrc.json', 'angular.json', 'tsconfig*.json',
+                    '.ai/harness/verify.sh', '.claude/hooks/budget.mjs'];
 if (!process.env.HARNESS_DOOR_OPEN && GATE_SCOPE.some((g) => hit(g, rel))) {
   block(`one-way door 7 - ${rel} defines a gate's own scope.
   Editing it can make a metric improve without the code improving.

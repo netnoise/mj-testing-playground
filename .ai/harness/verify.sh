@@ -11,24 +11,16 @@ if [ ! -d node_modules ]; then
   echo "verify: PREFLIGHT FAIL - node_modules missing. Run 'npm ci' first." >&2
   exit 1
 fi
-if [ -z "${CHROME_BIN:-}" ]; then
-  for c in chromium chromium-browser google-chrome "Google Chrome"; do
-    p=$(command -v "$c" 2>/dev/null) && { CHROME_BIN="$p"; export CHROME_BIN; break; }
-  done
-fi
 
 echo "verify: tier=$TIER"
 npm run lint
 [ "$TIER" = "fast" ] && { echo "verify: OK (fast)"; exit 0; }
 
-if [ -z "${CHROME_BIN:-}" ]; then
-  echo "verify: PREFLIGHT FAIL - no Chrome for headless specs. Set CHROME_BIN." >&2
-  exit 1
-fi
-npx ng test --watch=false --browsers=ChromeHeadless
+npx jest --ci
 [ "$TIER" = "full" ] && { echo "verify: OK (full)"; exit 0; }
 
 npm run build
-# Door 7 / vacuous-pass guard: deep must never read as runtime-verified.
-echo "verify: RUNTIME: NOT CONFIGURED (unverified_at_runtime)" >&2
-echo "verify: OK (deep, static only - nothing proved the app boots)"
+# deep is the real runtime oracle now: Playwright boots the app and drives it,
+# so a green deep run means something actually executed - not just compiled.
+npx playwright test
+echo "verify: OK (deep, build + app driven end to end by Playwright)"

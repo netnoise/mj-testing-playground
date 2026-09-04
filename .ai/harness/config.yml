@@ -10,18 +10,24 @@ doors:
     - auth_secrets_payments
     - outside_repo_or_shared_ref
     - gate_scope_config        # door 7 — see paths below
+  # This list is documentation, not the enforcement source of truth:
+  # .claude/hooks/budget.mjs hardcodes its own GATE_SCOPE array and does not
+  # parse this file (no YAML dependency in the repo - adding one is door 1).
+  # Keep the two in sync by hand; a decision record flags the duplication.
   gate_scope_paths:
-    - karma.conf.js
+    - jest.config.js
+    - setup-jest.ts
+    - playwright.config.ts
+    - .eslintrc.json
     - angular.json
-    - tslint.json
     - tsconfig*.json
     - .ai/harness/verify.sh
+    - .claude/hooks/budget.mjs
 
 gates:
-  fast: lint
-  full: lint + headless specs
-  deep: full + production build
-  runtime: null                # Playwright, deferred to its own session
+  fast: lint (eslint)
+  full: fast + jest --ci
+  deep: full + production build + playwright e2e   # real runtime oracle
 
 budgets:
   default:
