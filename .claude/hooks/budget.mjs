@@ -31,6 +31,12 @@ const hit = (pat, p) =>
   : pat.includes('*') ? new RegExp('^' + pat.replace(/[.]/g, '\\.').replace(/\*/g, '[^/]*') + '$').test(p)
   : p === pat;
 
+// --- MODEL.md is human-owned: agents propose diffs, never write it -------
+if (!process.env.HARNESS_DOOR_OPEN && rel === '.ai/MODEL.md') {
+  block(`.ai/MODEL.md is human-owned - propose the diff in the digest instead.
+  The human applies it, or re-run with HARNESS_DOOR_OPEN=1 on their say-so.`);
+}
+
 // --- Door 7: gate-scope config. Always on, run or no run. ----------------
 // The symptom of this failure is a BETTER number, so no gate can catch it.
 const GATE_SCOPE = ['karma.conf.js', 'angular.json', 'tslint.json', 'tsconfig*.json',
