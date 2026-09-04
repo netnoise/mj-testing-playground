@@ -270,14 +270,14 @@
 <div class="wrap">
 
 <header class="masthead">
-  <p class="eyebrow">Design v4 · portable AI harness</p>
+  <p class="eyebrow">Design v4.1 · portable AI harness</p>
   <h1>Vibe&nbsp;Harness</h1>
   <p class="deck">An agent that runs whole loops unattended, survives being killed mid-flight, comes back having taught you something about your own codebase — and keeps what you point at.</p>
   <div class="meta">
-    <span><b>Target</b> mj-testing-playground (Angular 9)</span>
+    <span><b>Target</b> mj-testing-playground (Angular 14)</span>
     <span><b>Portable to</b> any repo, any agent, any OS</span>
-    <span><b>Status</b> Phase 0+1 built — 33 files, no dependencies</span>
-    <span><b>Shaped by</b> the TriTrack review, 2026-09-04</span>
+    <span><b>Status</b> Phase 0+1 built, verified end to end, and delivered a real feature</span>
+    <span><b>Shaped by</b> the TriTrack review · Angular 9→14 migration, 2026-09-04</span>
   </div>
 </header>
 
@@ -344,7 +344,7 @@
         <li>Deleting or weakening an existing test</li>
         <li>Anything under auth, secrets, payments</li>
         <li>Writing outside the repo; pushing to a shared branch; rewriting history</li>
-        <li><b>Editing the config that defines a gate's own scope</b> — <code>karma.conf.js</code>, <code>angular.json</code> test/lint options, <code>tslint.json</code>, <code>tsconfig*.json</code>, <code>verify.sh</code> itself</li>
+        <li><b>Editing the config that defines a gate's own scope</b> — <code>jest.config.js</code>, <code>setup-jest.ts</code>, <code>playwright.config.ts</code>, <code>.eslintrc.json</code>, <code>angular.json</code>, <code>tsconfig*.json</code>, <code>verify.sh</code>, <code>budget.mjs</code> itself</li>
       </ul>
     </div>
   </div>
@@ -440,7 +440,7 @@ expensive to keep true. Same shape at
     <tbody>
       <tr><td class="mono">fast</td><td>lint</td><td>After every unit of work</td></tr>
       <tr><td class="mono">full</td><td>lint + headless specs</td><td>Before every commit</td></tr>
-      <tr><td class="mono">deep</td><td>+ production build — then prints <code>RUNTIME: NOT CONFIGURED</code></td><td>Once, before handing back</td></tr>
+      <tr><td class="mono">deep</td><td>+ production build + a real browser driving the app end to end</td><td>Once, before handing back</td></tr>
     </tbody>
   </table>
   </div>
@@ -758,22 +758,15 @@ component, not the store.</code></pre>
     <div class="phase">
       <div class="phase-label">PHASE 0+1<span>✓ built</span></div>
       <div>
-        <p><b>Doors, digest, journal, durability, bank — 33 files, ~1,600 lines</b></p>
-        <p>Nine prompts (<code>/recall</code> included — moved up from Phase 3 on the review's evidence that capture without recall repeats failure classes), the seven-door list, <code>verify.sh</code> tiers, <code>check-citations.sh</code>, the mechanical handoff, and <code>budget.mjs</code> with its pipe-tests passing. <em>Proven:</em> preflight fails honestly, citations resolve, the handoff generates with no model call, all hook paths block or pass as designed. <em>Not yet proven:</em> a green <code>verify full</code> (needs the Mac's toolchain — the build container's Node can't install Angular 9), and the hook firing live in a session (it loads at session start, so the session that wrote it never saw it).</p>
+        <p><b>Doors, digest, journal, durability, bank — built, dogfooded, and delivered a feature</b></p>
+        <p>Nine prompts, the seven-door list, <code>verify.sh</code> tiers, <code>check-citations.sh</code>, the mechanical handoff, <code>budget.mjs</code> live and firing. <em>Proven, not just written:</em> the hook blocked its own author mid-edit on a real MODEL.md crossing; <code>check-citations.sh</code> caught fabricated-looking citations twice — once its own dotfile bug, once a citation that drifted onto a blank line after an unrelated edit shifted the file underneath it; and a full feature (vehicle brand/model selection) went brief → failing-first specs → green → <code>verify deep</code> passing with Playwright actually selecting a brand and watching its models appear in a real browser. The blast-radius allowlist was enforced live, not advisory — its own record of which files it approved is in the run's <code>state.json</code>, not self-reported.</p>
       </div>
     </div>
     <div class="phase">
-      <div class="phase-label">NEXT<span>on the Mac</span></div>
+      <div class="phase-label">DELIVERED<span>mid-build</span></div>
       <div>
-        <p><b>Prove the unproven</b></p>
-        <p><code>npm ci && bash .ai/harness/verify.sh full</code> green once; restart the session so the hook loads; then a real <code>/understand</code> on a small change. One genuine digest and one survived interruption decide whether the rest gets built.</p>
-      </div>
-    </div>
-    <div class="phase">
-      <div class="phase-label">SESSION<span>dedicated</span></div>
-      <div>
-        <p><b>Runtime tier</b></p>
-        <p>Playwright as <code>verify deep</code>'s missing half: route-mount assertions and a console-error check, no selectors, no screenshot baselines. The existing Protractor e2e already asserts no SEVERE console entries — port that spec, don't rewrite it. Until then <code>unverified_at_runtime</code> stays loud.</p>
+        <p><b>The runtime tier, for free</b></p>
+        <p>An unrelated Angular 9 → 14 upgrade replaced Karma/Protractor/tslint with Jest/Playwright/ESLint on the host repo's own timeline — and Playwright's dev-server bootstrap made <code>verify deep</code> a genuine runtime oracle without the dedicated session this page originally deferred it to. The lesson isn't "get lucky" — it's that door 7's file list is pinned to specific paths that go stale the moment the toolchain moves, silently, with the old paths simply no longer existing. The retool also surfaced a smaller drift worth naming honestly: <code>config.yml</code>'s <code>gate_scope_paths</code> and <code>budget.mjs</code>'s hardcoded list now duplicate the same door-7 list from two places, because the hook has no YAML parser and adding one is itself a dependency change. Logged, not fixed — one owner per fact, bent on purpose for a real constraint.</p>
       </div>
     </div>
     <div class="phase">
@@ -807,13 +800,13 @@ component, not the store.</code></pre>
 
   <p><b>Branch sprawl.</b> Unattended runs produce branches faster than you review them. One flow in flight at a time until you trust the digests.</p>
 
-  <p><b>Green but never executed.</b> The most dangerous digest is the one where every gate passed and nothing ran the app. <code>unverified_at_runtime</code> exists so this state has a name; the risk is the name getting skimmed past. It stops being a watch item when the runtime tier lands.</p>
+  <p><b>Green but never executed — closed.</b> <code>verify deep</code> now boots the app and drives it with Playwright; a real feature (vehicle selection) was verified this way, not just compiled. <code>unverified_at_runtime</code> still exists as a state and still matters for any run that only reaches <code>fast</code> or <code>full</code> — the watch item now is making sure that distinction stays visible rather than reading every green the same way.</p>
 
   <p><b>The gate's own config.</b> Enforced now (door 7, always on), but the override exists and the failure's signature is a better number — so the residual risk is an override that never made it into a digest. Overrides are grep-able (<code>HARNESS_DOOR_OPEN</code>); check for orphans occasionally.</p>
 </section>
 
 <footer class="col">
-  <p><b>Provenance:</b> v1–v3 were design; v4 is design reconciled with a build and with the TriTrack review — a repo that ran agents unattended for two weeks and logged 780 lines of what broke. Every mechanism above that cites an incident cites one of theirs, or one from this harness's own first run (the citation checker catching its own brief's miscited lines; a sneaky in-place hook edit that silently no-oped and was caught by its pipe-test). The living copy of this page is <code>docs/vibe-harness.html</code> in the repo; the rules an agent actually loads are one page, in <code>.ai/HARNESS.md</code>.</p>
+  <p><b>Provenance:</b> v1–v3 were design; v4 reconciled that design with a build and with the TriTrack review — a repo that ran agents unattended for two weeks and logged 780 lines of what broke. v4.1 reconciles it again with an Angular 9→14 migration that landed mid-build on this repo's own timeline, and with the harness's first delivered feature. Every mechanism above that cites an incident cites one of theirs, or one from this harness's own history (the citation checker catching its own brief's miscited lines; a sneaky in-place hook edit that silently no-oped and was caught by its pipe-test; a citation that drifted onto a blank line after an unrelated edit shifted the file underneath it). The living copy of this page is <code>docs/vibe-harness.html</code> in the repo, whose git history from here on is the changelog; the rules an agent actually loads are one page, in <code>.ai/HARNESS.md</code>.</p>
 </footer>
 
 </div>
