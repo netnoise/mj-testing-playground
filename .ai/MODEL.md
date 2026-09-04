@@ -5,9 +5,10 @@ Kept to two pages — when it outgrows that, the system has structure worth spli
 
 ## What this repo is
 
-A near-default Angular CLI 9.1 scaffold. One root `AppComponent`, an empty
-`AppRoutingModule` (`routes: Routes = []`), no business logic. New feature work is the
-first real code.
+An Angular CLI 14.2 application (`mj-testing-playground`), upgraded from a v9
+scaffold on 2026-09 (decision 0003). Still close to a scaffold: one root
+`AppComponent`, an empty `AppRoutingModule`, no business logic yet. Toolchain:
+Jest, Playwright, ESLint, Storybook.
 
 ## Ownership of facts (one owner each)
 
@@ -23,19 +24,28 @@ is wrong and neither will tell you which.
 
 ## Invariants
 
-- Gate scope (`karma.conf.js`, `angular.json` test/lint options, `tslint.json`,
-  `tsconfig*.json`, `.ai/harness/verify.sh`) is changed by a human, never by an agent
-  reaching for a better number.
+- Gate scope (`jest.config.js`, `setup-jest.ts`, `playwright.config.ts`,
+  `.eslintrc.json`, `angular.json`, `tsconfig*.json`, `.ai/harness/verify.sh`,
+  `.claude/hooks/budget.mjs`) is changed by a human, never by an agent reaching for
+  a better number.
 - Nothing that matters lives only in a context window.
 
-## Not yet true
+## Runtime oracle
 
-No runtime oracle. `verify.sh deep` runs a build and reports
-`RUNTIME: NOT CONFIGURED`; nothing in this repo currently proves the app boots.
-Playwright is the intended fix, in its own session.
+`verify.sh deep` runs a production build, then `playwright test` — which boots the
+app via its dev server and drives it in a real browser (`e2e/app.spec.ts`). A green
+`deep` is the first genuinely runtime-verified state this repo has had. It does not
+by itself cover every route or interaction added later; new features should extend
+`e2e/` rather than relying on the one smoke spec.
 
 ## Known drift
 
-None recorded. (`docs/vibe-harness.html` was v3 and predated the TriTrack review;
-reconciled to v4 on 2026-09-04 — decision 0002. The v3→v4 diff in git is the
-changelog.)
+None recorded.
+
+## Known duplication
+
+`.ai/harness/config.yml`'s `gate_scope_paths` and `.claude/hooks/budget.mjs`'s
+`GATE_SCOPE` constant describe the same list from two places, because the hook has
+no YAML parser and adding one would itself be a dependency change (door 1). Kept in
+sync by hand; a drift between them would be silent. Worth fixing once a real need
+for a YAML dependency exists elsewhere — not manufactured for this alone.
