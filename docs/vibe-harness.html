@@ -270,24 +270,29 @@
 <div class="wrap">
 
 <header class="masthead">
-  <p class="eyebrow">Proposal v3 · portable AI harness</p>
+  <p class="eyebrow">Design v4 · portable AI harness</p>
   <h1>Vibe&nbsp;Harness</h1>
   <p class="deck">An agent that runs whole loops unattended, survives being killed mid-flight, comes back having taught you something about your own codebase — and keeps what you point at.</p>
   <div class="meta">
     <span><b>Target</b> mj-testing-playground (Angular 9)</span>
     <span><b>Portable to</b> any repo, any agent, any OS</span>
-    <span><b>Status</b> brainstorm — nothing scaffolded yet</span>
+    <span><b>Status</b> Phase 0+1 built — 33 files, no dependencies</span>
+    <span><b>Shaped by</b> the TriTrack review, 2026-09-04</span>
   </div>
 </header>
 
 <section>
   <span class="h2-num">00 — SPINE</span>
-  <h2>Five ideas, everything else follows</h2>
+  <h2>Six ideas, everything else follows</h2>
 
   <div class="spine">
     <div class="spine-row">
       <div class="spine-key">Doors</div>
-      <p><b>Reversibility decides who's in the loop.</b> Six one-way actions stop the agent. Everything else runs to completion, because the undo is deleting a branch.</p>
+      <p><b>Reversibility decides who's in the loop.</b> Seven one-way actions stop the agent. Everything else runs to completion, because the undo is deleting a branch.</p>
+    </div>
+    <div class="spine-row">
+      <div class="spine-key">Teeth</div>
+      <p><b>A rule the agent must police itself is advisory.</b> The ones that matter are hooks over a single-writer state file. This came from evidence, not caution: in the reviewed repo, every prompt-level constraint eventually lost to gate pressure; its one hook-enforced constraint held.</p>
     </div>
     <div class="spine-row">
       <div class="spine-key">Digest</div>
@@ -339,12 +344,14 @@
         <li>Deleting or weakening an existing test</li>
         <li>Anything under auth, secrets, payments</li>
         <li>Writing outside the repo; pushing to a shared branch; rewriting history</li>
+        <li><b>Editing the config that defines a gate's own scope</b> — <code>karma.conf.js</code>, <code>angular.json</code> test/lint options, <code>tslint.json</code>, <code>tsconfig*.json</code>, <code>verify.sh</code> itself</li>
       </ul>
     </div>
   </div>
 
   <div class="col">
-    <p style="margin-top:1.75rem;">Six lines you can hold in your head, versus a tier matrix you'd have to consult. When the agent hits a one-way door it doesn't ask permission — it writes down what the door is, what's on both sides, what it would do by default and what being wrong would cost. Then it carries on with everything that <em>doesn't</em> depend on the answer, and the question waits for you in the digest.</p>
+    <p style="margin-top:1.75rem;">Seven lines you can hold in your head, versus a tier matrix you'd have to consult. When the agent hits a one-way door it doesn't ask permission — it writes down what the door is, what's on both sides, what it would do by default and what being wrong would cost. Then it carries on with everything that <em>doesn't</em> depend on the answer, and the question waits for you in the digest.</p>
+    <p><b>Door 7 is the review's addition, and it's the only always-enforced one.</b> It exists because its symptom is a <em>better</em> number: the reviewed repo shipped a mutation glob narrowed to one file — no test deleted, score still green, coverage of everything else silently gone. No gate can see that, so <code>budget.mjs</code> blocks those edits whether or not a run is active; the deliberate override is <code>HARNESS_DOOR_OPEN=1</code>, which must be named in the digest. Corollary: a gate metric that improves after an agent edited the gate's config is not evidence.</p>
     <p><b>Cost travels with the door.</b> A two-way door is free to walk through in risk terms but not in spend, so every run carries a budget and reports at the halfway mark — one line, no action needed. That's what lets you kill a run that's wandering before it burns the rest of its allowance, without watching it.</p>
   </div>
 </section>
@@ -394,33 +401,51 @@ expensive to keep true. Same shape at
       <p><b>What surprised me.</b> Where the code contradicted a reasonable expectation. That's where brownfield tacit knowledge lives — what a fresh reader notices and a veteran has stopped seeing. It's also the honest signal that the code was read rather than pattern-matched.</p>
       <p><b>What I learned about your system.</b> Three cited findings you didn't ask for, free from work already done.</p>
       <p><b>Concept.</b> The transferable idea, named, plus a grep for the next place it applies. You stop learning <em>this bug</em> and start learning the class, anchored to an instance in your own code.</p>
-      <p>Nothing here can be rubber-stamped, because there's usually nothing to stamp. The risk inverts from you not reading to the agent writing filler — and that's checkable, because every claim carries <code>file:line</code> and a fabricated line number dies on the first spot-check.</p>
+      <p>Nothing here can be rubber-stamped, because there's usually nothing to stamp. The risk inverts from you not reading to the agent writing filler — and that's now a script, not a habit: <code>check-citations.sh</code> resolves every <code>file:line</code> in a digest, brief or record. Its very first run caught three miscited lines in the brief that produced it — which taught the boundary precisely: it proves a citation <em>resolves</em>, not that it's <em>apt</em>, so it prints each cited line's content for the human eye to catch the misattributions.</p>
+      <p><b>And one state can never be dressed as done:</b> <code>unverified_at_runtime</code>. A run whose gates were all static says so, loudly, in the digest and the handoff. Green is not running — the reviewed repo paid three full debugging cycles for a component that passed typecheck, lint and build and crashed the first time a browser opened it.</p>
     </div>
   </div>
 </section>
 
 <section>
   <span class="h2-num">03 — AUTONOMY</span>
-  <h2>Budgets, not permissions</h2>
-  <p class="sub">Unbounded autonomy is what makes people reach for approval gates. Bound it explicitly and the gates stop being necessary.</p>
+  <h2>Budgets with teeth</h2>
+  <p class="sub">Unbounded autonomy is what makes people reach for approval gates. Bound it explicitly — and enforce the bound mechanically, because a budget the agent polices itself has already been shown to lose under gate pressure.</p>
 
-<pre><code><span class="c"># .ai/prompts/implement.md — frontmatter is the contract</span>
+<pre><code><span class="c"># .ai/prompts/implement.md — frontmatter DECLARES the contract;</span>
+<span class="c"># .claude/hooks/budget.mjs ENFORCES it, over .ai/run/&lt;slug&gt;/state.json</span>
 <span class="k">needs:</span>    understand              <span class="c"># auto-runs it if brief.md is absent</span>
 <span class="k">model:</span>    large                   <span class="c"># small | large — see §07</span>
 <span class="k">reads:</span>    .ai/run/*/brief.md, src/**
 <span class="k">writes:</span>   src/**, .ai/run/*/implement.json
-<span class="k">budget:</span>   45m · 12 files · 150k tokens
-<span class="k">journal:</span>  on                      <span class="c"># append-only, one line per step</span>
+<span class="k">budget:</span>   45m · 12 files
 <span class="k">stop_on:</span>
-  - <span class="o">one_way_door</span>            <span class="c"># the six-line list</span>
-  - <span class="o">hypothesis_falsified</span>    <span class="c"># the brief was wrong — that's a finding</span>
-  - <span class="o">blast_radius_exceeded</span>   <span class="c"># touching files the brief didn't name</span>
-  - <span class="o">budget_spent</span>
-<span class="k">on_stop:</span>  write handoff, leave branch, exit 0</code></pre>
+  - <span class="g">enforced: one_way_door</span>           <span class="c"># door 7 blocks always, run or no run</span>
+  - <span class="g">enforced: blast_radius_exceeded</span>  <span class="c"># against the brief's allowed_paths</span>
+  - <span class="g">enforced: budget_spent</span>           <span class="c"># files touched + wall clock</span>
+  - <span class="o">advisory: hypothesis_falsified</span>   <span class="c"># only the agent can notice this</span>
+  - <span class="o">advisory: runtime_falsified</span>      <span class="c"># green gates, crashed when executed</span>
+<span class="k">on_stop:</span>  write handoff, leave branch, exit clean</code></pre>
 
   <div class="col">
-    <p><b><code>hypothesis_falsified</code> is the valuable stop.</b> The agent set out to prove something and the code said no. That's the most informative outcome available, and it leads the digest. An agent that can't stop this way will instead quietly reshape the problem until its first guess looks right — the most expensive failure mode in agentic coding.</p>
+    <p><b>The enforced/advisory tag is the honest line.</b> Enforced entries are checked by a <code>PreToolUse</code> hook before every edit: it is the <em>sole writer</em> of <code>state.json</code> (files touched, wall clock, the brief's path allowlist), so the budget's book-keeping can't drift, and blast radius stops being a judgment call — <code>/understand</code> writes the allowlist, the hook does path checks. Advisory entries are labelled as such so nobody mistakes an instruction for a mechanism. The hook fails <em>open</em> on anything unexpected: a guard that blocks every edit on a schema change is worse than no guard.</p>
+    <p><b><code>hypothesis_falsified</code> is the valuable stop.</b> The agent set out to prove something and the code said no. That's the most informative outcome available, and it leads the digest. An agent that can't stop this way will instead quietly reshape the problem until its first guess looks right — the most expensive failure mode in agentic coding. <code>runtime_falsified</code> is its sibling: the gates were green and the running app said no. Static reasoning about a runtime failure was independently wrong twice in the reviewed repo's worst incident; only executing the thing settled it.</p>
     <p><b>Every stop is a handoff, not a dead end.</b> Whatever ends a run — a door, a budget, a falsified hypothesis, a dropped connection — the exit path is the same: write the handoff, leave the branch, exit clean.</p>
+  </div>
+
+  <h3>The gate has tiers, because checking has a price</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th class="mono">verify.sh</th><th>Runs</th><th>When</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">fast</td><td>lint</td><td>After every unit of work</td></tr>
+      <tr><td class="mono">full</td><td>lint + headless specs</td><td>Before every commit</td></tr>
+      <tr><td class="mono">deep</td><td>+ production build — then prints <code>RUNTIME: NOT CONFIGURED</code></td><td>Once, before handing back</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="col">
+    <p>One contract, three costs; the preflight exits non-zero with a reason rather than ever passing silently. The runtime tier is deliberately absent until Playwright lands in its own session — and <code>deep</code> says so out loud instead of letting an empty check read as a pass. Four things are never trusted on their own: <code>VERIFY: PASS</code> without reading the test diff, <code>status: completed</code> without a matching <code>git diff</code>, a metric that improved after its own config was edited, and "nothing failed" over a list of zero checks.</p>
   </div>
 </section>
 
@@ -448,7 +473,7 @@ expensive to keep true. Same shape at
   <span class="k">"spent"</span>: { "min": 12, "files": 34, "tok": 61000 },
   <span class="k">"next"</span>: "implement"
 }</code></pre>
-      <p style="font-size:0.88rem;color:var(--ink-soft);"><code>decisions_needed</code> is the one field that changes your day: empty means the flow runs to the end untouched.</p>
+      <p style="font-size:0.88rem;color:var(--ink-soft);"><code>decisions_needed</code> is the one field that changes your day: empty means the flow runs to the end untouched. Any count of changed files in an emit comes from <code>git diff --name-only</code>, never from the agent's recollection — self-report is not evidence.</p>
     </div>
   </div>
 
@@ -460,7 +485,7 @@ expensive to keep true. Same shape at
       <tr><td class="mono">implement</td><td>"just fix this" — writes its own brief first</td><td>Consumes the brief, skips re-reading</td><td><span class="m-large">large</span></td></tr>
       <tr><td class="mono">test</td><td>"cover this file" — infers intent from code</td><td>Turns the hypothesis into assertions</td><td><span class="m-large">large</span></td></tr>
       <tr><td class="mono">review</td><td>"review my tree" — findings only, no edits</td><td>Diffs result against the brief that predicted it</td><td><span class="m-large">large</span></td></tr>
-      <tr><td class="mono">record</td><td>"write this up" — reads the diff</td><td>Brief + emits → template, near-zero thinking</td><td><span class="m-small">small</span></td></tr>
+      <tr><td class="mono">record</td><td>"write this up" — reads the diff</td><td>Makes checkable claims about the diff — not clerical, see §07</td><td><span class="m-large">large</span></td></tr>
       <tr><td class="mono">digest</td><td>—</td><td>Assembles emits into one screen</td><td><span class="m-small">small</span></td></tr>
       <tr><td class="mono">handoff</td><td>"stop, write it down for the next agent"</td><td>Fires automatically on every stop condition</td><td><span class="m-small">small</span></td></tr>
       <tr><td class="mono">resume</td><td>"pick up where that died"</td><td>Entry point after any interruption</td><td><span class="m-small">small</span></td></tr>
@@ -479,7 +504,11 @@ expensive to keep true. Same shape at
   explore: [diverge, spike, keep?]             <span class="c"># parallel worktrees, one per approach</span>
 <span class="k">stop_between:</span> on_decisions_needed            <span class="c"># the only pause condition</span></code></pre>
 
-  <p class="col"><b>Parallelism is git worktrees, not a framework.</b> <code>/diverge</code> spawns three worktrees off one commit, runs a spike in each, and puts the three findings side by side. Nothing to install, works with any agent, and the losers are deleted directories.</p>
+  <p class="col"><b>Parallelism is git worktrees, not a framework.</b> <code>/diverge</code> spawns three worktrees off one commit, runs a spike in each, and puts the three findings side by side. Nothing to install, works with any agent, and the losers are deleted directories. Worktrees also solve a subtler problem: a second concurrent session once <code>git add</code>-ed an unrelated 645-line file into the reviewed repo's shared working tree, and a pathspec-less commit nearly landed it. Separate trees make that impossible; until then, always commit with an explicit pathspec.</p>
+
+  <div class="note col">
+    <b>Skills load at session start — a file written mid-session is invisible.</b> The reviewed repo ran a whole phase through a generic fallback agent because the intended agent's file didn't exist when the session began; the one hook keyed on it silently never fired, and nothing said so. Two rules follow: any change to a prompt, command or hook file ends with "restart the session", stated by the skill itself; and a run asserts that each expected hook fired at least once — "nothing failed" over zero firings is a vacuous pass.
+  </div>
 </section>
 
 <section>
@@ -579,8 +608,12 @@ git checkout fix/vehicle-models && /resume</code></pre>
     <div class="shelf">
       <div class="shelf-path">.ai/MODEL.md</div>
       <div class="shelf-who">you · living</div>
-      <p>The map of the system. Agents propose diffs; a hook blocks direct writes. Kept to two pages, deliberately.</p>
+      <p>The map of the system. Agents propose diffs; the hook blocks direct writes — enforced, not requested. Kept to two pages, deliberately.</p>
     </div>
+  </div>
+
+  <div class="note col">
+    <b>One owner per fact.</b> The shelves earn their keep only if their boundary fits in a sentence each: <code>MODEL.md</code> is how the system is <em>now</em> (present tense, replaceable) · <code>decisions/</code> is why it changed, dated (past tense, append-only) · a bank card is what it taught that outlives this repo (portable). Conventions belong to <code>CLAUDE.md</code> and are never restated inside <code>.ai/</code> — a planned <code>conventions.md</code> was deleted mid-build for exactly this reason. And in a repo that already keeps a failure log, <code>/keep</code> appends to <em>that</em>: the harness absorbs existing stores, it does not stand beside them. Parallel stores drift, drift produces no error, and the wrong answer arrives looking healthy.
   </div>
 
   <div class="duo">
@@ -646,8 +679,13 @@ component, not the store.</code></pre>
     <tbody>
       <tr>
         <td>Model routing</td>
-        <td>Frontmatter <code>model: small | large</code>. Reasoning steps get the strong model; record, digest, handoff, keep, recall, journal get the small one</td>
-        <td>Clerical work is the majority of calls and nearly none of the difficulty</td>
+        <td>Frontmatter <code>model: small | large</code> — routed by <em>"can this be wrong in a way nothing downstream catches?"</em>, never by whether it feels like typing. Digest, handoff, resume, keep, recall assemble what exists → small. <code>record</code> makes checkable claims about a diff → large</td>
+        <td>The looks-clerical-but-isn't step is the trap; the reviewed repo's docs review looked like typing and behaved like reasoning</td>
+      </tr>
+      <tr>
+        <td>Overspend on the planner</td>
+        <td><code>understand</code> deliberately gets the strongest model and the loosest read budget of any step</td>
+        <td>A bad brief is paid for by every step under it</td>
       </tr>
       <tr>
         <td>Read budget</td>
@@ -661,7 +699,7 @@ component, not the store.</code></pre>
       </tr>
       <tr>
         <td>Cache hygiene</td>
-        <td>Stable prefix first in every prompt — <code>HARNESS.md</code>, <code>conventions.md</code>, <code>MODEL.md</code> — volatile content after. Part of why <code>MODEL.md</code> is capped at two pages</td>
+        <td>Stable prefix first in every prompt — <code>HARNESS.md</code>, <code>CLAUDE.md</code>, <code>MODEL.md</code> — volatile content after. Part of why <code>MODEL.md</code> is capped at two pages</td>
         <td>Long unattended runs re-send the same preamble dozens of times</td>
       </tr>
       <tr>
@@ -713,35 +751,43 @@ component, not the store.</code></pre>
 
 <section>
   <span class="h2-num">09 — ROLLOUT</span>
-  <h2>What to build, in order</h2>
+  <h2>Where it stands</h2>
+  <p class="sub">Phase 0 and 1 are built, committed, and dogfooded — the scaffold ran as its own first run, brief to decision record. What each phase claims below is what its verification actually showed, not what was intended.</p>
 
   <div class="phases">
     <div class="phase">
-      <div class="phase-label">PHASE 0<span>~1 hour</span></div>
+      <div class="phase-label">PHASE 0+1<span>✓ built</span></div>
       <div>
-        <p><b>Digest, journal, doors</b></p>
-        <p><code>verify.sh</code>, the six-line door list, three prompts (<code>understand</code>, <code>implement</code>, <code>record</code>) emitting into <code>.ai/run/</code>, and journal lines from the first run. Autonomous runs that come back with a written finding and survive being killed. No enforcement anywhere.</p>
+        <p><b>Doors, digest, journal, durability, bank — 33 files, ~1,600 lines</b></p>
+        <p>Nine prompts (<code>/recall</code> included — moved up from Phase 3 on the review's evidence that capture without recall repeats failure classes), the seven-door list, <code>verify.sh</code> tiers, <code>check-citations.sh</code>, the mechanical handoff, and <code>budget.mjs</code> with its pipe-tests passing. <em>Proven:</em> preflight fails honestly, citations resolve, the handoff generates with no model call, all hook paths block or pass as designed. <em>Not yet proven:</em> a green <code>verify full</code> (needs the Mac's toolchain — the build container's Node can't install Angular 9), and the hook firing live in a session (it loads at session start, so the session that wrote it never saw it).</p>
       </div>
     </div>
     <div class="phase">
-      <div class="phase-label">PHASE 1<span>~2 hours</span></div>
+      <div class="phase-label">NEXT<span>on the Mac</span></div>
       <div>
-        <p><b>Handoff, resume, keep</b></p>
-        <p>The mechanical handoff (Stop hook, no model needed), <code>/resume</code>, and <code>/keep</code> writing cards. Budgets and <code>stop_on</code> in frontmatter. This is the point where you can walk away mid-run without losing anything.</p>
+        <p><b>Prove the unproven</b></p>
+        <p><code>npm ci && bash .ai/harness/verify.sh full</code> green once; restart the session so the hook loads; then a real <code>/understand</code> on a small change. One genuine digest and one survived interruption decide whether the rest gets built.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label">SESSION<span>dedicated</span></div>
+      <div>
+        <p><b>Runtime tier</b></p>
+        <p>Playwright as <code>verify deep</code>'s missing half: route-mount assertions and a console-error check, no selectors, no screenshot baselines. The existing Protractor e2e already asserts no SEVERE console entries — port that spec, don't rewrite it. Until then <code>unverified_at_runtime</code> stays loud.</p>
       </div>
     </div>
     <div class="phase">
       <div class="phase-label">PHASE 2<span>~2 hours</span></div>
       <div>
         <p><b>Portable and cheap</b></p>
-        <p><code>/adopt</code>, install script, Windows scripts, one-line adapter stubs for every tool. Model routing, read budgets, <code>flows.tiny</code>, the spend ledger. Now it goes into your other repos and stops costing more than it should.</p>
+        <p><code>/adopt</code> — whose first job is absorbing the host repo's existing knowledge stores, and whose last line is a hard session restart. Install script, <code>verify.ps1</code>, model-routing enforcement, <code>flows.tiny</code>, the spend ledger.</p>
       </div>
     </div>
     <div class="phase">
       <div class="phase-label">PHASE 3<span>later</span></div>
       <div>
         <p><b>Compounding</b></p>
-        <p><code>/recall</code> feeding runs, <code>/draft</code> for posts, the rule ledger and <code>/prune</code>, drift PRs, <code>/diverge</code> with parallel worktrees, attic sweeps. Worth it once a few dozen cards and records exist to compound from.</p>
+        <p><code>/draft</code> for posts, <code>/review</code>, the rule ledger and <code>/prune</code>, drift PRs, <code>/diverge</code> with parallel worktrees, attic sweeps. Worth it once a few dozen cards and records exist to compound from.</p>
       </div>
     </div>
   </div>
@@ -760,10 +806,14 @@ component, not the store.</code></pre>
   <p><b>The default becomes the answer.</b> If every decision ships with a recommendation you'll take it — which is fine and intended, but the ledger has to notice, because a decision you never override should stop being asked.</p>
 
   <p><b>Branch sprawl.</b> Unattended runs produce branches faster than you review them. One flow in flight at a time until you trust the digests.</p>
+
+  <p><b>Green but never executed.</b> The most dangerous digest is the one where every gate passed and nothing ran the app. <code>unverified_at_runtime</code> exists so this state has a name; the risk is the name getting skimmed past. It stops being a watch item when the runtime tier lands.</p>
+
+  <p><b>The gate's own config.</b> Enforced now (door 7, always on), but the override exists and the failure's signature is a better number — so the residual risk is an override that never made it into a digest. Overrides are grep-able (<code>HARNESS_DOOR_OPEN</code>); check for orphans occasionally.</p>
 </section>
 
 <footer class="col">
-  <p><b>Where I'd start:</b> Phase 0, minus the door hook — <code>verify.sh</code>, three prompts, the digest format and journal lines, run on the first real change this repo gets. One digest and one survived interruption will tell you more than any further design. Say the word and I'll scaffold it on the branch.</p>
+  <p><b>Provenance:</b> v1–v3 were design; v4 is design reconciled with a build and with the TriTrack review — a repo that ran agents unattended for two weeks and logged 780 lines of what broke. Every mechanism above that cites an incident cites one of theirs, or one from this harness's own first run (the citation checker catching its own brief's miscited lines; a sneaky in-place hook edit that silently no-oped and was caught by its pipe-test). The living copy of this page is <code>docs/vibe-harness.html</code> in the repo; the rules an agent actually loads are one page, in <code>.ai/HARNESS.md</code>.</p>
 </footer>
 
 </div>

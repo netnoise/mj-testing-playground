@@ -36,7 +36,6 @@ Playwright is the intended fix, in its own session.
 
 ## Known drift
 
-`docs/vibe-harness.html` is design v3 and predates the TriTrack review. It says six
-doors, one flat verify, and budgets declared in frontmatter; the code has seven doors,
-three verify tiers, and budgets enforced by a hook. Kept deliberately as a dated
-snapshot until reconciled.
+None recorded. (`docs/vibe-harness.html` was v3 and predated the TriTrack review;
+reconciled to v4 on 2026-09-04 — decision 0002. The v3→v4 diff in git is the
+changelog.)
