@@ -25,3 +25,15 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## AI harness
+
+This repo carries a small, portable harness for working with coding agents:
+plain markdown plus four shell scripts, no dependencies.
+
+- `docs/vibe-harness.html` — the design, and why each piece exists
+- `.ai/HARNESS.md` — the one-page rules an agent reads
+- `.ai/harness/verify.sh [fast|full|deep]` — the only gate contract
+
+It is tool-agnostic: `CLAUDE.md` and `AGENTS.md` are three-line pointers at
+`.ai/`, so switching agents is a one-file change.

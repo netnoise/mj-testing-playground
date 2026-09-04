@@ -47,3 +47,15 @@ These come from `.eslintrc.json` / `angular.json` and will fail lint/build if vi
 - `e2e/` — Playwright specs (`*.spec.ts`).
 - `.storybook/` — Storybook configuration; stories live alongside components as `*.stories.ts`.
 - `tsconfig.app.json` (app build) and `tsconfig.spec.json` (Jest) both extend the root `tsconfig.json`.
+
+## The .ai harness
+
+This repo uses the `.ai` harness. Read `.ai/HARNESS.md` before any non-trivial
+change, and follow it. Structure and invariants live in `.ai/MODEL.md`; runnable
+prompts in `.ai/prompts/`; the design write-up in `docs/vibe-harness.html`.
+
+The gate is `bash .ai/harness/verify.sh [fast|full|deep]` — it is the only gate
+contract.
+
+This file remains the single owner of build commands and code conventions.
+Nothing in `.ai/` restates them.

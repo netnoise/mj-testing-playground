@@ -1,0 +1,10 @@
+{
+  "status": "done",
+  "allowed_paths": [".ai/**", ".claude/**", "docs/**", "AGENTS.md", "CLAUDE.md", "README.md"],
+  "max_files": 40,
+  "max_minutes": 90,
+  "files_touched_source": "git diff --cached --name-only (NOT the hook)",
+  "files_touched_count": 33,
+  "started_at": "2026-09-04T00:00:00Z",
+  "note": "The hook did not write this. Hook files load at session start, so budget.mjs was never live in the session that created it. Per the review's 1.4, that is stated rather than glossed - and it means this run's enforcement path is unproven end-to-end."
+}

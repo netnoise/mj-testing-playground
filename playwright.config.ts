@@ -14,7 +14,14 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        // Only set when PW_CHROMIUM points at a preinstalled browser (e.g. a
+        // container with no browser download access). Mac behavior untouched.
+        ...(process.env['PW_CHROMIUM']
+          ? { launchOptions: { executablePath: process.env['PW_CHROMIUM'] } }
+          : {}),
+      },
     },
   ],
   webServer: {
