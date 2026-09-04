@@ -6,9 +6,11 @@ Kept to two pages — when it outgrows that, the system has structure worth spli
 ## What this repo is
 
 An Angular CLI 14.2 application (`mj-testing-playground`), upgraded from a v9
-scaffold on 2026-09 (decision 0003). Still close to a scaffold: one root
-`AppComponent`, an empty `AppRoutingModule`, no business logic yet. Toolchain:
-Jest, Playwright, ESLint, Storybook.
+scaffold on 2026-09 (decision 0003). First real feature: vehicle brand/model
+selection (decision 0004) - `VehicleService` (`src/app/vehicle/vehicle.service.ts`)
+is the single owner of the selected brand and derives its models;
+`BrandSelectComponent` and `ModelListComponent` are read-only consumers.
+Toolchain: Jest, Playwright, ESLint, Storybook.
 
 ## Ownership of facts (one owner each)
 

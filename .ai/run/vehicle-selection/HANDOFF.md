@@ -1,5 +1,5 @@
 # HANDOFF - vehicle-selection
-generated mechanically 2026-09-04T16:42:52Z - no model call
+generated mechanically 2026-09-04T16:43:34Z - no model call
 
 ## Goal
 # Vehicle brand/model selection
@@ -22,13 +22,11 @@ run: vehicle-selection · started 2026-09-04
 
 ## Tree state (git is the truth, not any claim above)
 ```
-branch: claude/ai-harness-vibe-coding-jwi4yx  head: 6cde334
- M .ai/harness/check-citations.sh
-?? .ai/run/vehicle-selection/
-?? src/app/vehicle/
+branch: claude/ai-harness-vibe-coding-jwi4yx  head: 63e800a
+ M .ai/run/vehicle-selection/HANDOFF.md
 --
- .ai/harness/check-citations.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .ai/run/vehicle-selection/HANDOFF.md | 44 +++---------------------------------
+ 1 file changed, 3 insertions(+), 41 deletions(-)
 ```
 
 ## Last emit

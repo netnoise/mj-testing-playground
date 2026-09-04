@@ -1,5 +1,5 @@
 {
-  "status": "active",
+  "status": "done",
   "allowed_paths": [
     "src/app/vehicle/**",
     "src/app/app.component.ts",
@@ -15,7 +15,18 @@
     "src/app/vehicle/vehicle.service.ts",
     "src/app/vehicle/vehicle.service.spec.ts",
     "src/app/vehicle/brand-select.component.spec.ts",
-    "src/app/vehicle/model-list.component.spec.ts"
+    "src/app/vehicle/model-list.component.spec.ts",
+    "src/app/vehicle/brand-select.component.ts",
+    "src/app/vehicle/brand-select.component.html",
+    "src/app/vehicle/brand-select.component.sass",
+    "src/app/vehicle/model-list.component.ts",
+    "src/app/vehicle/model-list.component.html",
+    "src/app/vehicle/model-list.component.sass",
+    "src/app/app.component.html",
+    "src/app/app.component.sass",
+    "src/app/app.module.ts",
+    "e2e/app.spec.ts",
+    "src/app/vehicle/model-list.component.stories.ts"
   ],
   "started_at": "2026-09-04T16:40:00Z"
 }

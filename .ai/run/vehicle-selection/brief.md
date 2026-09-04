@@ -6,7 +6,7 @@ run: vehicle-selection · started 2026-09-04
   (title-only component). This is the first real feature (`.ai/MODEL.md`).
 - `.eslintrc.json:13` requires camelCase `app` attribute directives,
   `.eslintrc.json:17` requires `app-` kebab element selectors.
-- `src/app/app.component.spec.ts:20` is the repo's only spec, `toBeTruthy()`-shaped.
+- `src/app/app.component.spec.ts:24` is the repo's only spec, `toBeTruthy()`-shaped.
 - `e2e/app.spec.ts:3` is the repo's only e2e spec, asserting the welcome text.
 - Docs' running example (`docs/vibe-harness.html`) uses "vehicle brand → models"
   throughout as the illustrative feature. Making it real closes that loop.
