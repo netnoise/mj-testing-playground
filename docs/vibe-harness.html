@@ -1,0 +1,769 @@
+<title>Vibe Harness</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --paper:      #EDF0F5;
+    --panel:      #F7F9FC;
+    --ink:        #0F1520;
+    --ink-soft:   #47536A;
+    --ink-faint:  #8A94A8;
+    --rule:       #C9D2E0;
+    --rule-soft:  #DDE3ED;
+    --cobalt:     #2A4BD7;
+    --cobalt-dim: #DEE4FA;
+    --ochre:      #A8690A;
+    --ochre-dim:  #F6E8CC;
+    --good:       #1F7A4D;
+    --good-dim:   #DCEDE4;
+
+    --f-display: "IBM Plex Sans Condensed", "Helvetica Neue", Arial, sans-serif;
+    --f-body:    "Source Serif 4", Georgia, "Times New Roman", serif;
+    --f-mono:    "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+    --col: 40rem;
+    --wide: 60rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #0C111A;
+      --panel:      #141B26;
+      --ink:        #E4E9F2;
+      --ink-soft:   #A3AEC2;
+      --ink-faint:  #6B7689;
+      --rule:       #27313F;
+      --rule-soft:  #1D2531;
+      --cobalt:     #8AA0FF;
+      --cobalt-dim: #1B243C;
+      --ochre:      #E0A94A;
+      --ochre-dim:  #2C2416;
+      --good:       #56B98A;
+      --good-dim:   #16261F;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #0C111A;
+    --panel:      #141B26;
+    --ink:        #E4E9F2;
+    --ink-soft:   #A3AEC2;
+    --ink-faint:  #6B7689;
+    --rule:       #27313F;
+    --rule-soft:  #1D2531;
+    --cobalt:     #8AA0FF;
+    --cobalt-dim: #1B243C;
+    --ochre:      #E0A94A;
+    --ochre-dim:  #2C2416;
+    --good:       #56B98A;
+    --good-dim:   #16261F;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: var(--wide); margin: 0 auto; padding: 0 1.75rem 6rem; }
+  .col { max-width: var(--col); }
+
+  p { margin: 0 0 1rem; }
+  .col p, .col ul, .col ol { max-width: var(--col); }
+
+  a { color: var(--cobalt); }
+  :focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+  /* ---------- masthead ---------- */
+
+  header.masthead {
+    border-bottom: 2px solid var(--ink);
+    padding: 3.5rem 0 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+  .eyebrow {
+    font-family: var(--f-display); font-weight: 600; font-size: 0.7rem;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-faint);
+    margin: 0 0 0.9rem;
+  }
+  h1 {
+    font-family: var(--f-display); font-weight: 700;
+    font-size: clamp(2.6rem, 7vw, 4.25rem); line-height: 0.98;
+    letter-spacing: -0.015em; margin: 0 0 0.75rem; text-wrap: balance;
+  }
+  .deck { font-size: 1.18rem; color: var(--ink-soft); max-width: 35rem; margin: 0 0 2rem; }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 0 2.25rem;
+    font-family: var(--f-mono); font-size: 0.74rem; color: var(--ink-faint);
+  }
+  .meta b { font-weight: 500; color: var(--ink-soft); }
+
+  /* ---------- sections ---------- */
+
+  section { margin: 0 0 4.5rem; }
+
+  h2 {
+    font-family: var(--f-display); font-weight: 700; font-size: 1.75rem;
+    letter-spacing: -0.01em; line-height: 1.15; margin: 0 0 0.35rem; text-wrap: balance;
+  }
+  .h2-num {
+    font-family: var(--f-mono); font-size: 0.72rem; color: var(--cobalt);
+    display: block; margin-bottom: 0.45rem; letter-spacing: 0.08em;
+  }
+  h2 + .sub { color: var(--ink-soft); font-size: 1rem; margin: 0 0 1.75rem; max-width: var(--col); }
+  h3 {
+    font-family: var(--f-display); font-weight: 600; font-size: 1.05rem;
+    letter-spacing: 0.005em; margin: 2rem 0 0.5rem;
+  }
+
+  ul, ol { padding-left: 1.15rem; margin: 0 0 1rem; }
+  li { margin-bottom: 0.4rem; }
+
+  code {
+    font-family: var(--f-mono); font-size: 0.85em;
+    background: var(--cobalt-dim); padding: 0.1em 0.32em; border-radius: 2px;
+  }
+
+  pre {
+    font-family: var(--f-mono); font-size: 0.78rem; line-height: 1.65;
+    background: var(--panel); border: 1px solid var(--rule);
+    border-left: 3px solid var(--cobalt);
+    padding: 1.1rem 1.25rem; overflow-x: auto; margin: 0 0 1.25rem; color: var(--ink);
+  }
+  pre code { background: none; padding: 0; font-size: inherit; }
+  pre .c { color: var(--ink-faint); }
+  pre .k { color: var(--cobalt); font-weight: 500; }
+  pre .o { color: var(--ochre); font-weight: 500; }
+  pre .g { color: var(--good); font-weight: 500; }
+
+  .caption {
+    font-family: var(--f-display); font-size: 0.78rem; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink-faint); margin: 0 0 0.55rem;
+  }
+
+  /* ---------- spine ---------- */
+
+  .spine { border-top: 1px solid var(--ink); }
+  .spine-row {
+    display: grid; grid-template-columns: 9.5rem 1fr; gap: 0 1.5rem;
+    padding: 0.9rem 0; border-bottom: 1px solid var(--rule-soft); align-items: baseline;
+  }
+  .spine-key {
+    font-family: var(--f-display); font-weight: 700; font-size: 1rem;
+    text-transform: uppercase; letter-spacing: 0.04em; color: var(--cobalt);
+  }
+  .spine-row p { margin: 0; font-size: 0.96rem; color: var(--ink-soft); }
+  .spine-row b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- doors ---------- */
+
+  .doors { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1.5rem; }
+  .door { border-top: 3px solid var(--good); padding-top: 0.9rem; }
+  .door.oneway { border-top-color: var(--ochre); }
+  .door-name {
+    font-family: var(--f-display); font-weight: 700; font-size: 1.1rem;
+    text-transform: uppercase; letter-spacing: 0.03em; margin: 0 0 0.1rem; color: var(--good);
+  }
+  .door.oneway .door-name { color: var(--ochre); }
+  .door-rule { font-family: var(--f-mono); font-size: 0.74rem; color: var(--ink-soft); margin: 0 0 0.75rem; }
+  .door ul { font-size: 0.92rem; color: var(--ink-soft); padding-left: 1rem; margin: 0; }
+
+  /* ---------- tables ---------- */
+
+  .tablewrap { overflow-x: auto; margin: 0 0 1.25rem; }
+  table { border-collapse: collapse; width: 100%; min-width: 34rem; font-size: 0.88rem; }
+  th {
+    font-family: var(--f-display); font-weight: 600; font-size: 0.72rem;
+    letter-spacing: 0.1em; text-transform: uppercase; text-align: left;
+    color: var(--ink-faint); border-bottom: 1px solid var(--ink);
+    padding: 0 0.9rem 0.5rem 0; vertical-align: bottom;
+  }
+  td {
+    padding: 0.7rem 0.9rem 0.7rem 0; border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top; color: var(--ink-soft);
+  }
+  td:first-child { color: var(--ink); }
+  td.mono, th.mono { font-family: var(--f-mono); font-size: 0.78rem; }
+  td.num { font-variant-numeric: tabular-nums; text-align: right; padding-right: 1.4rem; }
+  th.num { text-align: right; padding-right: 1.4rem; }
+  .keep { color: var(--good); font-family: var(--f-mono); font-size: 0.76rem; }
+  .prune { color: var(--ochre); font-family: var(--f-mono); font-size: 0.76rem; }
+  .m-small { color: var(--good); font-family: var(--f-mono); font-size: 0.76rem; }
+  .m-large { color: var(--ochre); font-family: var(--f-mono); font-size: 0.76rem; }
+
+  /* ---------- two-up ---------- */
+
+  .duo {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    gap: 1.5rem 2.25rem; align-items: start;
+  }
+  .duo h3 { margin-top: 0; }
+
+  /* ---------- record / card ---------- */
+
+  .record { background: var(--panel); border: 1px solid var(--rule); padding: 1.5rem 1.6rem 1.1rem; }
+  .record dl { margin: 0; }
+  .record dt {
+    font-family: var(--f-display); font-weight: 600; font-size: 0.72rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--cobalt);
+    margin: 1.15rem 0 0.2rem;
+  }
+  .record dt:first-child { margin-top: 0; }
+  .record dt.hot { color: var(--ochre); }
+  .record dd { margin: 0; font-size: 0.95rem; color: var(--ink); }
+
+  /* ---------- shelves ---------- */
+
+  .shelves { border-top: 1px solid var(--ink); margin-bottom: 1.5rem; }
+  .shelf {
+    display: grid; grid-template-columns: 11rem 6.5rem 1fr; gap: 0 1.25rem;
+    padding: 0.85rem 0; border-bottom: 1px solid var(--rule-soft); align-items: baseline;
+  }
+  .shelf-path { font-family: var(--f-mono); font-size: 0.78rem; color: var(--ink); }
+  .shelf-who { font-family: var(--f-mono); font-size: 0.72rem; color: var(--ink-faint); }
+  .shelf p { margin: 0; font-size: 0.93rem; color: var(--ink-soft); }
+
+  /* ---------- callout ---------- */
+
+  .note {
+    border-left: 3px solid var(--ochre); padding: 0.15rem 0 0.15rem 1.1rem;
+    margin: 1.5rem 0; color: var(--ink-soft); font-size: 0.95rem; max-width: var(--col);
+  }
+  .note b { color: var(--ink); font-weight: 600; }
+  .note.calm { border-left-color: var(--cobalt); }
+
+  /* ---------- surface ---------- */
+
+  .surface { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1.5rem; }
+  .surf { border-top: 1px solid var(--ink); padding-top: 0.8rem; }
+  .surf-n {
+    font-family: var(--f-display); font-weight: 700; font-size: 2rem; line-height: 1;
+    color: var(--cobalt); margin: 0 0 0.3rem;
+  }
+  .surf p { margin: 0; font-size: 0.92rem; color: var(--ink-soft); }
+  .surf b { color: var(--ink); font-family: var(--f-display); font-weight: 600; display: block; font-size: 0.98rem; }
+
+  /* ---------- phases ---------- */
+
+  .phases { border-top: 1px solid var(--ink); }
+  .phase { display: grid; grid-template-columns: 7.5rem 1fr; gap: 0 1.5rem; padding: 1rem 0; border-bottom: 1px solid var(--rule-soft); }
+  .phase-label { font-family: var(--f-mono); font-size: 0.76rem; color: var(--cobalt); }
+  .phase-label span { display: block; color: var(--ink-faint); font-size: 0.7rem; }
+  .phase p { margin: 0; font-size: 0.94rem; color: var(--ink-soft); }
+  .phase b { color: var(--ink); font-family: var(--f-display); font-weight: 600; font-size: 1rem; }
+
+  footer { border-top: 2px solid var(--ink); padding-top: 1.25rem; font-size: 0.9rem; color: var(--ink-soft); }
+
+  @media (max-width: 40rem) {
+    .shelf { grid-template-columns: 1fr; gap: 0.15rem; }
+  }
+  @media (max-width: 34rem) {
+    body { font-size: 16px; }
+    .phase, .spine-row { grid-template-columns: 1fr; gap: 0.35rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <p class="eyebrow">Proposal v3 · portable AI harness</p>
+  <h1>Vibe&nbsp;Harness</h1>
+  <p class="deck">An agent that runs whole loops unattended, survives being killed mid-flight, comes back having taught you something about your own codebase — and keeps what you point at.</p>
+  <div class="meta">
+    <span><b>Target</b> mj-testing-playground (Angular 9)</span>
+    <span><b>Portable to</b> any repo, any agent, any OS</span>
+    <span><b>Status</b> brainstorm — nothing scaffolded yet</span>
+  </div>
+</header>
+
+<section>
+  <span class="h2-num">00 — SPINE</span>
+  <h2>Five ideas, everything else follows</h2>
+
+  <div class="spine">
+    <div class="spine-row">
+      <div class="spine-key">Doors</div>
+      <p><b>Reversibility decides who's in the loop.</b> Six one-way actions stop the agent. Everything else runs to completion, because the undo is deleting a branch.</p>
+    </div>
+    <div class="spine-row">
+      <div class="spine-key">Digest</div>
+      <p><b>The checkpoint pays you in knowledge.</b> An agent reads thirty files to change three. What it learned about your system is the product; the diff is a by-product.</p>
+    </div>
+    <div class="spine-row">
+      <div class="spine-key">Skills</div>
+      <p><b>Self-sufficient, therefore composable.</b> Each heals its own preconditions, so it works alone; each writes to a run directory, so it chains. The filesystem is the bus.</p>
+    </div>
+    <div class="spine-row">
+      <div class="spine-key">Journal</div>
+      <p><b>Nothing valuable lives only in a context window.</b> An append-only line per step means a usage limit or a dead container costs minutes, not the run.</p>
+    </div>
+    <div class="spine-row">
+      <div class="spine-key">Bank</div>
+      <p><b>You point, it keeps.</b> A curated store of facts, failures and hunches that outlives the repo — raw material for reasoning, for writing, and for tuning the process itself.</p>
+    </div>
+  </div>
+
+  <div class="note calm col">
+    <b>The lightweight test.</b> You type three words (<code>/fix</code>, <code>/keep</code>, <code>/handoff</code>), you occasionally write one line answering one question, and you own one file (<code>MODEL.md</code>). Everything else in <code>.ai/</code> is written by the agent for the agent. If you never open that folder, the workflow still works — that's the standard the boilerplate has to meet.
+  </div>
+</section>
+
+<section>
+  <span class="h2-num">01 — COUPLING</span>
+  <h2>Doors, not tiers</h2>
+  <p class="sub">The only question that should stop an agent is: <em>can this be undone by deleting a branch?</em></p>
+
+  <div class="doors">
+    <div class="door">
+      <p class="door-name">Two-way</p>
+      <p class="door-rule">→ run the whole loop, report after</p>
+      <ul>
+        <li>Any edit on a branch that isn't pushed to a shared ref</li>
+        <li>Adding tests, refactors, renames</li>
+        <li>Reading anything, anywhere</li>
+        <li>New files in an area the brief named</li>
+        <li>Failed experiments — deleting the branch is the undo</li>
+      </ul>
+    </div>
+    <div class="door oneway">
+      <p class="door-name">One-way</p>
+      <p class="door-rule">→ stop, and make the stop informative</p>
+      <ul>
+        <li>Adding, removing or bumping a dependency</li>
+        <li>Schema or data migration</li>
+        <li>Changing a contract something outside the repo calls</li>
+        <li>Deleting or weakening an existing test</li>
+        <li>Anything under auth, secrets, payments</li>
+        <li>Writing outside the repo; pushing to a shared branch; rewriting history</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col">
+    <p style="margin-top:1.75rem;">Six lines you can hold in your head, versus a tier matrix you'd have to consult. When the agent hits a one-way door it doesn't ask permission — it writes down what the door is, what's on both sides, what it would do by default and what being wrong would cost. Then it carries on with everything that <em>doesn't</em> depend on the answer, and the question waits for you in the digest.</p>
+    <p><b>Cost travels with the door.</b> A two-way door is free to walk through in risk terms but not in spend, so every run carries a budget and reports at the halfway mark — one line, no action needed. That's what lets you kill a run that's wandering before it burns the rest of its allowance, without watching it.</p>
+  </div>
+</section>
+
+<section>
+  <span class="h2-num">02 — PAYLOAD</span>
+  <h2>The checkpoint has to pay you</h2>
+  <p class="sub">In a brownfield repo, twenty-seven files' worth of understanding gets thrown away every session. Capturing it is the whole opportunity.</p>
+
+  <div class="duo">
+    <div>
+      <p class="caption">.ai/run/vehicle-models/digest.md</p>
+<pre><code><span class="c">## Vehicle models don't refresh on brand change</span>
+<span class="c">   fix/vehicle-models · verify ✓ · 41 min · 6 files</span>
+
+<span class="o">### One decision for you</span>
+<span class="o">Unknown brand: clear the model list, or keep the</span>
+<span class="o">last one? I assumed clear — the empty-state at</span>
+<span class="o">model-list.html:12 expects it, but the pricing view</span>
+<span class="o">(pricing.component.ts:88) reads the same slice and</span>
+<span class="o">renders 0 for an empty list. Cost of wrong: a</span>
+<span class="o">visible "€0" flash. Reversible.</span>
+
+<span class="k">### What surprised me</span>
+The seed-once branch in vehicle.effects.ts:63 also
+feeds the comparison view — undocumented, untested.
+That's why this looked like a rendering bug for a
+week.
+
+<span class="k">### What I learned about your system</span>
+1. Three components read the vehicle slice; only one
+   writes it (effects.ts:41). Narrower than it looks.
+2. Specs mock the store, not the service, so selector
+   bugs are invisible by construction. (4 of 4.)
+3. `brandCtrl` is the only FormControl not in a
+   FormGroup. Probably historical.
+
+<span class="g">### Concept: derived state vs. duplicated state</span>
+If two components need the same fact, exactly one
+place computes it. Duplication is cheap to write and
+expensive to keep true. Same shape at
+`user/prefs.component.ts:30` — likely next instance.</code></pre>
+    </div>
+    <div>
+      <h3>The four sections that earn the read</h3>
+      <p><b>One decision for you.</b> Singular, with a default, a cost, and a reversibility note. Zero decisions is the common case — and then nothing interrupts you at all. This is the mechanism that converts approvals into reading.</p>
+      <p><b>What surprised me.</b> Where the code contradicted a reasonable expectation. That's where brownfield tacit knowledge lives — what a fresh reader notices and a veteran has stopped seeing. It's also the honest signal that the code was read rather than pattern-matched.</p>
+      <p><b>What I learned about your system.</b> Three cited findings you didn't ask for, free from work already done.</p>
+      <p><b>Concept.</b> The transferable idea, named, plus a grep for the next place it applies. You stop learning <em>this bug</em> and start learning the class, anchored to an instance in your own code.</p>
+      <p>Nothing here can be rubber-stamped, because there's usually nothing to stamp. The risk inverts from you not reading to the agent writing filler — and that's checkable, because every claim carries <code>file:line</code> and a fabricated line number dies on the first spot-check.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="h2-num">03 — AUTONOMY</span>
+  <h2>Budgets, not permissions</h2>
+  <p class="sub">Unbounded autonomy is what makes people reach for approval gates. Bound it explicitly and the gates stop being necessary.</p>
+
+<pre><code><span class="c"># .ai/prompts/implement.md — frontmatter is the contract</span>
+<span class="k">needs:</span>    understand              <span class="c"># auto-runs it if brief.md is absent</span>
+<span class="k">model:</span>    large                   <span class="c"># small | large — see §07</span>
+<span class="k">reads:</span>    .ai/run/*/brief.md, src/**
+<span class="k">writes:</span>   src/**, .ai/run/*/implement.json
+<span class="k">budget:</span>   45m · 12 files · 150k tokens
+<span class="k">journal:</span>  on                      <span class="c"># append-only, one line per step</span>
+<span class="k">stop_on:</span>
+  - <span class="o">one_way_door</span>            <span class="c"># the six-line list</span>
+  - <span class="o">hypothesis_falsified</span>    <span class="c"># the brief was wrong — that's a finding</span>
+  - <span class="o">blast_radius_exceeded</span>   <span class="c"># touching files the brief didn't name</span>
+  - <span class="o">budget_spent</span>
+<span class="k">on_stop:</span>  write handoff, leave branch, exit 0</code></pre>
+
+  <div class="col">
+    <p><b><code>hypothesis_falsified</code> is the valuable stop.</b> The agent set out to prove something and the code said no. That's the most informative outcome available, and it leads the digest. An agent that can't stop this way will instead quietly reshape the problem until its first guess looks right — the most expensive failure mode in agentic coding.</p>
+    <p><b>Every stop is a handoff, not a dead end.</b> Whatever ends a run — a door, a budget, a falsified hypothesis, a dropped connection — the exit path is the same: write the handoff, leave the branch, exit clean.</p>
+  </div>
+</section>
+
+<section>
+  <span class="h2-num">04 — SKILLS</span>
+  <h2>Alone or in concert, same file</h2>
+  <p class="sub">A skill is a markdown file with frontmatter. It works standalone because it heals its own preconditions; it composes because it emits structured output to a shared run directory. No orchestrator to install.</p>
+
+  <div class="duo">
+    <div>
+      <h3>The contract</h3>
+      <p><b>Self-healing preconditions.</b> Call <code>/implement</code> cold with no brief and it runs <code>/understand</code> first, then continues. Call it inside a flow and the brief already exists, so it skips through. Same prompt, same code path — the only difference is what's already on disk.</p>
+      <p><b>Structured emit.</b> Each skill ends by writing one JSON file. That's the entire integration surface: the next skill reads it, the digest aggregates it, you can <code>cat</code> it.</p>
+      <p><b>Idempotent and resumable.</b> Re-running with unchanged inputs is a no-op — which is precisely what makes an interrupted run safe to continue rather than restart.</p>
+    </div>
+    <div>
+      <p class="caption">.ai/run/vehicle-models/understand.json</p>
+<pre><code>{
+  <span class="k">"skill"</span>: "understand",
+  <span class="k">"status"</span>: "ok",
+  <span class="k">"artifacts"</span>: ["brief.md"],
+  <span class="k">"decisions_needed"</span>: [<span class="o">"unknown-brand-behaviour"</span>],
+  <span class="k">"doors"</span>: [],
+  <span class="k">"learned"</span>: 3,
+  <span class="k">"spent"</span>: { "min": 12, "files": 34, "tok": 61000 },
+  <span class="k">"next"</span>: "implement"
+}</code></pre>
+      <p style="font-size:0.88rem;color:var(--ink-soft);"><code>decisions_needed</code> is the one field that changes your day: empty means the flow runs to the end untouched.</p>
+    </div>
+  </div>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th class="mono">Skill</th><th>Runs alone as</th><th>In a flow it also</th><th class="mono">Model</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">understand</td><td>"explain this area" — read-only, writes a brief</td><td>Seeds the blast radius later steps are bounded by</td><td><span class="m-large">large</span></td></tr>
+      <tr><td class="mono">implement</td><td>"just fix this" — writes its own brief first</td><td>Consumes the brief, skips re-reading</td><td><span class="m-large">large</span></td></tr>
+      <tr><td class="mono">test</td><td>"cover this file" — infers intent from code</td><td>Turns the hypothesis into assertions</td><td><span class="m-large">large</span></td></tr>
+      <tr><td class="mono">review</td><td>"review my tree" — findings only, no edits</td><td>Diffs result against the brief that predicted it</td><td><span class="m-large">large</span></td></tr>
+      <tr><td class="mono">record</td><td>"write this up" — reads the diff</td><td>Brief + emits → template, near-zero thinking</td><td><span class="m-small">small</span></td></tr>
+      <tr><td class="mono">digest</td><td>—</td><td>Assembles emits into one screen</td><td><span class="m-small">small</span></td></tr>
+      <tr><td class="mono">handoff</td><td>"stop, write it down for the next agent"</td><td>Fires automatically on every stop condition</td><td><span class="m-small">small</span></td></tr>
+      <tr><td class="mono">resume</td><td>"pick up where that died"</td><td>Entry point after any interruption</td><td><span class="m-small">small</span></td></tr>
+      <tr><td class="mono">keep</td><td>"remember this" — one card to the bank</td><td>Offers candidates at the end of a run</td><td><span class="m-small">small</span></td></tr>
+      <tr><td class="mono">recall</td><td>"what do I know about X?"</td><td>Injects matching cards ahead of understand</td><td><span class="m-small">small</span></td></tr>
+      <tr><td class="mono">diverge</td><td>"three ways to do this" — no code</td><td>Fans out into parallel <code>spike/*</code> worktrees</td><td><span class="m-large">large</span></td></tr>
+      <tr><td class="mono">adopt</td><td>One-time: infers verify script, conventions, doors</td><td>—</td><td><span class="m-large">large</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+<pre><code><span class="c"># .ai/harness/config.yml — flows are three lines</span>
+<span class="k">flows:</span>
+  fix:     [recall, understand, implement, test, review, record, keep?]
+  tiny:    [implement, verify]                 <span class="c"># typo-class changes skip the ceremony</span>
+  explore: [diverge, spike, keep?]             <span class="c"># parallel worktrees, one per approach</span>
+<span class="k">stop_between:</span> on_decisions_needed            <span class="c"># the only pause condition</span></code></pre>
+
+  <p class="col"><b>Parallelism is git worktrees, not a framework.</b> <code>/diverge</code> spawns three worktrees off one commit, runs a spike in each, and puts the three findings side by side. Nothing to install, works with any agent, and the losers are deleted directories.</p>
+</section>
+
+<section>
+  <span class="h2-num">05 — DURABILITY</span>
+  <h2>Survive the kill</h2>
+  <p class="sub">Usage limit, dead container, dropped connection, closed laptop. The design assumption is that any run can be terminated between any two steps, without warning, with no chance to summarise.</p>
+
+  <div class="duo">
+    <div>
+      <h3>Three layers, cheapest first</h3>
+      <p><b>1 · WIP commits.</b> Free, and the strongest recovery you own. The agent commits on its branch after each green step. Git is the ledger; everything else just explains it.</p>
+      <p><b>2 · <code>journal.md</code>, append-only.</b> One line per meaningful step, written <em>before</em> the step and amended after. Costs a handful of tokens; turns "what was it doing?" into a fact. Write-ahead matters: the ambiguous case that breaks naive resume is a step that was in flight when the lights went out.</p>
+      <p><b>3 · <code>HANDOFF.md</code>.</b> Written for a cold agent with zero context. Fires on every stop condition, and can be written by hand.</p>
+
+      <h3>The part most designs get wrong</h3>
+      <p>If you hit a usage limit, <em>you cannot call the model to summarise</em>. So the fallback handoff must be generated without an LLM: a Stop hook or shell <code>trap</code> concatenates the journal tail, <code>git status</code>, <code>git diff --stat</code> and the last emit into <code>HANDOFF.md</code>. Cruder than the written version, and entirely sufficient to resume. The good handoff is an optimisation; the mechanical one is the guarantee.</p>
+
+      <h3>Where a journal isn't worth it</h3>
+      <p>Skip it for read-only exploration and anything under a minute. The rule: <em>journal a step if redoing it would cost more than it costs to record it, or if it changed the working tree.</em> Most reads are free to repeat; no edit ever is.</p>
+    </div>
+    <div>
+      <p class="caption">.ai/run/vehicle-models/journal.md</p>
+<pre><code>14:02 understand  ↦ reading vehicle/** + callers
+14:09 understand  ✓ 34 files → brief.md (3 learned)
+14:11 implement   ↦ failing spec first
+14:14 implement   ✓ vehicle.spec.ts:74 red as expected
+14:15 commit      ✓ wip: failing spec
+14:20 implement   ↦ derive FormArray from brand
+14:27 implement   ✓ effects.ts:63 seed branch removed
+14:28 verify      ✗ 1 spec — comparison view
+14:31 implement   ↦ second consumer, not in brief
+14:31 !           blast_radius +1 file (noted)
+14:38 verify      ✓ all green
+14:39 commit      ✓ wip: derive models from brand
+<span class="o">14:41 review      ↦ adversarial pass</span>
+<span class="o">      ── killed here (usage limit) ──</span></code></pre>
+
+      <p class="caption" style="margin-top:1.5rem;">HANDOFF.md — written mechanically, no model needed</p>
+<pre><code><span class="k">## Goal</span>
+Models don't refresh on brand change. Brief:
+.ai/run/vehicle-models/brief.md
+
+<span class="k">## Done</span> (verified)
+- Failing spec → passing (vehicle.spec.ts:74)
+- Derived FormArray; seed branch removed in
+  effects.ts:63 and comparison view
+- verify ✓ at 14:38 · branch fix/vehicle-models
+  @ 3f2a9c1
+
+<span class="k">## In flight</span>
+review — started 14:41, no output written.
+Safe to re-run from scratch (read-only).
+
+<span class="k">## Next</span>
+1. /review  2. /record  3. answer the open
+decision below before merge
+
+<span class="o">## Open decision</span>
+<span class="o">Unknown brand → clear list (assumed) vs keep last.</span>
+<span class="o">See digest.md.</span>
+
+<span class="k">## Traps</span>
+Specs mock the store, not the service — a green
+suite does not prove the selector works.
+
+<span class="k">## Resume</span>
+git checkout fix/vehicle-models && /resume</code></pre>
+    </div>
+  </div>
+
+  <div class="note col">
+    <b>Why this pays for itself immediately.</b> Recovering from zero is the single most expensive thing that can happen to an agentic workflow — it re-reads the codebase, re-derives the plan, and re-spends the whole budget to reach a state you'd already bought. A journal costs a rounding error and makes that impossible. Durability and cost efficiency are the same feature here.
+  </div>
+</section>
+
+<section>
+  <span class="h2-num">06 — MEMORY</span>
+  <h2>Three shelves, one of them yours</h2>
+  <p class="sub">Automatic capture makes documentation. Curated capture makes a body of work. The bank is the second kind, and it's the only shelf where <em>you</em> decide what goes in.</p>
+
+  <div class="shelves">
+    <div class="shelf">
+      <div class="shelf-path">.ai/run/&lt;slug&gt;/</div>
+      <div class="shelf-who">agent · hours</div>
+      <p>Brief, journal, emits, digest, handoff. Deleted when the work lands.</p>
+    </div>
+    <div class="shelf">
+      <div class="shelf-path">.ai/decisions/</div>
+      <div class="shelf-who">agent · permanent</div>
+      <p>One record per meaningful change: Problem, Root cause, Decision, Why, Trade-off, Concept. Doubles as commit body and PR text.</p>
+    </div>
+    <div class="shelf">
+      <div class="shelf-path">.ai/bank/</div>
+      <div class="shelf-who">you · permanent</div>
+      <p>Cards you pointed at. Facts, failures, hunches, quotes. Survives the repo — this is the shelf that becomes a blog post or a change to how you work.</p>
+    </div>
+    <div class="shelf">
+      <div class="shelf-path">.ai/MODEL.md</div>
+      <div class="shelf-who">you · living</div>
+      <p>The map of the system. Agents propose diffs; a hook blocks direct writes. Kept to two pages, deliberately.</p>
+    </div>
+  </div>
+
+  <div class="duo">
+    <div>
+      <h3>Capture is one gesture</h3>
+      <p>Bare <code>/keep</code> reads what just happened and proposes two or three candidate cards; you pick one, or type your own sentence. <code>/keep "specs mocking the store hid this for a year"</code> skips straight to the card. Either way it's seconds, and it runs on the small model.</p>
+      <p><b>Failed experiments are the point.</b> A dead spike is normally a deleted branch and nothing else — the most expensive knowledge you generate, routinely thrown away. <code>kind: failure</code> cards are the only place a negative result survives, and they're what stops you re-running the same idea in eight months.</p>
+
+      <h3>Three ways it pays back</h3>
+      <p><b>Reasoning.</b> <code>/recall &lt;topic&gt;</code> loads matching cards ahead of <code>understand</code>, so a new run starts with what you already concluded instead of rediscovering it. Only headers are scanned until something matches — cheap by construction.</p>
+      <p><b>Writing.</b> <code>/draft &lt;tag&gt;</code> collects cards into an outline. Because each card carries a date, a real file reference and the cost of being wrong, the draft has the specifics that make a post worth reading — which is exactly what you can't reconstruct months later.</p>
+      <p><b>Process tuning.</b> Cards tagged <code>about: process</code> feed the rule ledger. Three cards describing the same friction become a proposed rule with its evidence attached, rather than a vibe you half-remember.</p>
+
+      <h3>Kept honest</h3>
+      <p>A bank that only grows is a graveyard. Cards never recalled in six months get proposed for <code>bank/attic/</code> — moved, never deleted, because a card you ignored for a year is sometimes exactly the one you need at year two.</p>
+    </div>
+    <div>
+      <p class="caption">.ai/bank/2026-09-04-store-mocking.md</p>
+<pre><code><span class="c">---</span>
+<span class="k">kind:</span> gotcha        <span class="c"># gotcha | failure | pattern</span>
+                     <span class="c"># | decision | idea | quote</span>
+<span class="k">tags:</span> [angular, testing, ngrx, brownfield]
+<span class="k">source:</span> .ai/decisions/0007
+<span class="k">confidence:</span> high
+<span class="k">blog:</span> yes
+<span class="c">---</span>
+Specs that mock the store instead of the service
+make selector bugs invisible by construction.
+
+Seen: vehicle.spec.ts:74 · cost ≈ 1 week of
+wrong diagnosis.
+Generalises: mock at the boundary you don't own,
+never the one you do.</code></pre>
+
+      <p class="caption" style="margin-top:1.5rem;">.ai/bank/2026-08-19-signals-rewrite.md</p>
+<pre><code><span class="c">---</span>
+<span class="k">kind:</span> failure
+<span class="k">tags:</span> [angular, state, spike]
+<span class="k">source:</span> spike/signals-store (deleted)
+<span class="k">confidence:</span> high
+<span class="k">blog:</span> yes
+<span class="c">---</span>
+Porting the vehicle slice to signals died on the
+effects boundary: three effects needed the old
+action stream and there's no clean bridge in v9.
+
+Don't retry before the Angular upgrade lands.
+Cost: 2h. What I'd try next: bridge at the
+component, not the store.</code></pre>
+      <p style="font-size:0.85rem;color:var(--ink-faint);">Nine lines saves you two hours and a wrong turn — next year, or in whichever project asks the same question.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="h2-num">07 — SPEND</span>
+  <h2>Cheap by construction</h2>
+  <p class="sub">Most of the token volume in a loop like this is clerical. Routing it correctly costs nothing and changes the economics more than any prompt tuning.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Lever</th><th>What it does</th><th>Where it bites</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Model routing</td>
+        <td>Frontmatter <code>model: small | large</code>. Reasoning steps get the strong model; record, digest, handoff, keep, recall, journal get the small one</td>
+        <td>Clerical work is the majority of calls and nearly none of the difficulty</td>
+      </tr>
+      <tr>
+        <td>Read budget</td>
+        <td><code>understand</code> gets a file-read allowance and must justify overrunning it. Symbol search and grep before opening files; read the region and its callers, not the module</td>
+        <td>Reading is the largest single input cost in brownfield work</td>
+      </tr>
+      <tr>
+        <td>Don't re-derive</td>
+        <td>Emits exist so <code>test</code>, <code>review</code> and <code>record</code> never re-explore. The blast radius from the brief is also the read scope for everything downstream</td>
+        <td>Naive chains pay for the same understanding four times</td>
+      </tr>
+      <tr>
+        <td>Cache hygiene</td>
+        <td>Stable prefix first in every prompt — <code>HARNESS.md</code>, <code>conventions.md</code>, <code>MODEL.md</code> — volatile content after. Part of why <code>MODEL.md</code> is capped at two pages</td>
+        <td>Long unattended runs re-send the same preamble dozens of times</td>
+      </tr>
+      <tr>
+        <td>Right-sized flow</td>
+        <td><code>flows.tiny</code> for provably local changes: implement, verify, done. No brief, no review, no record</td>
+        <td>A typo fix should not cost what a state refactor costs</td>
+      </tr>
+      <tr>
+        <td>Journal + WIP commits</td>
+        <td>An interrupted run resumes instead of restarting</td>
+        <td>Restarting from zero is the most expensive event in the system</td>
+      </tr>
+      <tr>
+        <td>Spend ledger</td>
+        <td>Every emit records tokens and minutes; the weekly roll-up shows cost per change class</td>
+        <td>You can't tune what you can't see — and this replaces every estimate on this page with a measurement</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note col">
+    <b>One honest caveat.</b> The split above is a design intent, not a measurement — I'd expect clerical steps to dominate call count while the reasoning steps dominate spend, but the ledger in the last row exists precisely because that guess should be replaced with your real numbers after a fortnight. If routing turns out not to matter here, that's a finding worth a card.
+  </div>
+</section>
+
+<section>
+  <span class="h2-num">08 — SELF-PRUNING</span>
+  <h2>Rules must earn their keep</h2>
+  <p class="sub">Ceremony creep is real and a page limit is a weak answer. Every rule carries its evidence; the weekly <code>/prune</code> proposes its own deletions.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead>
+      <tr><th>Rule</th><th>Born from</th><th class="num">Caught</th><th class="num">Overridden</th><th>Verdict</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Derive, don't duplicate shared state</td><td class="mono">0007</td><td class="num">4</td><td class="num">0</td><td class="keep">keep</td></tr>
+      <tr><td>Failing spec before a bug fix</td><td class="mono">0003</td><td class="num">9</td><td class="num">1</td><td class="keep">keep</td></tr>
+      <tr><td>Specs mock the service, never the store</td><td class="mono">bank</td><td class="num">2</td><td class="num">0</td><td class="keep">keep</td></tr>
+      <tr><td>No barrel files</td><td class="mono">0002</td><td class="num">0</td><td class="num">6</td><td class="prune">prune →</td></tr>
+      <tr><td>Every component gets a spec file</td><td class="mono">adopt</td><td class="num">1</td><td class="num">11</td><td class="prune">prune →</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p class="col">A rule overridden eleven times and useful once isn't a standard, it's a speed bump you've learned to drive around — and it teaches the agent the file is negotiable. <b>The same ledger measures your checkpoints:</b> a decision where you always take the default should stop being asked. Attention gets reallocated by evidence, not policy.</p>
+</section>
+
+<section>
+  <span class="h2-num">09 — ROLLOUT</span>
+  <h2>What to build, in order</h2>
+
+  <div class="phases">
+    <div class="phase">
+      <div class="phase-label">PHASE 0<span>~1 hour</span></div>
+      <div>
+        <p><b>Digest, journal, doors</b></p>
+        <p><code>verify.sh</code>, the six-line door list, three prompts (<code>understand</code>, <code>implement</code>, <code>record</code>) emitting into <code>.ai/run/</code>, and journal lines from the first run. Autonomous runs that come back with a written finding and survive being killed. No enforcement anywhere.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label">PHASE 1<span>~2 hours</span></div>
+      <div>
+        <p><b>Handoff, resume, keep</b></p>
+        <p>The mechanical handoff (Stop hook, no model needed), <code>/resume</code>, and <code>/keep</code> writing cards. Budgets and <code>stop_on</code> in frontmatter. This is the point where you can walk away mid-run without losing anything.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label">PHASE 2<span>~2 hours</span></div>
+      <div>
+        <p><b>Portable and cheap</b></p>
+        <p><code>/adopt</code>, install script, Windows scripts, one-line adapter stubs for every tool. Model routing, read budgets, <code>flows.tiny</code>, the spend ledger. Now it goes into your other repos and stops costing more than it should.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label">PHASE 3<span>later</span></div>
+      <div>
+        <p><b>Compounding</b></p>
+        <p><code>/recall</code> feeding runs, <code>/draft</code> for posts, the rule ledger and <code>/prune</code>, drift PRs, <code>/diverge</code> with parallel worktrees, attic sweeps. Worth it once a few dozen cards and records exist to compound from.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="col">
+  <span class="h2-num">10 — RISK</span>
+  <h2>What I'd still watch</h2>
+
+  <p><b>Bank hoarding.</b> Capture is so cheap it becomes reflexive, and the signal drowns. The attic sweep helps; the real discipline is that a card must say what it <em>costs you</em> to not know the thing.</p>
+
+  <p><b>Journal drift.</b> A journal that gets written after the fact rather than before is worse than none — it looks authoritative and describes a run that didn't happen. Write-ahead or off, no middle setting.</p>
+
+  <p><b>Confident fiction.</b> More autonomy means more unread text, and unread text is where fabrication hides. <code>file:line</code> everywhere, one spot-check a week. Cheap, and it works because being caught is total.</p>
+
+  <p><b>The default becomes the answer.</b> If every decision ships with a recommendation you'll take it — which is fine and intended, but the ledger has to notice, because a decision you never override should stop being asked.</p>
+
+  <p><b>Branch sprawl.</b> Unattended runs produce branches faster than you review them. One flow in flight at a time until you trust the digests.</p>
+</section>
+
+<footer class="col">
+  <p><b>Where I'd start:</b> Phase 0, minus the door hook — <code>verify.sh</code>, three prompts, the digest format and journal lines, run on the first real change this repo gets. One digest and one survived interruption will tell you more than any further design. Say the word and I'll scaffold it on the branch.</p>
+</footer>
+
+</div>
