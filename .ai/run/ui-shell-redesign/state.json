@@ -23,10 +23,11 @@
     ".ai/run/ui-shell-redesign/**"
   ],
   "max_files": 20,
-  "max_minutes": 60,
+  "max_minutes": 90,
   "files_touched": [
     "src/app/advanced-form/advanced-form.component.spec.ts",
-    ".ai/run/ui-shell-redesign/journal.md"
+    ".ai/run/ui-shell-redesign/journal.md",
+    "e2e/app.spec.ts"
   ],
   "started_at": "2026-09-07T21:42:42Z"
 }

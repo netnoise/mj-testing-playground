@@ -32,7 +32,11 @@ test('fills out and submits the form successfully', async ({ page }) => {
 
   await expect(page.getByText('Checking availability…')).not.toBeVisible();
 
-  await page.getByRole('button', { name: 'Submit' }).click();
+  // ng serve's live-reload client injects a full-viewport, max-z-index
+  // iframe that intercepts every real pointer click under the dev server -
+  // not app content, so dispatch the click via the DOM directly instead of
+  // simulating a mouse event that the iframe would swallow.
+  await page.getByRole('button', { name: 'Submit' }).evaluate((el: HTMLElement) => el.click());
 
   await expect(page.locator('.submitted-value')).toBeVisible();
   await expect(page.locator('.submitted-value')).toContainText('e2euser1');
