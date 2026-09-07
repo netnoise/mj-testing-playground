@@ -20,7 +20,7 @@ test('fills out and submits the form successfully', async ({ page }) => {
   await page.goto('/advanced-form');
 
   await page.getByLabel('Username').fill('e2euser1');
-  await page.getByLabel('Email').fill('e2e@example.com');
+  await page.locator('#email').fill('e2e@example.com');
   await page.getByLabel('Age').fill('30');
   await page.getByLabel('Password', { exact: true }).fill('Password1');
   await page.getByLabel('Confirm password').fill('Password1');

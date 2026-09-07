@@ -41,5 +41,21 @@
 22:3x verify       ✓ fast: lint OK (pre-existing 4 warnings, 0 errors).
                   full: `npx jest --ci --roots src/app` (excluding the
                   pre-existing worktree pollution) → 52/52 green. `npm run
-                  build` → green, no budget violations. `playwright test`
-                  running to confirm deep
+                  build` → green, no budget violations.
+00:2x !           `npx playwright test` (default config) appeared to hang -
+                  it had actually finished (2/3 passed) and was blocking
+                  forever serving its HTML report on :9323, the default
+                  non-CI behavior of the `html` reporter. Not a bug in this
+                  work; killed the process to read the real result. Found
+                  one genuine bug from the run it did complete:
+                  `getByLabel('Email')` matched both the email `<input>` and
+                  the "Email" radio option in the contact-preference group
+                  (strict-mode violation) - fixed with `page.locator('#email')`
+00:3x verify       ✓ `npx playwright test --reporter=line` (non-blocking) →
+                  3/3 green against the redesigned shell + advanced-form flow
+00:3x !           `verify.sh deep` (the actual gate contract) still exits 1 -
+                  but at the `jest` step, on the same pre-existing worktree
+                  pollution logged above; `set -e` means it never reaches
+                  `npm run build`/`playwright test`. Not this run's doing and
+                  not fixable inside its declared blast radius; the gate
+                  cannot go green end-to-end until the worktree is removed
