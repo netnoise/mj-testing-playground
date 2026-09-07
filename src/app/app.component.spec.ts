@@ -1,8 +1,6 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { BrandSelectComponent } from './vehicle/brand-select.component';
-import { ModelListComponent } from './vehicle/model-list.component';
 
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
@@ -11,9 +9,7 @@ describe('AppComponent', () => {
         RouterTestingModule
       ],
       declarations: [
-        AppComponent,
-        BrandSelectComponent,
-        ModelListComponent
+        AppComponent
       ],
     }).compileComponents();
   }));
@@ -30,10 +26,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('mj-testing-playground');
   });
 
-  it('should render title', () => {
+  it('should render the title in the header', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('mj-testing-playground app is running!');
+    expect(compiled.querySelector('.app-header h1').textContent).toContain('mj-testing-playground');
   });
 });

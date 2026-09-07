@@ -59,25 +59,25 @@ describe('AdvancedFormComponent', () => {
     it('is required', () => {
       const control = component.form.get('username');
       control.setValue('');
-      expect(control.errors.required).toBeTruthy();
+      expect(control.errors['required']).toBeTruthy();
     });
 
     it('enforces a minimum length', () => {
       const control = component.form.get('username');
       control.setValue('ab');
-      expect(control.errors.minlength).toBeTruthy();
+      expect(control.errors['minlength']).toBeTruthy();
     });
 
     it('enforces a maximum length', () => {
       const control = component.form.get('username');
       control.setValue('a'.repeat(21));
-      expect(control.errors.maxlength).toBeTruthy();
+      expect(control.errors['maxlength']).toBeTruthy();
     });
 
     it('enforces an allowed character pattern', () => {
       const control = component.form.get('username');
       control.setValue('bad name!');
-      expect(control.errors.pattern).toBeTruthy();
+      expect(control.errors['pattern']).toBeTruthy();
     });
 
     it('is pending while the async check runs, then flags a taken name', fakeAsync(() => {
@@ -85,7 +85,7 @@ describe('AdvancedFormComponent', () => {
       control.setValue('admin');
       expect(control.pending).toBe(true);
       tick(USERNAME_CHECK_DELAY_MS);
-      expect(control.errors.usernameTaken).toBeTruthy();
+      expect(control.errors['usernameTaken']).toBeTruthy();
     }));
 
     it('resolves valid for an available name', fakeAsync(() => {
@@ -100,13 +100,13 @@ describe('AdvancedFormComponent', () => {
     it('is required', () => {
       const control = component.form.get('email');
       control.setValue('');
-      expect(control.errors.required).toBeTruthy();
+      expect(control.errors['required']).toBeTruthy();
     });
 
     it('validates email format', () => {
       const control = component.form.get('email');
       control.setValue('not-an-email');
-      expect(control.errors.email).toBeTruthy();
+      expect(control.errors['email']).toBeTruthy();
       control.setValue('a@b.com');
       expect(control.valid).toBe(true);
     });
@@ -116,19 +116,19 @@ describe('AdvancedFormComponent', () => {
     it('is required', () => {
       const control = component.form.get('age');
       control.setValue(null);
-      expect(control.errors.required).toBeTruthy();
+      expect(control.errors['required']).toBeTruthy();
     });
 
     it('enforces a minimum', () => {
       const control = component.form.get('age');
       control.setValue(17);
-      expect(control.errors.min).toBeTruthy();
+      expect(control.errors['min']).toBeTruthy();
     });
 
     it('enforces a maximum', () => {
       const control = component.form.get('age');
       control.setValue(121);
-      expect(control.errors.max).toBeTruthy();
+      expect(control.errors['max']).toBeTruthy();
     });
 
     it('accepts the boundary values', () => {
@@ -144,7 +144,7 @@ describe('AdvancedFormComponent', () => {
     it('is required', () => {
       const control = component.form.get('country');
       control.setValue('');
-      expect(control.errors.required).toBeTruthy();
+      expect(control.errors['required']).toBeTruthy();
     });
   });
 
@@ -159,7 +159,7 @@ describe('AdvancedFormComponent', () => {
       component.form.get('contactPreference').setValue('phone');
       const phoneControl = component.form.get('phone');
       phoneControl.setValue('');
-      expect(phoneControl.errors.required).toBeTruthy();
+      expect(phoneControl.errors['required']).toBeTruthy();
     });
 
     it('accepts a well-formed phone number once contact preference is phone', () => {
@@ -193,19 +193,19 @@ describe('AdvancedFormComponent', () => {
     it('requires street', () => {
       const control = component.form.get('address.street');
       control.setValue('');
-      expect(control.errors.required).toBeTruthy();
+      expect(control.errors['required']).toBeTruthy();
     });
 
     it('requires city', () => {
       const control = component.form.get('address.city');
       control.setValue('');
-      expect(control.errors.required).toBeTruthy();
+      expect(control.errors['required']).toBeTruthy();
     });
 
     it('validates postal code format', () => {
       const control = component.form.get('address.postalCode');
       control.setValue('abc');
-      expect(control.errors.pattern).toBeTruthy();
+      expect(control.errors['pattern']).toBeTruthy();
       control.setValue('12345');
       expect(control.valid).toBe(true);
     });
@@ -215,7 +215,7 @@ describe('AdvancedFormComponent', () => {
     it('flags a mismatch on the group, not on the individual controls', () => {
       const group = component.form.get('passwordGroup');
       group.setValue({ password: 'longenough1', confirmPassword: 'different1' });
-      expect(group.errors.passwordMismatch).toBeTruthy();
+      expect(group.errors['passwordMismatch']).toBeTruthy();
       expect(group.get('password').errors).toBeNull();
       expect(group.get('confirmPassword').errors).toBeNull();
     });
@@ -349,7 +349,7 @@ describe('AdvancedFormComponent', () => {
     it('re-attaches the conditional validator exactly once after reset', () => {
       component.onReset();
       const phoneControl = component.form.get('phone');
-      spyOn(phoneControl, 'setValidators').and.callThrough();
+      jest.spyOn(phoneControl, 'setValidators');
 
       component.form.get('contactPreference').setValue('phone');
 
@@ -360,7 +360,7 @@ describe('AdvancedFormComponent', () => {
   describe('ngOnDestroy', () => {
     it('unsubscribes from the contactPreference subscription', () => {
       const subscription = (component as any).contactPreferenceSubscription;
-      spyOn(subscription, 'unsubscribe').and.callThrough();
+      jest.spyOn(subscription, 'unsubscribe');
 
       fixture.destroy();
 

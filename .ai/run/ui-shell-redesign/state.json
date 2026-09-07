@@ -1,0 +1,32 @@
+{
+  "status": "active",
+  "allowed_paths": [
+    "src/app/app.component.html",
+    "src/app/app.component.sass",
+    "src/app/app.component.scss",
+    "src/app/app.component.ts",
+    "src/app/app.component.spec.ts",
+    "src/app/app-routing.module.ts",
+    "src/app/app.module.ts",
+    "src/app/vehicle/**",
+    "src/app/advanced-form/advanced-form.component.sass",
+    "src/app/advanced-form/advanced-form.component.scss",
+    "src/app/advanced-form/advanced-form.component.ts",
+    "src/app/advanced-form/advanced-form.component.spec.ts",
+    "src/styles.sass",
+    "src/styles.scss",
+    "angular.json",
+    "CLAUDE.md",
+    "e2e/app.spec.ts",
+    "e2e/*.spec.ts",
+    ".ai/decisions/**",
+    ".ai/run/ui-shell-redesign/**"
+  ],
+  "max_files": 20,
+  "max_minutes": 60,
+  "files_touched": [
+    "src/app/advanced-form/advanced-form.component.spec.ts",
+    ".ai/run/ui-shell-redesign/journal.md"
+  ],
+  "started_at": "2026-09-07T21:42:42Z"
+}

@@ -7,7 +7,7 @@ import { passwordMatchValidator, usernameTakenValidator } from './advanced-form.
 @Component({
   selector: 'app-advanced-form',
   templateUrl: './advanced-form.component.html',
-  styleUrls: ['./advanced-form.component.sass']
+  styleUrls: ['./advanced-form.component.scss']
 })
 export class AdvancedFormComponent implements OnInit, OnDestroy {
   static readonly COUNTRIES: string[] = ['United States', 'Canada', 'United Kingdom', 'Germany', 'Other'];
