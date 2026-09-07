@@ -1,0 +1,285 @@
+<title>Vibe Harness Cheatsheet</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --paper:      #EDF0F5;
+    --panel:      #F7F9FC;
+    --ink:        #0F1520;
+    --ink-soft:   #47536A;
+    --ink-faint:  #8A94A8;
+    --rule:       #C9D2E0;
+    --rule-soft:  #DDE3ED;
+    --cobalt:     #2A4BD7;
+    --cobalt-dim: #DEE4FA;
+    --ochre:      #A8690A;
+    --ochre-dim:  #F6E8CC;
+    --good:       #1F7A4D;
+    --good-dim:   #DCEDE4;
+
+    --f-display: "IBM Plex Sans Condensed", "Helvetica Neue", Arial, sans-serif;
+    --f-body:    "Source Serif 4", Georgia, "Times New Roman", serif;
+    --f-mono:    "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0C111A; --panel: #141B26; --ink: #E4E9F2; --ink-soft: #A3AEC2; --ink-faint: #6B7689;
+      --rule: #27313F; --rule-soft: #1D2531; --cobalt: #8AA0FF; --cobalt-dim: #1B243C;
+      --ochre: #E0A94A; --ochre-dim: #2C2416; --good: #56B98A; --good-dim: #16261F;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0C111A; --panel: #141B26; --ink: #E4E9F2; --ink-soft: #A3AEC2; --ink-faint: #6B7689;
+    --rule: #27313F; --rule-soft: #1D2531; --cobalt: #8AA0FF; --cobalt-dim: #1B243C;
+    --ochre: #E0A94A; --ochre-dim: #2C2416; --good: #56B98A; --good-dim: #16261F;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink); font-family: var(--f-body);
+    font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 74rem; margin: 0 auto; padding: 2.25rem 1.5rem 4rem; }
+
+  header.top {
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem;
+    border-bottom: 2px solid var(--ink); padding-bottom: 1rem; margin-bottom: 1.75rem; flex-wrap: wrap;
+  }
+  .eyebrow {
+    font-family: var(--f-display); font-weight: 600; font-size: 0.68rem;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 0.4rem;
+  }
+  h1 {
+    font-family: var(--f-display); font-weight: 700; font-size: 2.1rem;
+    letter-spacing: -0.01em; margin: 0; text-wrap: balance;
+  }
+  .top-meta {
+    font-family: var(--f-mono); font-size: 0.72rem; color: var(--ink-soft);
+    text-align: right; line-height: 1.7;
+  }
+  .top-meta b { color: var(--ink); font-weight: 500; }
+
+  .loop {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;
+    font-family: var(--f-mono); font-size: 0.86rem; margin-bottom: 2rem;
+  }
+  .loop span {
+    background: var(--panel); border: 1px solid var(--rule); padding: 0.35rem 0.75rem;
+  }
+  .loop span.gate { border-color: var(--ochre); color: var(--ochre); font-weight: 500; }
+  .loop .arrow { color: var(--ink-faint); }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
+    gap: 1.5rem; align-items: start; margin-bottom: 1.5rem;
+  }
+  .block { background: var(--panel); border: 1px solid var(--rule); padding: 1.1rem 1.25rem 1.25rem; }
+  .block.span2 { grid-column: span 2; }
+  @media (max-width: 46rem) { .block.span2 { grid-column: span 1; } }
+
+  h2 {
+    font-family: var(--f-display); font-weight: 700; font-size: 0.78rem;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--cobalt);
+    margin: 0 0 0.85rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule-soft);
+  }
+
+  code {
+    font-family: var(--f-mono); font-size: 0.85em; background: var(--cobalt-dim);
+    padding: 0.05em 0.3em; border-radius: 2px;
+  }
+  .note { font-size: 0.82rem; color: var(--ink-soft); margin: 0.6rem 0 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th {
+    font-family: var(--f-display); font-weight: 600; font-size: 0.66rem; letter-spacing: 0.06em;
+    text-transform: uppercase; text-align: left; color: var(--ink-faint);
+    border-bottom: 1px solid var(--rule); padding: 0 0.5rem 0.4rem 0;
+  }
+  td { padding: 0.5rem 0.5rem 0.5rem 0; border-bottom: 1px solid var(--rule-soft); vertical-align: top; color: var(--ink-soft); }
+  td:first-child { color: var(--ink); font-family: var(--f-mono); font-size: 0.8rem; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  .tag { font-family: var(--f-mono); font-size: 0.68rem; padding: 0.1em 0.4em; white-space: nowrap; }
+  .tag.large { background: var(--ochre-dim); color: var(--ochre); }
+  .tag.small { background: var(--good-dim); color: var(--good); }
+
+  ol.doors, ul.doors {
+    margin: 0; padding-left: 1.15rem; font-size: 0.85rem; color: var(--ink-soft);
+  }
+  ol.doors li, ul.doors li { margin-bottom: 0.42rem; }
+  ol.doors li b, ul.doors li b { color: var(--ink); font-weight: 600; }
+  .door-head {
+    font-family: var(--f-display); font-weight: 700; font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.5rem;
+  }
+  .block.two .door-head { color: var(--good); }
+  .block.one .door-head { color: var(--ochre); }
+  .block.one { border-top: 3px solid var(--ochre); }
+  .block.two { border-top: 3px solid var(--good); }
+
+  pre {
+    font-family: var(--f-mono); font-size: 0.76rem; line-height: 1.55; background: var(--paper);
+    border: 1px solid var(--rule); padding: 0.85rem 1rem; margin: 0; overflow-x: auto; color: var(--ink);
+  }
+  pre .k { color: var(--cobalt); }
+  pre .c { color: var(--ink-faint); }
+  pre .o { color: var(--ochre); }
+
+  .filemap { list-style: none; margin: 0; padding: 0; font-size: 0.83rem; }
+  .filemap li { display: grid; grid-template-columns: 12rem 1fr; gap: 0.75rem; padding: 0.4rem 0; border-bottom: 1px solid var(--rule-soft); }
+  .filemap li:last-child { border-bottom: none; }
+  .filemap code { background: none; padding: 0; font-size: 0.82rem; }
+  .filemap span { color: var(--ink-soft); }
+
+  .trust { margin: 0; padding-left: 1.1rem; font-size: 0.84rem; color: var(--ink-soft); }
+  .trust li { margin-bottom: 0.55rem; }
+  .trust b { color: var(--ink); }
+
+  footer {
+    border-top: 1px solid var(--rule); margin-top: 0.5rem; padding-top: 1rem;
+    font-size: 0.78rem; color: var(--ink-faint); text-align: center;
+  }
+  footer code { background: none; padding: 0; }
+
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div>
+    <p class="eyebrow">Quick reference · companion to the design doc</p>
+    <h1>Vibe Harness Cheatsheet</h1>
+  </div>
+  <div class="top-meta">
+    <div><b>mj-testing-playground</b> · Angular 14</div>
+    <div>rules an agent loads: <code>.ai/HARNESS.md</code></div>
+    <div>design + rationale: <code>docs/vibe-harness.html</code></div>
+  </div>
+</header>
+
+<div class="loop">
+  <span>understand</span><span class="arrow">→</span>
+  <span>implement</span><span class="arrow">→</span>
+  <span>test</span><span class="arrow">→</span>
+  <span class="gate">verify</span><span class="arrow">→</span>
+  <span>digest</span><span class="arrow">→</span>
+  <span>record</span>
+</div>
+
+<div class="grid">
+  <div class="block span2">
+    <h2>Commands</h2>
+    <table>
+      <thead><tr><th>Command</th><th>Does</th><th>Model</th></tr></thead>
+      <tbody>
+        <tr><td>/understand</td><td>Investigate, write the brief and blast-radius allowlist. No code edits.</td><td><span class="tag large">large</span></td></tr>
+        <tr><td>/implement</td><td>Runs /understand first if no brief exists, then executes it. Blast radius enforced live.</td><td><span class="tag large">large</span></td></tr>
+        <tr><td>/test</td><td>Failing-first for a bug; invariant-named specs for a feature. Reports vacuous specs.</td><td><span class="tag large">large</span></td></tr>
+        <tr><td>/record</td><td>Brief + diff → decision record. Makes checkable claims — not clerical.</td><td><span class="tag large">large</span></td></tr>
+        <tr><td>/digest</td><td>Assembles what the run already produced into one screen. Invents nothing.</td><td><span class="tag small">small</span></td></tr>
+        <tr><td>/handoff</td><td>Mechanical fallback needs no model call; the prompt version improves on it if one is available.</td><td><span class="tag small">small</span></td></tr>
+        <tr><td>/resume</td><td>Trusts the diff over the journal's claims. Re-runs <code>verify</code> itself.</td><td><span class="tag small">small</span></td></tr>
+        <tr><td>/keep</td><td>Proposes 2–3 bank-card candidates from the run; you pick, or write your own.</td><td><span class="tag small">small</span></td></tr>
+        <tr><td>/recall</td><td>Header-scans <code>.ai/bank/</code> and <code>.ai/decisions/</code> before new work starts.</td><td><span class="tag small">small</span></td></tr>
+      </tbody>
+    </table>
+    <p class="note">Every stub in <code>.claude/commands/</code> just points at <code>.ai/prompts/</code> — the prompts are the source, tool-agnostic. <code>flows.fix</code>: recall → understand → implement → test → record. <code>flows.tiny</code>: implement → verify.</p>
+  </div>
+
+  <div class="block one">
+    <p class="door-head">One-way doors — stop, state, continue elsewhere</p>
+    <ol class="doors">
+      <li><b>Dependency</b> — add, remove, bump. Includes <code>package-lock.json</code>.</li>
+      <li><b>Migration</b> — schema or data.</li>
+      <li><b>External contract</b> — anything outside the repo calls it.</li>
+      <li><b>Test deleted or weakened.</b></li>
+      <li><b>Auth, secrets, payments.</b></li>
+      <li><b>Outside the repo</b> — shared branch, rewritten history.</li>
+      <li><b>Gate's own scope</b> — <code>jest.config.js</code>, <code>playwright.config.ts</code>, <code>.eslintrc.json</code>, <code>angular.json</code>, <code>tsconfig*.json</code>, <code>verify.sh</code>, <code>budget.mjs</code> itself. Enforced live — hook blocks it.</li>
+    </ol>
+    <p class="note">Override: <code>HARNESS_DOOR_OPEN=1</code>, and say so in the digest.</p>
+  </div>
+
+  <div class="block two">
+    <p class="door-head">Two-way — run, report after</p>
+    <ul class="doors">
+      <li>Any edit on an unpushed branch.</li>
+      <li>Tests, refactors, renames.</li>
+      <li>Reading anything, anywhere.</li>
+      <li>New files inside the declared blast radius.</li>
+      <li>Failed experiments — <code>git branch -D</code> is the undo.</li>
+    </ul>
+    <p class="note"><code>.ai/MODEL.md</code> is a standing exception: human-owned, hook-blocked regardless of an active run.</p>
+  </div>
+
+  <div class="block span2">
+    <h2>Gates — <code>bash .ai/harness/verify.sh &lt;tier&gt;</code></h2>
+    <table>
+      <thead><tr><th>Tier</th><th>Runs</th><th>When</th></tr></thead>
+      <tbody>
+        <tr><td>fast</td><td>eslint</td><td>after a unit of work</td></tr>
+        <tr><td>full</td><td>fast + <code>jest --ci</code></td><td>before every commit</td></tr>
+        <tr><td>deep</td><td>full + production build + <code>playwright test</code></td><td>once, before handing back</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Exit 0 or 1, nothing else. <code>deep</code> is the real runtime oracle — Playwright boots the app and drives it. In this container: <code>PW_CHROMIUM=/opt/pw-browsers/chromium bash .ai/harness/verify.sh deep</code>.</p>
+  </div>
+
+  <div class="block">
+    <h2>Never trust</h2>
+    <ul class="trust">
+      <li><b>VERIFY: PASS</b> alone — read the test diff for a spec that only asserts <code>toBeTruthy()</code>.</li>
+      <li><b>status: completed</b> — check <code>git diff --stat</code> actually changed something.</li>
+      <li><b>A metric that improved</b> right after its own config was edited.</li>
+      <li><b>An empty list</b> — zero checks is not "nothing failed."</li>
+      <li><b>A citation that resolves</b> — proves the line exists, not that it's still the right one.</li>
+    </ul>
+  </div>
+
+  <div class="block span2">
+    <h2>Where things live</h2>
+    <ul class="filemap">
+      <li><code>.ai/run/&lt;slug&gt;/</code><span>brief, journal, state.json, digest — hours, deleted when the work lands</span></li>
+      <li><code>.ai/decisions/NNNN-*.md</code><span>why a change happened — permanent, append-only</span></li>
+      <li><code>.ai/bank/</code><span>lessons that outlive this repo — human-curated, never auto-written</span></li>
+      <li><code>.ai/MODEL.md</code><span>structure and invariants — human-owned, hook-guarded</span></li>
+      <li><code>CLAUDE.md</code><span>commands and conventions — the one owner of both</span></li>
+      <li><code>.ai/harness/check-citations.sh</code><span>resolves every <code>file:line</code> in a doc</span></li>
+      <li><code>.ai/harness/handoff.sh</code><span>writes <code>HANDOFF.md</code> with no model call</span></li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h2>Bank card — <code>.ai/bank/YYYY-MM-DD-slug.md</code></h2>
+    <pre><code><span class="c">---</span>
+<span class="k">kind:</span> gotcha <span class="c">| failure | pattern | decision | idea | quote</span>
+<span class="k">tags:</span> []
+<span class="k">source:</span>
+<span class="k">confidence:</span> high <span class="c">| hunch</span>
+<span class="k">blog:</span> yes <span class="c">| no</span>
+<span class="c">---</span>
+<span class="o">&lt;the claim, in one or two sentences&gt;</span>
+
+Seen: <span class="c">file:line, or a branch — even deleted</span>
+Cost: <span class="c">what not knowing this cost</span>
+Generalises: <span class="c">the portable form</span></code></pre>
+  </div>
+
+  <div class="block">
+    <h2>Decision record — <code>.ai/decisions/NNNN-slug.md</code></h2>
+    <pre><code><span class="k">## Problem</span>
+<span class="k">## Root cause</span>
+<span class="k">## Decision</span>
+<span class="k">## Why</span>
+<span class="k">## Trade-off</span>
+<span class="k">## Concept</span>       <span class="c"># the transferable idea, named</span>
+<span class="k">## What actually happened</span></code></pre>
+    <p class="note">Everything but the last section comes from the approved brief — nothing invented after the fact.</p>
+  </div>
+</div>
+
+<footer>
+  One page for lookup; <code>.ai/HARNESS.md</code> for the rules an agent actually loads; <code>docs/vibe-harness.html</code> for why any of this exists.
+</footer>
+
+</div>
