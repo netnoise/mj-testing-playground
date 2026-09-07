@@ -1,5 +1,5 @@
 {
-  "status": "active",
+  "status": "done",
   "allowed_paths": [
     "src/app/app.component.html",
     "src/app/app.component.sass",
@@ -27,7 +27,9 @@
   "files_touched": [
     "src/app/advanced-form/advanced-form.component.spec.ts",
     ".ai/run/ui-shell-redesign/journal.md",
-    "e2e/app.spec.ts"
+    "e2e/app.spec.ts",
+    ".ai/run/ui-shell-redesign/digest.md",
+    ".ai/decisions/0005-ui-shell-redesign.md"
   ],
   "started_at": "2026-09-07T21:42:42Z"
 }
