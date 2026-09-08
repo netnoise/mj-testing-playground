@@ -1,0 +1,7 @@
+{
+  "skill": "retro",
+  "status": "ok",
+  "artifacts": ["brief.md","digest.md","implement.json","journal.md","proposed-MODEL.md","retro.md"],
+  "files_changed": [".ai/HARNESS.md",".ai/harness/OWED.md",".ai/harness/check-citations.sh",".ai/harness/config.yml",".ai/harness/emit.sh",".ai/harness/gate-scope.json",".ai/harness/handoff.sh",".ai/harness/ledger.sh",".ai/prompts/digest.md",".ai/prompts/keep.md",".ai/prompts/retro.md",".ai/run/harness-v42-r3/brief.md",".ai/run/harness-v42-r3/digest.md",".ai/run/harness-v42-r3/implement.json",".ai/run/harness-v42-r3/journal.md",".ai/run/harness-v42-r3/patch-budget-gate-scope.mjs",".ai/run/harness-v42-r3/patch-verify.sh",".ai/run/harness-v42-r3/proposed-MODEL.md",".ai/run/harness-v42-r3/retro.md",".ai/run/harness-v42-r3/state.json",".claude/commands/retro.md","README.md","docs/cheatsheet.html","docs/vibe-harness.html"],
+  "spent": {"min": -129, "files": 24}
+}
