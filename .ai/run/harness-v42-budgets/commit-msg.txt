@@ -1,0 +1,31 @@
+harness(budgets): raise default run budget from 12 files/45 min to 30/90
+
+Direct user direction after the previous harness-remediation run hit its
+own 12-file cap mid-flight with real, in-scope work still left: the
+default was never validated against actual usage. It now can be -
+ui-shell-redesign (a normal-sized feature run) touched 30 files in
+about 90 minutes, already needing exactly that extension once before
+(decision 0005). 30/90 matches the largest real run on record rather
+than picking a bigger round number.
+
+- config.yml: default budget updated, with the evidence cited inline.
+- understand.md: example state.json template updated to match.
+- implement.md: frontmatter budget line updated. Also picks up a note
+  deferred from the previous run - the app-mount check should run at a
+  natural checkpoint mid-implement, not just once at hand-back, so the
+  runtime-contradiction stop condition can actually fire from inside
+  the fix loop.
+- HARNESS.md: tier table updated for four tiers instead of three
+  (also deferred from the previous run).
+- budget.mjs: fallback defaults 12/45 -> 30/90, applied by the user from
+  a prepared patch (door 7; no HARNESS_DOOR_OPEN path exists for this
+  session's hook process in the desktop app, confirmed in the previous
+  run). Confirmed live via hook-test.sh (14/14 green) and a full
+  production-build verify run (green) against the actual patched file,
+  not just the staged copy - this session was interrupted mid-run by an
+  app restart, and /resume verified rather than assumed the patch had
+  landed correctly.
+
+Record: .ai/run/harness-v42-budgets/
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>

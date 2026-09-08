@@ -32,7 +32,9 @@ run: <slug> · started <date>
 ```
 
 4. Write `state.json`: `{"status":"active","allowed_paths":[...from blast radius],
-   "max_files":12,"max_minutes":45,"files_touched":[],"started_at":"<iso>"}`.
+   "max_files":30,"max_minutes":90,"files_touched":[],"started_at":"<iso>"}`.
+   30/90 is the default (`.ai/harness/config.yml`), sized to the largest real run
+   on record — raise or lower per-run if the brief's blast radius clearly warrants it.
    The hook reads this. A path you forget here will block the next step — that is
    the mechanism working, not a bug. **Write it once.** The hook is `state.json`'s
    sole writer after this: it re-derives `files_touched` from git on every edit, and

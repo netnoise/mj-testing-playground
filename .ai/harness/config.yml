@@ -31,8 +31,12 @@ gates:
 
 budgets:
   default:
-    minutes: 45
-    files: 12
+    # sized to the largest real run on record, not a round number:
+    # ui-shell-redesign touched 30 files in ~90 minutes (decision 0005 -
+    # already extended past a 45-minute default once). 12/45 was hit mid-run
+    # by harness-v42-r2 with real, in-scope work still left.
+    minutes: 90
+    files: 30
   enforced_by: .claude/hooks/budget.mjs
   state: .ai/run/<slug>/state.json    # single writer: the hook
 

@@ -42,14 +42,24 @@ after the gate's own config was edited is not evidence.
 | tier | runs | when |
 |---|---|---|
 | `fast` | lint (eslint) | after a unit of work |
-| `full` | fast + `jest --ci` | before every commit |
-| `deep` | full + production build + `playwright test` | once before handing back |
+| `full` | fast + `jest --ci` + `hook-test.sh` | before every commit |
+| `smoke` | full + production build + `e2e/smoke.spec.ts` | at a checkpoint mid-`implement` |
+| `deep` | smoke + the full e2e suite | once before handing back |
 
-`deep` is the real runtime oracle: Playwright's `webServer` boots the app and
-`e2e/app.spec.ts` drives it in a real browser. A green `deep` means something
-actually executed, not just compiled — the `unverified_at_runtime` state this section
-used to warn about no longer applies to `deep` itself. It still applies to anything
-that only ran `fast` or `full` and is being reported as if the app had been exercised.
+`smoke` and `deep` are both genuine runtime oracles, and both run against the actual
+**production build** (`npm run build`'s `dist/`, served by `e2e/serve-dist.mjs`), not
+`ng serve` — `ng serve` may be a leftover process of unknown provenance, which is the
+mechanism behind a report that once reached a human as "all tests pass" and was wrong.
+
+They check different things. `smoke` is generic and cheap: every route mounts, no
+uncaught error, no horizontal overflow — it breaks only when the app is actually
+broken, so it belongs inside the fix loop (`implement.md`), not just at hand-back.
+`deep` adds the feature-driving spec (`e2e/app.spec.ts`) — a real acceptance test and
+a much narrower regression net, since it breaks on any copy or layout change too.
+A green `deep` (or `smoke`) means something actually executed, not just compiled —
+the `unverified_at_runtime` state this section used to warn about no longer applies
+to either. It still applies to anything that only ran `fast` or `full` and is being
+reported as if the app had been exercised.
 
 ## Never trust
 

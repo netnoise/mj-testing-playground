@@ -1,0 +1,28 @@
+{
+  "status": "done",
+  "allowed_paths": [
+    ".ai/harness/config.yml",
+    ".claude/hooks/budget.mjs",
+    ".ai/prompts/understand.md",
+    ".ai/prompts/implement.md",
+    ".ai/HARNESS.md",
+    ".ai/run/harness-v42-budgets/**"
+  ],
+  "max_files": 12,
+  "max_minutes": 45,
+  "files_touched": [
+    ".ai/HARNESS.md",
+    ".ai/harness/config.yml",
+    ".ai/prompts/implement.md",
+    ".ai/prompts/understand.md",
+    ".ai/run/harness-v42-budgets/HANDOFF.md",
+    ".ai/run/harness-v42-budgets/PATCH-NOTES.md",
+    ".ai/run/harness-v42-budgets/digest.md",
+    ".ai/run/harness-v42-budgets/journal.md",
+    ".ai/run/harness-v42-budgets/patch-budget.mjs",
+    ".ai/run/harness-v42-budgets/state.json",
+    ".ai/run/harness-v42-r2/commit-msg.txt",
+    ".claude/hooks/budget.mjs"
+  ],
+  "started_at": "2026-09-08T22:30:00Z"
+}
