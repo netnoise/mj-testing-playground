@@ -25,7 +25,11 @@ All commands run via the local Angular CLI (`npx ng …` or the npm scripts belo
 These come from `.eslintrc.json` / `angular.json` and will fail lint/build if violated — follow them when generating code:
 
 - **Selectors**: components use element selectors with prefix `app-` in **kebab-case** (e.g. `app-foo-bar`); directives use attribute selectors with prefix `app` in **camelCase**.
-- **Component styles**: SASS (`.sass`, indented syntax — not SCSS). `ng generate component` is configured to emit `.sass` files; the global stylesheet is `src/styles.sass`.
+- **Component styles**: SCSS (`.scss`). Existing components use it; `ng generate component`'s
+  default schematic and the global stylesheet (`src/styles.sass`) still need a human edit to
+  `angular.json` — that file is a gate-scope config this harness won't let an agent touch
+  (`.ai/HARNESS.md` door 7) — to finish the switch. Until then, `ng generate` still scaffolds
+  `.sass`; new components should be hand-converted to `.scss` to match.
 - **TS style**: single quotes, semicolons required, 140-char max line, `no-console` (except `log`/`warn`/`error`).
 - **TypeScript target**: `es2017` with `lib: [es2020, dom]`; Angular compiler runs `strictTemplates` and `strictInjectionParameters`.
 - **RxJS**: import from `rxjs` / `rxjs/operators` only.
