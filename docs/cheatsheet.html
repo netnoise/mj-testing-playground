@@ -176,14 +176,15 @@
         <tr><td>/implement</td><td>Runs /understand first if no brief exists, then executes it. Blast radius enforced live.</td><td><span class="tag large">large</span></td></tr>
         <tr><td>/test</td><td>Failing-first for a bug; invariant-named specs for a feature. Reports vacuous specs.</td><td><span class="tag large">large</span></td></tr>
         <tr><td>/record</td><td>Brief + diff → decision record. Makes checkable claims — not clerical.</td><td><span class="tag large">large</span></td></tr>
-        <tr><td>/digest</td><td>Assembles what the run already produced into one screen. Invents nothing.</td><td><span class="tag small">small</span></td></tr>
+        <tr><td>/digest</td><td>Assembles the run <em>and</em> states one decision, its default and cost — synthesis, not just assembly.</td><td><span class="tag large">large</span></td></tr>
+        <tr><td>/retro</td><td>Process critique: what you got wrong, not what the code did. Digest has no section where you're the subject.</td><td><span class="tag large">large</span></td></tr>
         <tr><td>/handoff</td><td>Mechanical fallback needs no model call; the prompt version improves on it if one is available.</td><td><span class="tag small">small</span></td></tr>
         <tr><td>/resume</td><td>Trusts the diff over the journal's claims. Re-runs <code>verify</code> itself.</td><td><span class="tag small">small</span></td></tr>
         <tr><td>/keep</td><td>Proposes 2–3 bank-card candidates from the run; you pick, or write your own.</td><td><span class="tag small">small</span></td></tr>
         <tr><td>/recall</td><td>Header-scans <code>.ai/bank/</code> and <code>.ai/decisions/</code> before new work starts.</td><td><span class="tag small">small</span></td></tr>
       </tbody>
     </table>
-    <p class="note">Every stub in <code>.claude/commands/</code> just points at <code>.ai/prompts/</code> — the prompts are the source, tool-agnostic. <code>flows.fix</code>: recall → understand → implement → test → record. <code>flows.tiny</code>: implement → verify.</p>
+    <p class="note">Every stub in <code>.claude/commands/</code> just points at <code>.ai/prompts/</code> — the prompts are the source, tool-agnostic. <code>flows.fix</code>: recall → understand → implement → test → record → retro?. <code>flows.tiny</code>: implement → verify — for a provably local change only; unsure whether it qualifies means it doesn't.</p>
   </div>
 
   <div class="block one">
@@ -195,7 +196,7 @@
       <li><b>Test deleted or weakened.</b></li>
       <li><b>Auth, secrets, payments.</b></li>
       <li><b>Outside the repo</b> — shared branch, rewritten history.</li>
-      <li><b>Gate's own scope</b> — <code>jest.config.js</code>, <code>playwright.config.ts</code>, <code>.eslintrc.json</code>, <code>angular.json</code>, <code>tsconfig*.json</code>, <code>verify.sh</code>, <code>budget.mjs</code> itself. Enforced live — hook blocks it.</li>
+      <li><b>Gate's own scope</b> — one owner, <code>.claude/hooks/budget.mjs</code>'s <code>GATE_SCOPE</code>, which emits the live list to <code>.ai/harness/gate-scope.json</code> on every run. Enforced live — hook blocks it.</li>
     </ol>
     <p class="note">Override: <code>HARNESS_DOOR_OPEN=1</code>, and say so in the digest.</p>
   </div>
@@ -218,11 +219,12 @@
       <thead><tr><th>Tier</th><th>Runs</th><th>When</th></tr></thead>
       <tbody>
         <tr><td>fast</td><td>eslint</td><td>after a unit of work</td></tr>
-        <tr><td>full</td><td>fast + <code>jest --ci</code></td><td>before every commit</td></tr>
-        <tr><td>deep</td><td>full + production build + <code>playwright test</code></td><td>once, before handing back</td></tr>
+        <tr><td>full</td><td>fast + <code>jest --ci</code> + <code>hook-test.sh</code></td><td>before every commit</td></tr>
+        <tr><td>smoke</td><td>full + production build + generic route-mount check</td><td>at a checkpoint mid-<code>implement</code></td></tr>
+        <tr><td>deep</td><td>smoke + full <code>playwright</code> e2e suite</td><td>once, before handing back</td></tr>
       </tbody>
     </table>
-    <p class="note">Exit 0 or 1, nothing else. <code>deep</code> is the real runtime oracle — Playwright boots the app and drives it. In this container: <code>PW_CHROMIUM=/opt/pw-browsers/chromium bash .ai/harness/verify.sh deep</code>.</p>
+    <p class="note"><code>smoke</code> and <code>deep</code> both drive the actual production build (<code>dist/</code>, served by <code>e2e/serve-dist.mjs</code>), not <code>ng serve</code>. Exit 0 or 1, nothing else. In this container: <code>PW_CHROMIUM=/opt/pw-browsers/chromium bash .ai/harness/verify.sh deep</code>.</p>
   </div>
 
   <div class="block">
@@ -239,13 +241,17 @@
   <div class="block span2">
     <h2>Where things live</h2>
     <ul class="filemap">
-      <li><code>.ai/run/&lt;slug&gt;/</code><span>brief, journal, state.json, digest — hours, deleted when the work lands</span></li>
+      <li><code>.ai/run/&lt;slug&gt;/</code><span>brief, journal, state.json, emits, digest, retro — hours, deleted when the work lands</span></li>
       <li><code>.ai/decisions/NNNN-*.md</code><span>why a change happened — permanent, append-only</span></li>
       <li><code>.ai/bank/</code><span>lessons that outlive this repo — human-curated, never auto-written</span></li>
       <li><code>.ai/MODEL.md</code><span>structure and invariants — human-owned, hook-guarded</span></li>
       <li><code>CLAUDE.md</code><span>commands and conventions — the one owner of both</span></li>
-      <li><code>.ai/harness/check-citations.sh</code><span>resolves every <code>file:line</code> in a doc</span></li>
-      <li><code>.ai/harness/handoff.sh</code><span>writes <code>HANDOFF.md</code> with no model call</span></li>
+      <li><code>.ai/harness/check-citations.sh</code><span>resolves every <code>file:line</code> and bare-path citation in a doc</span></li>
+      <li><code>.ai/harness/handoff.sh</code><span>writes <code>HANDOFF.md</code> with no model call, stamped if the run is still active</span></li>
+      <li><code>.ai/harness/emit.sh</code><span>writes a skill's <code>&lt;skill&gt;.json</code>, no model call — git as truth</span></li>
+      <li><code>.ai/harness/ledger.sh</code><span><code>jq</code> roll-up of every emit, by skill and by inferred flow</span></li>
+      <li><code>.ai/harness/gate-scope.json</code><span>the door-7 path list — one owner, generated, not hand-kept</span></li>
+      <li><code>.ai/harness/OWED.md</code><span>human-owed door-7 fixes and bank cards with an unbuilt mechanism</span></li>
     </ul>
   </div>
 

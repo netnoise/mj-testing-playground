@@ -105,13 +105,38 @@ working tree. Intent line first, result appended. Commit WIP on green.
 If you are interrupted, `bash .ai/harness/handoff.sh <slug>` writes `HANDOFF.md` with
 no model call — that is the path that still works at a usage limit.
 
+**A `HANDOFF.md` appearing while a run is still active is expected, not a signal
+something went wrong — do not delete it.** The Stop hook writes one on every stop
+while `state.json` is `active`, including an ordinary turn end, not just a real
+interruption. It is stamped `ACTIVE — mid-run snapshot, not a final state` for
+exactly this reason. Deleting it to keep the run directory tidy destroys the one
+artifact this durability layer exists to guarantee, for no benefit — the file is
+overwritten on the next stop regardless.
+
 ## Where things live
 
-`.ai/run/<slug>/` brief, journal, state, emits, digest (hours) ·
+`.ai/run/<slug>/` brief, journal, state, emits, digest, retro (hours) ·
 `.ai/decisions/` why a change happened (permanent) ·
 `.ai/bank/` lessons that outlive this repo (human-curated) ·
 `.ai/MODEL.md` structure and invariants (human-owned) ·
 `CLAUDE.md` commands and conventions.
+
+`emits` (`.ai/run/<slug>/<skill>.json`) are written by `.ai/harness/emit.sh`, not
+by hand — mechanical, no model call, same reason as `handoff.sh`. `retro.md` is
+the process critique: what the agent got wrong, distinct from `digest.md`'s
+technical summary, which has no section where the agent is the subject.
+
+## Right-sizing the loop
+
+Not every change is `understand → implement → test → verify → digest → record`.
+`.ai/harness/config.yml`'s `flows.tiny` (`implement → verify`) is for a change
+that is provably local and small enough that a brief would cost more than it
+saves — a typo, a one-line config value already covered by an existing test, a
+comment fix. If you're unsure whether a change qualifies, it doesn't: run the
+full loop. Ceremony sized to a task this small is a real cost — see the
+`ui-shell-redesign` retro's own closing observation — but the failure mode of
+skipping the loop on something that wasn't actually tiny is worse than the
+ceremony it would have cost.
 
 **One owner per fact.** Never restate a convention inside `.ai/`.
 

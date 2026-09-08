@@ -1,0 +1,18 @@
+{
+  "patterns": [
+    "jest.config.js",
+    "setup-jest.ts",
+    "playwright.config.ts",
+    ".eslintrc.json",
+    "angular.json",
+    "tsconfig*.json",
+    ".ai/harness/verify.sh",
+    ".claude/hooks/budget.mjs",
+    ".claude/settings.json"
+  ],
+  "missing": [],
+  "observed_unlisted": [
+    ".editorconfig",
+    "package-lock.json"
+  ]
+}

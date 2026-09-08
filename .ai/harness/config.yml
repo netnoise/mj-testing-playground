@@ -9,25 +9,21 @@ doors:
     - test_deleted_or_weakened
     - auth_secrets_payments
     - outside_repo_or_shared_ref
-    - gate_scope_config        # door 7 — see paths below
-  # This list is documentation, not the enforcement source of truth:
-  # .claude/hooks/budget.mjs hardcodes its own GATE_SCOPE array and does not
-  # parse this file (no YAML dependency in the repo - adding one is door 1).
-  # Keep the two in sync by hand; a decision record flags the duplication.
-  gate_scope_paths:
-    - jest.config.js
-    - setup-jest.ts
-    - playwright.config.ts
-    - .eslintrc.json
-    - angular.json
-    - tsconfig*.json
-    - .ai/harness/verify.sh
-    - .claude/hooks/budget.mjs
+    - gate_scope_config        # door 7
+  # The door-7 path list has one owner: .claude/hooks/budget.mjs's GATE_SCOPE
+  # array, which is also the sole enforcer. It emits .ai/harness/gate-scope.json
+  # on every invocation - read that file if something else needs the list
+  # (docs, this file's own removed gate_scope_paths key used to be a second
+  # copy that drifted silently out of sync with the real one; a third and
+  # fourth copy lived in HARNESS.md and the design docs. All now generated,
+  # not hand-kept - see gate-scope.json's own "missing"/"observed_unlisted"
+  # fields for what decay or drift would look like.)
 
 gates:
   fast: lint (eslint)
-  full: fast + jest --ci
-  deep: full + production build + playwright e2e   # real runtime oracle
+  full: fast + jest --ci + hook-test.sh
+  smoke: full + production build + generic route-mount check   # cheap runtime oracle, mid-loop
+  deep: smoke + full e2e suite                                 # feature-driving spec, hand-back
 
 budgets:
   default:
@@ -41,14 +37,24 @@ budgets:
   state: .ai/run/<slug>/state.json    # single writer: the hook
 
 flows:
-  fix:  [recall, understand, implement, test, record]
-  tiny: [implement, verify]
+  fix:  [recall, understand, implement, test, record, retro?]
+  tiny: [implement, verify]   # provably local: a typo, a one-line config value
+                               # already covered by an existing test, a comment
+                               # fix. Unsure whether it qualifies? It doesn't -
+                               # run fix instead. See HARNESS.md's "Right-sizing
+                               # the loop" for the failure mode this guards.
 
 model_routing:
   # Route by "can this be wrong in a way nothing downstream catches",
   # not by whether it feels like typing.
-  large: [understand, implement, test, record]   # record makes checkable claims
-  small: [digest, handoff, resume, recall, keep]
+  large: [understand, implement, test, record, digest, retro]
+  # digest moved from small: its "One decision for you" block states a
+  # default, a cost, and a reversibility judgment - synthesis across emits,
+  # not concatenation of them, and a wrong cost-of-wrong is uncatchable by
+  # construction (there is no downstream of the digest). retro is large for
+  # the same reason: it has to notice its own mistakes accurately, which is
+  # not a clerical task.
+  small: [handoff, resume, recall, keep]
   overspend_on: understand                       # a bad brief is paid for by every step under it
 
 journal:

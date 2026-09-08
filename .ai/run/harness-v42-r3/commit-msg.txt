@@ -1,0 +1,76 @@
+harness(R3): one owner for the door list, the missing artifacts, the docs
+
+docs/reviews/harness-v4.2-implementation-audit-2026-09-08.md's largest
+remaining workstream: the door-7 list had drifted to six independently
+hand-kept copies (one already missing an entry); zero emits existed
+anywhere in this repo despite every prompt declaring one; the citation
+checker could not see a bare-path reference, which is exactly what let
+MODEL.md describe a deleted feature as current for a full phase; and
+the docs described mechanisms - a hook-fired assertion, a spend ledger,
+an "enforced live" blast radius - that were either unbuilt or, in one
+case, quietly false by the time this audit ran.
+
+New scripts, mechanical, no model call, same standard as handoff.sh:
+- emit.sh writes a skill's <skill>.json from git and the filesystem -
+  not the richer, self-reported shape the design page originally
+  showed (decisions_needed, learned, next), because that shape is
+  exactly why no emit was ever written: those fields need judgment a
+  shell script can't honestly supply.
+- ledger.sh, a jq roll-up of every emit by skill and by inferred flow.
+  Corpus was empty before this run's own emits - the design page's
+  spend-ledger row was a design intent for an entire phase, not a
+  measurement, and now says so.
+
+New skill:
+- retro.md + a command stub: process critique, not a technical
+  summary - "what I got wrong", which digest.md has no section for.
+  Dogfooded on this very run (see its own retro.md): building the
+  citation gate below surfaced a real design mistake, caught before
+  it shipped rather than after.
+
+check-citations.sh: resolves bare-path citations (not just path:line),
+guards against a zero-citation vacuous pass, uses mktemp instead of a
+fixed /tmp path, and supports a <!-- cite-base: <sha> --> header so a
+document can pin itself to the commit it describes. Gated into
+verify.sh deep, scoped to only the newest run's digest - not
+decisions/, which turned out to have the identical "cites a tree that
+later legitimately changed" problem a brief has: decisions/0001 cites
+a conventions.md a later decision deleted on purpose, and HARNESS.md
+already defines a decision record as "past tense, append-only".
+Found live, building the gate, not reasoned out in advance.
+
+keep.md: a mechanism: field, so a bank card's own named fix lands in
+the new .ai/harness/OWED.md instead of waiting to be re-read and
+re-discovered - which is what happened to the citation-drift card's
+own fix.
+
+handoff.sh: stamps a mid-run HANDOFF.md as an active snapshot rather
+than leaving it ambiguous with a final one; HARNESS.md states plainly
+that one appearing while a run is active is expected, not a signal
+to delete it.
+
+Docs: README.md's stale Angular-9 half is gone. docs/cheatsheet.html
+and docs/vibe-harness.html no longer enumerate the door-7 list
+(generated, one owner) and no longer describe unbuilt mechanisms as
+built - six flagged corrections, plus two more (a "one file" -> "one
+of them yours" contradiction, a "three shelves" heading showing four)
+found live while already in the same sections.
+
+Two door-7 patches (budget.mjs's gate-scope.json emission, verify.sh's
+disclosure + citation gates) and one human-owned MODEL.md proposal are
+in this run's directory, not applied - no HARNESS_DOOR_OPEN path
+exists in this desktop-app session, confirmed again. verify.sh full is
+green against the current live files; the patches were tested directly
+(diffed to confirm additive-only changes, and exercised manually with
+crafted payloads and throwaway fixtures) before being handed over.
+
+Two mistakes caught mid-run rather than shipped, recorded in this
+run's own retro.md: the citation gate's first design (all of
+decisions/) was wrong, caught by running it against real data: and a
+disclosure-check test fixture was placed one directory level too deep,
+which made its negative case silently pass by never being exercised,
+not by actually working.
+
+Record: .ai/run/harness-v42-r3/
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
