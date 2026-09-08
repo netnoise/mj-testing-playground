@@ -17,6 +17,7 @@ npm run lint
 [ "$TIER" = "fast" ] && { echo "verify: OK (fast)"; exit 0; }
 
 npx jest --ci
+sh .ai/harness/hook-test.sh
 [ "$TIER" = "full" ] && { echo "verify: OK (full)"; exit 0; }
 
 npm run build

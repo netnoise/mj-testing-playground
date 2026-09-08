@@ -65,7 +65,23 @@ that only ran `fast` or `full` and is being reported as if the app had been exer
 
 Declared in each prompt's frontmatter, tagged `enforced:` (a hook checks it) or
 `advisory:` (only you can trigger it — say so when you do). Enforced limits live in
-`.ai/run/<slug>/state.json`, whose single writer is `.claude/hooks/budget.mjs`.
+`.ai/run/<slug>/state.json`, whose single writer is `.claude/hooks/budget.mjs` — the
+hook blocks any other write to an existing `state.json`, including a shell `rm`
+followed by a rewrite. The active run's own `.ai/run/<slug>/**` is always inside
+blast radius, so a brief needing a mid-run correction is a normal edit, not a reason
+to touch `state.json`.
+
+`files_touched` is derived from `git diff --name-only HEAD` plus untracked files on
+every guarded call, not accumulated from which tool you happened to use — a deletion
+or a shell edit counts the same as an `Edit` call. The guard covers `Bash` as well as
+`Edit`/`Write`/`MultiEdit`/`NotebookEdit`: a shell command containing a write verb
+(`>`, `sed -i`, `mv`, `rm`, …) against a door-7 file or a run's `state.json` is
+blocked the same as a direct edit would be. It does not apply blast radius or the
+file budget to Bash — that's covered by the git-derived count above regardless of
+which tool wrote the file.
+
+Run `sh .ai/harness/hook-test.sh` (part of `verify.sh full`) to confirm the guard
+itself is firing rather than silently passing everything through.
 
 Stop conditions: `one_way_door`, `hypothesis_falsified`, `runtime_falsified`,
 `blast_radius_exceeded`, `budget_spent`. Every stop writes a handoff, leaves the
