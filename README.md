@@ -35,5 +35,11 @@ plain markdown plus four shell scripts, no dependencies.
 - `.ai/HARNESS.md` — the one-page rules an agent reads
 - `.ai/harness/verify.sh [fast|full|deep]` — the only gate contract
 
+## Testing
+
+- `docs/testing-techniques.md` — a catalog of testing techniques, each with a
+  verdict for this repo (including the ones that don't apply, and why)
+- `docs/testing-roadmap.md` — the phased plan for adopting them
+
 It is tool-agnostic: `CLAUDE.md` and `AGENTS.md` are three-line pointers at
 `.ai/`, so switching agents is a one-file change.

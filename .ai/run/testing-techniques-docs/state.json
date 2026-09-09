@@ -1,0 +1,13 @@
+{
+  "status": "paused",
+  "note": "Planned, not started. No code written. Flip status to \"active\" AND set started_at to the current time before implementing - see HANDOFF.md traps.",
+  "allowed_paths": [
+    "docs/**",
+    "README.md",
+    ".ai/run/testing-techniques-docs/**"
+  ],
+  "max_files": 12,
+  "max_minutes": 45,
+  "files_touched": [],
+  "started_at": null
+}
