@@ -28,9 +28,13 @@ that does not depend on the answer.
 4. Deleting or weakening an existing test
 5. Anything under auth, secrets, payments
 6. Writing outside the repo; pushing to a shared branch; rewriting history
-7. **Editing the config that defines a gate's own scope** — `jest.config.js`,
-   `setup-jest.ts`, `playwright.config.ts`, `.eslintrc.json`, `angular.json`,
-   `tsconfig*.json`, `.ai/harness/verify.sh`, `.claude/hooks/budget.mjs` itself
+7. **Editing the config that defines a gate's own scope** — one owner:
+   `.claude/hooks/budget.mjs`'s `GATE_SCOPE` array, which is also the sole
+   enforcer. It emits the live list to `.ai/harness/gate-scope.json` on every
+   invocation — read that file for what is actually guarded. Do not re-state the
+   list here: this line was a hand-kept copy until 2026-09-09 and had already gone
+   stale, omitting `.claude/settings.json` for two days after the hook began
+   blocking it.
 
 Door 7 exists because the symptom is a *better* number. A gate metric that improves
 after the gate's own config was edited is not evidence.
