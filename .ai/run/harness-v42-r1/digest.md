@@ -29,17 +29,27 @@ this run produced:
 
 ### What I learned about your system
 
-1. `.claude/settings.json`'s `PreToolUse` matcher change **needs a session restart**
-   to take effect — `.ai/HARNESS.md`'s existing hook/prompt/command-file rule applies
-   to itself. Until restart, Bash edits to gate-scope files in *this* session are
-   still unguarded by the runtime hook config, even though `budget.mjs`'s own logic
-   now checks for `tool_name === 'Bash'`. The two pieces (hook logic vs. matcher
-   registration) had to land together but only take effect together after restart.
+1. `.claude/settings.json`'s `PreToolUse` matcher change **takes effect immediately** —
+   no session restart needed. Confirmed live at the start of the next run
+   (`.ai/run/harness-v42-r2/journal.md:9`): its very first Bash call was intercepted
+   by the Bash-guard path, which only exists because the matcher now includes `Bash`.
+   `.ai/HARNESS.md`'s "restart after editing a prompt, hook or command file" rule
+   covers `.ai/prompts/` and `.claude/commands/`; it does not extend to
+   `settings.json`'s hook registration, which the runtime re-reads per call.
+
+   **Correction (2026-09-09):** this item originally claimed the opposite, and the
+   closing section below told you to restart before trusting the guard. Both were
+   wrong — in the direction that costs a real session for no reason. Corrected in
+   place rather than left standing with the fix recorded only in another run's
+   journal; `.ai/run/harness-v42-closeout/retro.md` records why leaving it was
+   itself the mistake.
 2. The negative control I wrote for `hook-test.sh` initially proved nothing: breaking
    the `dir/**` fast-path branch didn't change behavior for a single-level file,
    because the fallback regex branch (`[^/]*` repeated) accidentally handles that
-   case too. Only a genuinely nested path (`vehicle/deeply/nested/x.ts`) exercises
-   the code path that `dir/**` alone can match. Fixed; kept as the permanent case.
+   case too. Only a payload naming a file several directories deep — the fixture
+   uses a synthetic "deeply/nested" path under the allowlisted root, which by
+   design never exists on disk — exercises the code path that `dir/**` alone can
+   match. Fixed; kept as the permanent case.
 3. `files_touched` is now visibly larger than before for the same work, because it
    counts the run's own scaffolding (`state.json`, `journal.md`) via
    `git ls-files --others` — previously invisible since those are untracked and the
@@ -69,13 +79,9 @@ it into `verify.sh full`; added `.ai/harness/close-run.sh`; updated
 `.ai/prompts/understand.md` and `.ai/HARNESS.md` to describe the new behavior.
 `verify.sh full` is green, including `hook-test.sh`.
 
-**Not verified:** the `.claude/settings.json` matcher change itself, live, in this
-session — it requires a restart to take effect, per the harness's own stated rule,
-so Bash is guarded going forward but was not literally exercised as "guarded by the
-running session" during this run. `hook-test.sh` verifies `budget.mjs`'s logic
-directly (by invoking it with a crafted payload), which is independent of whether
-the session's own matcher has picked it up yet — that's real coverage of the code,
-not a substitute for confirming the wiring after restart.
-
-**Say so to the user:** please restart the session before relying on Bash being
-guarded for door-7 files or an active run's `state.json`.
+**Not verified during this run:** the `.claude/settings.json` matcher change itself,
+live. `hook-test.sh` verifies `budget.mjs`'s logic directly (by invoking it with a
+crafted payload), which is real coverage of the code but independent of whether the
+running session's matcher had picked it up. That wiring was confirmed at the start
+of the next run instead — see the correction above; it needed no restart, and the
+guard was already live.
