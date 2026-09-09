@@ -12,23 +12,6 @@ if [ ! -d node_modules ]; then
   exit 1
 fi
 
-# Gate-scope decay check. .ai/harness/gate-scope.json's "missing" field
-# (emitted by budget.mjs on every guarded tool call) lists a door-7 pattern
-# that no longer resolves to anything - the Angular 9->14 retool proved this
-# happens silently. Without this, a missing gate-scope path was only ever
-# discovered as whatever confusing error the downstream tool produces (e.g.
-# `ng lint` failing with "not available outside a workspace" when
-# angular.json is gone) - found live, running the plan's own specified
-# negative control for real rather than assuming it worked.
-if [ -f .ai/harness/gate-scope.json ]; then
-  MISSING=$(node -e "try{const m=JSON.parse(require('node:fs').readFileSync('.ai/harness/gate-scope.json','utf8')).missing||[];console.log(m.join(', '))}catch{}" 2>/dev/null || true)
-  if [ -n "$MISSING" ]; then
-    echo "verify: PREFLIGHT FAIL - gate-scope path(s) no longer resolve: $MISSING" >&2
-    echo "verify: .claude/hooks/budget.mjs's GATE_SCOPE is stale - a human updates it (door 7)" >&2
-    exit 1
-  fi
-fi
-
 echo "verify: tier=$TIER"
 npm run lint
 [ "$TIER" = "fast" ] && { echo "verify: OK (fast)"; exit 0; }

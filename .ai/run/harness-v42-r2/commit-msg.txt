@@ -1,0 +1,56 @@
+harness(R2): deep now runs the actual production build, not ng serve
+
+docs/reviews/harness-v4.2-implementation-audit-2026-09-08.md 1.2/1.2:
+verify.sh deep compiled a production build and threw it away, testing
+ng serve instead - which, via playwright.config.ts's reuseExistingServer,
+could be a leftover dev server of unknown provenance. That mechanism
+produced the one report that reached the user as 'all 3 e2e tests pass'
+and was wrong (decision 0005 / the ui-shell-redesign retro).
+
+- e2e/serve-dist.mjs (new): zero-dependency static server over
+  dist/mj-testing-playground, SPA history fallback, no new dependency.
+- e2e/smoke.spec.ts (new): generic route-mount oracle for both routes -
+  no uncaught error, no console error, non-empty root, no horizontal
+  overflow, plus a real (non-forced, non-evaluate) click reaching the
+  submit button, proving the ng-serve live-reload iframe interception
+  from decision 0005 doesn't exist against the built artifact. No copy
+  assertions - this is the regression net, app.spec.ts stays the
+  acceptance test.
+- verify.sh: new smoke tier between full and deep. Both smoke and deep
+  now build first and set HARNESS_DEEP=1 so Playwright serves the real
+  dist/ output with reuse forced off; --reporter=line on every
+  invocation, fixing the terminal-blocking HTML-reporter hang from
+  decision 0005's retro (mistake #2).
+- playwright.config.ts: webServer.command/reuseExistingServer switch on
+  HARNESS_DEEP. Ordinary npm run e2e is untouched (still ng serve).
+- jest.config.js: testPathIgnorePatterns excludes the .claude directory,
+  closing the worktree-collision bug decision 0005 hit live.
+
+Confirmed live, not just asserted: both new gate tiers passed green, and
+the served index.html was checked directly against the build hash the
+production build step just produced.
+
+Major finding, not a workaround failure: HARNESS_DOOR_OPEN cannot be set
+for this session's hook process at all in the Claude Code desktop app -
+no terminal is exposed that the hook-runner reads its environment from,
+confirmed after the user explicitly exported it in a separate terminal.
+The three gate-scope files here were applied by the user directly from
+prepared patch files rather than by the agent under the disclosed
+override the plan assumed would work.
+
+Two smaller findings, both disclosed rather than routed around: a third
+real instance of the Bash guard's write-verb-scans-whole-command-string
+false positive; and the write-once state.json guard has no bootstrap
+path out of an exhausted budget once the override doesn't work -
+correctly escalated to the user rather than papered over with another
+workaround script.
+
+Deferred to the next run (budget cap hit at 12/12 files): the prompt
+frontmatter's smoke-checkpoint note, the harness rules doc's tier table
+update, and the user-requested default-budget increase across the
+harness (current limits are too tight - ui-shell-redesign alone touched
+thirty files).
+
+Record: .ai/run/harness-v42-r2/
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>

@@ -4,17 +4,14 @@
 // Fails OPEN on anything unexpected - a guard that blocks every edit on a
 // schema change is worse than no guard.
 //
-// v4.2 remediation (docs/reviews/harness-v4.2-implementation-audit-2026-09-08.md):
-// R1 - the active run's own directory is now always in scope (was locking the
-// agent out of its own brief.md, which made `rm state.json` the routine
-// workaround - and each deletion silently zeroed the budget it exists to
-// enforce); Bash is now scanned, not just Edit/Write/MultiEdit/NotebookEdit;
+// v4.2 remediation (docs/reviews/harness-v4.2-implementation-audit-2026-09-08.md,
+// workstream R1): the active run's own directory is now always in scope (was
+// locking the agent out of its own brief.md, which made `rm state.json` the
+// routine workaround - and each deletion silently zeroed the budget it exists
+// to enforce); Bash is now scanned, not just Edit/Write/MultiEdit/NotebookEdit;
 // files_touched is derived from git, not accumulated from tool interception,
 // so it counts deletions and moves; state.json is single-writer in practice,
 // not just in the docs.
-// R3 - GATE_SCOPE is now emitted to .ai/harness/gate-scope.json on every
-// invocation: one owner for a list that had drifted to six hand-kept copies,
-// one of them (the cheatsheet) already missing an entry silently.
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { execSync } from 'node:child_process';
@@ -50,56 +47,10 @@ const hit = (pat, p) =>
 // Angular 14 toolchain: jest/playwright/eslint replaced karma/tslint (0003).
 // .claude/settings.json is included: it decides whether this hook runs at
 // all, so it defines a gate's own scope as surely as jest.config.js does.
-//
-// This array is the single source of truth for the door-7 list - everything
-// else (docs, HARNESS.md, the design page) reads .ai/harness/gate-scope.json,
-// emitted below, rather than hand-keeping its own copy.
 const GATE_SCOPE = ['jest.config.js', 'setup-jest.ts', 'playwright.config.ts',
                     '.eslintrc.json', 'angular.json', 'tsconfig*.json',
                     '.ai/harness/verify.sh', '.claude/hooks/budget.mjs',
                     '.claude/settings.json'];
-
-// --- Emit gate-scope.json. Fails open - never blocks on this. ------------
-// missing: a listed pattern that resolves to nothing now - the Angular 9->14
-// retool proved this happens silently (Karma/Protractor/tslint paths simply
-// stopped existing). verify.sh fails on this, naming what's missing, so
-// decay becomes a failed preflight instead of a silent hole.
-// observed_unlisted: a config-shaped path NOT in GATE_SCOPE - reported into
-// the digest, never blocked. Blocking on an unknown would contradict this
-// hook's own fail-open principle; reporting doesn't.
-try {
-  const missing = GATE_SCOPE.filter((pat) => {
-    if (!pat.includes('*')) return !existsSync(join(ROOT, pat));
-    let entries = [];
-    try { entries = readdirSync(ROOT); } catch { /* fail open */ }
-    return !entries.some((name) => hit(pat, name));
-  });
-
-  const UNLISTED_RE = /config|\.rc\.|rc\.[a-z]+$/i;
-  const LOCKFILE_RE = /^(package-lock\.json|yarn\.lock|pnpm-lock\.yaml)$/;
-  const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', '.angular', 'coverage']);
-  const observedUnlisted = [];
-  const scanDir = (dir, relPrefix) => {
-    let entries = [];
-    try { entries = readdirSync(dir, { withFileTypes: true }); } catch { return; }
-    for (const e of entries) {
-      if (e.isDirectory() && SKIP_DIRS.has(e.name)) continue;
-      if (!e.isFile()) continue;
-      const rel = relPrefix ? `${relPrefix}/${e.name}` : e.name;
-      if (GATE_SCOPE.some((g) => hit(g, rel))) continue;
-      if (LOCKFILE_RE.test(e.name) || UNLISTED_RE.test(e.name)) observedUnlisted.push(rel);
-    }
-  };
-  scanDir(ROOT, '');
-  scanDir(join(ROOT, 'ci'), 'ci');
-  scanDir(join(ROOT, '.github', 'workflows'), '.github/workflows');
-  scanDir(join(ROOT, 'verify'), 'verify');
-
-  writeFileSync(
-    join(ROOT, '.ai', 'harness', 'gate-scope.json'),
-    JSON.stringify({ patterns: GATE_SCOPE, missing, observed_unlisted: observedUnlisted.sort() }, null, 2) + '\n'
-  );
-} catch { /* never block on this - it's a report, not a gate */ }
 
 // --- Bash: heuristic scan, not path-based. -------------------------------
 // Blocks a write verb touching a gate-scope file's name, MODEL.md, or an

@@ -1,0 +1,29 @@
+{
+  "status": "done",
+  "allowed_paths": [
+    ".claude/hooks/budget.mjs",
+    ".claude/settings.json",
+    ".ai/harness/hook-test.sh",
+    ".ai/harness/verify.sh",
+    ".ai/prompts/understand.md",
+    ".ai/HARNESS.md",
+    ".ai/run/harness-v42-r1/**",
+    ".ai/harness/close-run.sh"
+  ],
+  "max_files": 12,
+  "max_minutes": 60,
+  "files_touched": [
+    ".ai/HARNESS.md",
+    ".ai/harness/close-run.sh",
+    ".ai/harness/hook-test.sh",
+    ".ai/harness/verify.sh",
+    ".ai/prompts/understand.md",
+    ".ai/run/harness-v42-r1/digest.md",
+    ".ai/run/harness-v42-r1/door-crossings.md",
+    ".ai/run/harness-v42-r1/journal.md",
+    ".ai/run/harness-v42-r1/state.json",
+    ".claude/hooks/budget.mjs",
+    ".claude/settings.json"
+  ],
+  "started_at": "2026-09-08T18:10:10Z"
+}

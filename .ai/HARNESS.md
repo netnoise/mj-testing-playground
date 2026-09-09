@@ -42,14 +42,24 @@ after the gate's own config was edited is not evidence.
 | tier | runs | when |
 |---|---|---|
 | `fast` | lint (eslint) | after a unit of work |
-| `full` | fast + `jest --ci` | before every commit |
-| `deep` | full + production build + `playwright test` | once before handing back |
+| `full` | fast + `jest --ci` + `hook-test.sh` | before every commit |
+| `smoke` | full + production build + `e2e/smoke.spec.ts` | at a checkpoint mid-`implement` |
+| `deep` | smoke + the full e2e suite | once before handing back |
 
-`deep` is the real runtime oracle: Playwright's `webServer` boots the app and
-`e2e/app.spec.ts` drives it in a real browser. A green `deep` means something
-actually executed, not just compiled — the `unverified_at_runtime` state this section
-used to warn about no longer applies to `deep` itself. It still applies to anything
-that only ran `fast` or `full` and is being reported as if the app had been exercised.
+`smoke` and `deep` are both genuine runtime oracles, and both run against the actual
+**production build** (`npm run build`'s `dist/`, served by `e2e/serve-dist.mjs`), not
+`ng serve` — `ng serve` may be a leftover process of unknown provenance, which is the
+mechanism behind a report that once reached a human as "all tests pass" and was wrong.
+
+They check different things. `smoke` is generic and cheap: every route mounts, no
+uncaught error, no horizontal overflow — it breaks only when the app is actually
+broken, so it belongs inside the fix loop (`implement.md`), not just at hand-back.
+`deep` adds the feature-driving spec (`e2e/app.spec.ts`) — a real acceptance test and
+a much narrower regression net, since it breaks on any copy or layout change too.
+A green `deep` (or `smoke`) means something actually executed, not just compiled —
+the `unverified_at_runtime` state this section used to warn about no longer applies
+to either. It still applies to anything that only ran `fast` or `full` and is being
+reported as if the app had been exercised.
 
 ## Never trust
 
@@ -65,7 +75,23 @@ that only ran `fast` or `full` and is being reported as if the app had been exer
 
 Declared in each prompt's frontmatter, tagged `enforced:` (a hook checks it) or
 `advisory:` (only you can trigger it — say so when you do). Enforced limits live in
-`.ai/run/<slug>/state.json`, whose single writer is `.claude/hooks/budget.mjs`.
+`.ai/run/<slug>/state.json`, whose single writer is `.claude/hooks/budget.mjs` — the
+hook blocks any other write to an existing `state.json`, including a shell `rm`
+followed by a rewrite. The active run's own `.ai/run/<slug>/**` is always inside
+blast radius, so a brief needing a mid-run correction is a normal edit, not a reason
+to touch `state.json`.
+
+`files_touched` is derived from `git diff --name-only HEAD` plus untracked files on
+every guarded call, not accumulated from which tool you happened to use — a deletion
+or a shell edit counts the same as an `Edit` call. The guard covers `Bash` as well as
+`Edit`/`Write`/`MultiEdit`/`NotebookEdit`: a shell command containing a write verb
+(`>`, `sed -i`, `mv`, `rm`, …) against a door-7 file or a run's `state.json` is
+blocked the same as a direct edit would be. It does not apply blast radius or the
+file budget to Bash — that's covered by the git-derived count above regardless of
+which tool wrote the file.
+
+Run `sh .ai/harness/hook-test.sh` (part of `verify.sh full`) to confirm the guard
+itself is firing rather than silently passing everything through.
 
 Stop conditions: `one_way_door`, `hypothesis_falsified`, `runtime_falsified`,
 `blast_radius_exceeded`, `budget_spent`. Every stop writes a handoff, leaves the
@@ -79,13 +105,38 @@ working tree. Intent line first, result appended. Commit WIP on green.
 If you are interrupted, `bash .ai/harness/handoff.sh <slug>` writes `HANDOFF.md` with
 no model call — that is the path that still works at a usage limit.
 
+**A `HANDOFF.md` appearing while a run is still active is expected, not a signal
+something went wrong — do not delete it.** The Stop hook writes one on every stop
+while `state.json` is `active`, including an ordinary turn end, not just a real
+interruption. It is stamped `ACTIVE — mid-run snapshot, not a final state` for
+exactly this reason. Deleting it to keep the run directory tidy destroys the one
+artifact this durability layer exists to guarantee, for no benefit — the file is
+overwritten on the next stop regardless.
+
 ## Where things live
 
-`.ai/run/<slug>/` brief, journal, state, emits, digest (hours) ·
+`.ai/run/<slug>/` brief, journal, state, emits, digest, retro (hours) ·
 `.ai/decisions/` why a change happened (permanent) ·
 `.ai/bank/` lessons that outlive this repo (human-curated) ·
 `.ai/MODEL.md` structure and invariants (human-owned) ·
 `CLAUDE.md` commands and conventions.
+
+`emits` (`.ai/run/<slug>/<skill>.json`) are written by `.ai/harness/emit.sh`, not
+by hand — mechanical, no model call, same reason as `handoff.sh`. `retro.md` is
+the process critique: what the agent got wrong, distinct from `digest.md`'s
+technical summary, which has no section where the agent is the subject.
+
+## Right-sizing the loop
+
+Not every change is `understand → implement → test → verify → digest → record`.
+`.ai/harness/config.yml`'s `flows.tiny` (`implement → verify`) is for a change
+that is provably local and small enough that a brief would cost more than it
+saves — a typo, a one-line config value already covered by an existing test, a
+comment fix. If you're unsure whether a change qualifies, it doesn't: run the
+full loop. Ceremony sized to a task this small is a real cost — see the
+`ui-shell-redesign` retro's own closing observation — but the failure mode of
+skipping the loop on something that wasn't actually tiny is worse than the
+ceremony it would have cost.
 
 **One owner per fact.** Never restate a convention inside `.ai/`.
 
