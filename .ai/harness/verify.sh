@@ -29,6 +29,53 @@ if [ -f .ai/harness/gate-scope.json ]; then
   fi
 fi
 
+# Undisclosed protected-path crossing check (v4.3, docs/reviews/vibe-harness-
+# v4.3-delta-2026-09-10.md §1.1). The hook's own sweep only stops the NEXT
+# Edit/Write after a Bash-mediated bypass - it can't undo one that already
+# happened and was never followed by another guarded call before hand-back.
+# This is the check that makes that shape unable to produce a green gate
+# regardless: same protected-path list (gate-scope.json's "patterns", plus
+# .ai/MODEL.md - the hook's PROTECTED_PATHS), same door-crossings.md
+# disclosure rule, run BEFORE any tier so a crossing can never hide behind a
+# passing lint/test/build.
+#
+# Base is the active run's base_commit when one exists (status: active,
+# found the same way the hook finds it - NOT lib.mjs's currentRun(), which
+# deliberately falls back to a DONE run for human-facing pickers below; a
+# done run's door-crossings.md is not "the current run"), else HEAD.
+DISCLOSURE_FAIL=$(node -e "
+(async () => {
+  const fs = require('node:fs');
+  const { gateDiff } = await import('$ROOT/.ai/harness/lib.mjs');
+  let patterns = [];
+  try { patterns = JSON.parse(fs.readFileSync('.ai/harness/gate-scope.json', 'utf8')).patterns || []; } catch {}
+  const protectedPaths = [...patterns, '.ai/MODEL.md'];
+
+  let slug = null, state = {};
+  const runsDir = '.ai/run';
+  if (fs.existsSync(runsDir)) {
+    for (const s of fs.readdirSync(runsDir)) {
+      const p = runsDir + '/' + s + '/state.json';
+      if (!fs.existsSync(p)) continue;
+      try {
+        const st = JSON.parse(fs.readFileSync(p, 'utf8'));
+        if (st.status === 'active') { slug = s; state = st; break; }
+      } catch {}
+    }
+  }
+  const crossed = gateDiff(protectedPaths, { ...state, slug }, process.cwd());
+  if (crossed.length) {
+    console.error('verify: PREFLIGHT FAIL - undisclosed protected-path crossing(s): ' + crossed.join(', '));
+    if (slug) {
+      console.error('verify: disclose in .ai/run/' + slug + '/door-crossings.md naming the file and why, or revert (git checkout -- <path>)');
+    } else {
+      console.error('verify: no active run to disclose into - revert (git checkout -- <path>), or open a run and disclose there');
+    }
+    process.exit(1);
+  }
+})();
+" 2>&1) || { echo "$DISCLOSURE_FAIL" >&2; exit 1; }
+
 echo "verify: tier=$TIER"
 npm run lint
 [ "$TIER" = "fast" ] && { echo "verify: OK (fast)"; exit 0; }
@@ -108,7 +155,13 @@ fi
 # The empty case stays non-fatal deliberately: the documented loop runs verify
 # BEFORE digest, so at deep time a digest legitimately may not exist yet. It
 # reports that nothing was checked rather than letting silence read as green.
-LATEST_RUN=$(ls -1t .ai/run 2>/dev/null | head -1)
+#
+# LATEST_RUN (v4.3): picked via lib.mjs's currentRun() - status-based, with a
+# fallback to the greatest started_at - not "most recently modified" (ls
+# -1t), which is the mechanism that pulled a two-day-old run into this gate
+# when only its digest had been edited in place (docs/reviews/vibe-harness-
+# v4.3-delta-2026-09-10.md §1.5).
+LATEST_RUN=$(node .ai/harness/lib.mjs current-run 2>/dev/null || true)
 CITE_DOCS=""
 for f in digest.md retro.md; do
   # explicit if, not `[ -f x ] && VAR=y`: under set -e a false test as the last
