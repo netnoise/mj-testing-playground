@@ -10,6 +10,15 @@
 # corpus exists; it doesn't, so nothing downstream of it can be built honestly
 # before this script exists and is actually called.
 #
+# docs/reviews/vibe-harness-v4.3-delta-2026-09-10.md §1.4: files_changed and
+# spent.files now come from lib.mjs's runTouched (git diff from base_commit,
+# run artifacts excluded), the same ruler budget.mjs enforces, not a raw
+# `git diff --name-only HEAD` that resets on every WIP commit and counts a
+# run's own paperwork against itself. "at" (an actual timestamp, not just an
+# elapsed-minutes guess) and "base_commit" are new fields so ledger.sh can
+# tell which emit in a run is newest and compute a real per-skill delta
+# instead of summing whole-tree snapshots.
+#
 # usage: emit.sh <slug> <skill> [status]   (default status: ok)
 set -e
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
@@ -20,6 +29,7 @@ SKILL="${2:?usage: emit.sh <slug> <skill> [status]}"
 STATUS="${3:-ok}"
 RUN_DIR=".ai/run/$SLUG"
 OUT="$RUN_DIR/$SKILL.json"
+STATE="$RUN_DIR/state.json"
 [ -d "$RUN_DIR" ] || { echo "emit: no such run: $RUN_DIR" >&2; exit 1; }
 
 # artifacts: what this run has produced so far, as of this call - not scoped
@@ -28,35 +38,36 @@ OUT="$RUN_DIR/$SKILL.json"
 ARTIFACTS=$(find "$RUN_DIR" -maxdepth 1 -type f \( -name '*.md' -o -name '*.json' \) \
   ! -name 'state.json' -exec basename {} \; 2>/dev/null | sort | sed 's/.*/"&"/' | paste -sd, -)
 
-# files_changed: git as truth, same principle as budget.mjs's files_touched -
-# a full snapshot of the working tree at call time, not a per-skill delta
-# (this script can't know what changed since the *previous* emit without
-# tracking state this run doesn't otherwise need).
-CHANGED=$( { git diff --name-only HEAD; git ls-files --others --exclude-standard; } 2>/dev/null \
-  | sort -u | sed 's/.*/"&"/' | paste -sd, -)
-
-# spent.min: wall-clock since state.json's started_at, if readable. spent.tok
-# is deliberately absent - a token count can only come from the agent's own
-# self-report, which is exactly the kind of claim this mechanical script
-# exists to not need. A field that can only be filled by trusting the thing
-# being verified doesn't belong on a mechanical artifact.
-MIN="null"
-if [ -f "$RUN_DIR/state.json" ]; then
-  STARTED=$(node -e "try{const s=require('node:fs').readFileSync('$RUN_DIR/state.json','utf8');console.log(JSON.parse(s).started_at||'')}catch{console.log('')}" 2>/dev/null || true)
-  if [ -n "$STARTED" ]; then
-    MIN=$(node -e "const t=Date.parse('$STARTED');console.log(isNaN(t)?'null':Math.round((Date.now()-t)/60000))" 2>/dev/null || echo null)
-  fi
-fi
-FILES_COUNT=$( { git diff --name-only HEAD; git ls-files --others --exclude-standard; } 2>/dev/null | sort -u | wc -l | tr -d ' ')
-
-cat > "$OUT" <<EOF
-{
-  "skill": "$SKILL",
-  "status": "$STATUS",
-  "artifacts": [$ARTIFACTS],
-  "files_changed": [$CHANGED],
-  "spent": {"min": $MIN, "files": $FILES_COUNT}
-}
-EOF
+node -e "
+const fs = require('node:fs');
+(async () => {
+  const lib = await import('$ROOT/.ai/harness/lib.mjs');
+  const statePath = '$STATE';
+  let state = {};
+  try { state = JSON.parse(fs.readFileSync(statePath, 'utf8')); } catch {}
+  const touched = [...lib.runTouched(state)].sort();
+  const startedAt = state.started_at;
+  let min = null;
+  if (startedAt) {
+    const t = Date.parse(startedAt);
+    if (!isNaN(t)) min = Math.round((Date.now() - t) / 60000);
+  }
+  const artifacts = '$ARTIFACTS' ? JSON.parse('[$ARTIFACTS]') : [];
+  // spent.tok is deliberately absent - a token count can only come from the
+  // agent's own self-report, which is exactly the kind of claim this
+  // mechanical script exists to not need. Unchanged by this pass; see
+  // docs/reviews/vibe-harness-v4.3-delta-2026-09-10.md §3.
+  const out = {
+    skill: '$SKILL',
+    status: '$STATUS',
+    at: new Date().toISOString(),
+    base_commit: state.base_commit ?? null,
+    artifacts,
+    files_changed: touched,
+    spent: { min, files: touched.length },
+  };
+  fs.writeFileSync('$OUT', JSON.stringify(out, null, 2) + '\n');
+})();
+"
 
 echo "emit: wrote $OUT"

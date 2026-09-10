@@ -18,7 +18,11 @@ ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
 cd "$ROOT"
 
 if [ $# -eq 0 ]; then
-  SLUG=$(ls -1t .ai/run 2>/dev/null | head -1)
+  # docs/reviews/vibe-harness-v4.3-delta-2026-09-10.md §1.5: status-based via
+  # lib.mjs, not "most recently modified" (mtime), which is the mechanism
+  # that let editing an old run's digest in place pull that run into a gate
+  # meant for the run actually being handed back.
+  SLUG=$(node .ai/harness/lib.mjs current-run 2>/dev/null || true)
   set -- .ai/run/"$SLUG"/*.md
 fi
 
