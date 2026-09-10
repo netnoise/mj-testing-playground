@@ -1,21 +1,35 @@
 {
   "skill": "implement",
   "status": "ok",
-  "at": "2026-09-10T18:33:02.681Z",
+  "at": "2026-09-10T18:55:12.636Z",
   "base_commit": "1e644ea2b3db12ba505fa25a8cdb0d1529fbb9c9",
   "artifacts": [
     "HANDOFF.md",
+    "PATCH-NOTES.md",
     "brief.md",
+    "implement.json",
     "journal.md",
     "understand.json"
   ],
   "files_changed": [
+    ".ai/HARNESS.md",
+    ".ai/harness/OWED.md",
+    ".ai/harness/check-citations.sh",
+    ".ai/harness/close-run.sh",
     ".ai/harness/emit.sh",
+    ".ai/harness/handoff.sh",
+    ".ai/harness/ledger.sh",
     ".ai/harness/lib.mjs",
-    ".ai/harness/open-run.sh"
+    ".ai/harness/open-run.sh",
+    ".ai/prompts/retro.md",
+    ".ai/prompts/understand.md",
+    "e2e/smoke-routes.ts",
+    "e2e/smoke.spec.ts",
+    "src/app/app-routing.module.ts",
+    "src/app/smoke-routes.spec.ts"
   ],
   "spent": {
-    "min": 112,
-    "files": 3
+    "min": 135,
+    "files": 15
   }
 }
