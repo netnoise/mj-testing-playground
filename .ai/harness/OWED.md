@@ -14,20 +14,22 @@ session that created it. Cite the documented floor and where to look instead.
 
 ## Door-7 (needs a human edit)
 
-- **`.claude/hooks/budget.mjs` + `.ai/harness/verify.sh` + `.ai/harness/hook-test.sh`:
+- ~~**`.claude/hooks/budget.mjs` + `.ai/harness/verify.sh` + `.ai/harness/hook-test.sh`:
   the Bash door-7 check scanned the whole command string, not the write verb's
-  actual target — now replaced with a tree check.** At least five documented
+  actual target.**~~ **Applied, commit `b55f988`.** At least five documented
   instances across R1–R3 (`.ai/run/harness-v42-r3/digest.md:38`), confirmed still
-  present at `1e644ea` (six commands probed live, three of them new:
-  `git apply`, `eslint --fix`, a `node -e` write — `.ai/run/harness-v43-critical/
-  brief.md`'s reproduction table). **Patch ready, not yet applied**: see
-  `.ai/run/harness-v43-critical/PATCH-NOTES.md` — `.ai/harness/lib.mjs`'s
-  `gateDiff()` compares the tree against the run's `base_commit` and blocks
-  further non-run-directory edits while an undisclosed crossing exists, instead
-  of parsing command text. Tested in a throwaway repo, 23/23 cases, including a
-  side-by-side run of the same suite against the *unpatched* live hook (4/23 fail
-  there, exactly the shapes this fixes) — both in the PATCH-NOTES. Apply all
-  three files together per the note's instructions.
+  present at `1e644ea` (six commands probed live, three of them new: `git apply`,
+  `eslint --fix`, a `node -e` write — `.ai/run/harness-v43-critical/brief.md`'s
+  reproduction table). Replaced with `.ai/harness/lib.mjs`'s `gateDiff()`: compares
+  the tree against the run's `base_commit` and blocks further non-run-directory
+  edits while an undisclosed crossing exists, instead of parsing command text.
+  `verify.sh full` and `deep` both green post-apply with the new `hook-test.sh`
+  (23/23). **Applying it live surfaced one more gap**, now fixed in the same
+  commit and in `.ai/run/harness-v43-critical/PATCH-NOTES.md`/`.ai/HARNESS.md`:
+  the patch's own new preflight fails on the uncommitted diff that applying the
+  patch itself creates (no active run to disclose into) — the apply instructions
+  didn't say to commit before verifying. Fixed by documenting "commit, then
+  verify" as the standard apply sequence, not by weakening the preflight.
   Source: `.ai/run/harness-v42-r1/journal.md`, `.ai/run/harness-v42-r2/journal.md`,
   `docs/reviews/vibe-harness-v4.3-delta-2026-09-10.md` §1.1.
 
@@ -96,10 +98,8 @@ session that created it. Cite the documented floor and where to look instead.
 
 ## Pending human application
 
-- **`.claude/hooks/budget.mjs`, `.ai/harness/verify.sh`, `.ai/harness/hook-test.sh`**
-  — the door-7 tree-check patch, see the top of this file and
-  `.ai/run/harness-v43-critical/PATCH-NOTES.md` for the full instructions. Apply
-  all three together.
+- ~~**`.claude/hooks/budget.mjs`, `.ai/harness/verify.sh`, `.ai/harness/hook-test.sh`**
+  — the door-7 tree-check patch.~~ **Done, see commit `b55f988`.**
 
 - ~~**`.ai/MODEL.md`** — proposed diff awaiting application.~~ **Done, see commit
   `21703f5`** — applied byte-identical to

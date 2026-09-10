@@ -13,8 +13,19 @@ cp .ai/run/harness-v43-critical/patch-budget.mjs .claude/hooks/budget.mjs
 cp .ai/run/harness-v43-critical/patch-verify.sh .ai/harness/verify.sh
 cp .ai/run/harness-v43-critical/patch-hook-test.sh .ai/harness/hook-test.sh
 chmod +x .ai/harness/verify.sh .ai/harness/hook-test.sh
+git add .claude/hooks/budget.mjs .ai/harness/verify.sh .ai/harness/hook-test.sh .ai/harness/gate-scope.json
+git commit -m "harness: apply the door-7 tree-check patch"
 sh .ai/harness/verify.sh full
 ```
+
+**Commit before running `verify.sh` — not after.** This patch's own new preflight (in
+`verify.sh`, run before any tier) diffs the tree against `HEAD` when no run is active, and fails
+if a protected file differs and isn't disclosed. `cp`-ing these three files in *is* exactly that
+kind of diff, so running `verify.sh full` on the still-uncommitted copy fails with
+`undisclosed protected-path crossing(s): .ai/harness/verify.sh, .claude/hooks/budget.mjs` — hit
+live applying this patch for the first time; not a bug in the check, just a missing step in this
+note. `.ai/harness/gate-scope.json` is the auto-regenerated report file (not gate-scope itself,
+safe to commit alongside — `lib.mjs` shows up in its `patterns` list once `budget.mjs` runs once).
 
 **Apply all three together, not one at a time.** `hook-test.sh`'s new cases assert the tree-check
 behavior that only exists once `budget.mjs` is patched — applying `hook-test.sh` alone first would

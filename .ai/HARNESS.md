@@ -126,6 +126,12 @@ needed, propose it as a patch (a unified diff — `git diff --no-index <live> <p
 > x.patch` in the run directory, so a human reviews a diff, not a full-file
 replacement) and say so in the digest; don't chase the override.
 
+**When you (the human) apply a gate-scope patch, commit it before running `verify.sh`
+— not after.** `verify.sh`'s own preflight diffs the tree against `HEAD` when no run
+is active and fails on an undisclosed protected-file diff; applying a patch (`cp` or
+`git apply`) is exactly that kind of diff. Copy the file(s) in, commit, then verify —
+found live applying the v4.3 door-7 patch itself.
+
 Run `sh .ai/harness/hook-test.sh` (part of `verify.sh full`) — now built entirely
 inside a throwaway `mktemp` git repo, never the live `.ai/run` — to confirm the guard
 itself is firing rather than silently passing everything through.
