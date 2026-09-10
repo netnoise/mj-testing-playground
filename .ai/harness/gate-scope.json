@@ -8,7 +8,8 @@
     "tsconfig*.json",
     ".ai/harness/verify.sh",
     ".claude/hooks/budget.mjs",
-    ".claude/settings.json"
+    ".claude/settings.json",
+    ".ai/harness/lib.mjs"
   ],
   "missing": [],
   "observed_unlisted": [

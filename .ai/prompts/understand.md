@@ -31,16 +31,20 @@ run: <slug> · started <date>
 ## Open decisions      — at most one. If none, say none.
 ```
 
-4. Write `state.json`: `{"status":"active","allowed_paths":[...from blast radius],
-   "max_files":30,"max_minutes":90,"files_touched":[],"started_at":"<iso>"}`.
-   30/90 is the default (`.ai/harness/config.yml`), sized to the largest real run
-   on record — raise or lower per-run if the brief's blast radius clearly warrants it.
-   The hook reads this. A path you forget here will block the next step — that is
-   the mechanism working, not a bug. **Write it once.** The hook is `state.json`'s
-   sole writer after this: it re-derives `files_touched` from git on every edit, and
-   blocks any tool — including a shell `rm` — from touching this file again while the
-   run is active. If a budget or allowlist genuinely turns out wrong mid-run, say so
-   in the digest; don't delete the file to reset it.
+4. Open the run: `sh .ai/harness/open-run.sh <slug> <max_files> <max_minutes> <allowed_path>...`
+   — 30/90 is the default (`.ai/harness/config.yml`), sized to the largest real run
+   on record; raise or lower per-run if the brief's blast radius clearly warrants it.
+   This stamps `started_at` from the real clock and `base_commit`/`dirty_at_start`
+   from git, not from anything you type — a model-typed `started_at` is not trustworthy
+   (it drifted from the run's own first commit by two hours on `harness-v42-r3`,
+   local time written down as UTC) and every budget in the hook measures from it. A
+   path you forget from `allowed_path` will block the next step — that is the
+   mechanism working, not a bug. **This runs once.** The hook is `state.json`'s sole
+   writer after this: it re-derives `files_touched` from git (against `base_commit`,
+   not a moving `HEAD`) on every edit, and blocks any tool — including a shell write —
+   from touching this file again, creation included, while the run is active. If a
+   budget or allowlist genuinely turns out wrong mid-run, say so in the digest; don't
+   delete the file to reset it.
 5. Run `sh .ai/harness/check-citations.sh` before you finish. A citation that does
    not resolve is a fabrication; one that resolves to the wrong line is a
    misattribution and the script cannot see it, so re-read what it prints.

@@ -14,25 +14,43 @@ session that created it. Cite the documented floor and where to look instead.
 
 ## Door-7 (needs a human edit)
 
-- **`.claude/hooks/budget.mjs`: all three Bash sub-checks match against the whole
-  command string, not the write verb's actual target.** The `MODEL.md` check
-  (`.claude/hooks/budget.mjs:117`), the door-7 needle check
-  (`.claude/hooks/budget.mjs:121`) and the `state.json` check
-  (`.claude/hooks/budget.mjs:126`) each test whether a protected name appears
-  *anywhere* in the command, and block if a write verb also appears *anywhere*. So
-  a legitimate command is blocked because it *mentions* a protected file in
-  unrelated content — prose, a JSON value, a heredoc body, a `cp` or `diff`
-  *source* — while its `>` or `rm` targets something else entirely. At least five
-  documented instances across three runs (`.ai/run/harness-v42-r3/digest.md:38`),
-  and it has recurred in every run since, including while writing test fixtures and
-  a PR body. The `MODEL.md` variant fired writing a fixture to an unrelated file
-  whose *text* cited that path. Workaround: split into separate Bash calls, route
-  the write through the `Write` tool, or copy with Python. Real fix: tie each check
-  to the token the write verb actually targets. Always fails closed — friction,
-  never a hole.
-  Source: `.ai/run/harness-v42-r1/journal.md`, `.ai/run/harness-v42-r2/journal.md`.
-  *(Previously said "found live three times" — already five before the run that
-  wrote it had ended, and never updated.)*
+- ~~**`.claude/hooks/budget.mjs` + `.ai/harness/verify.sh` + `.ai/harness/hook-test.sh`:
+  the Bash door-7 check scanned the whole command string, not the write verb's
+  actual target.**~~ **Applied, commit `b55f988`.** At least five documented
+  instances across R1–R3 (`.ai/run/harness-v42-r3/digest.md:38`), confirmed still
+  present at `1e644ea` (six commands probed live, three of them new: `git apply`,
+  `eslint --fix`, a `node -e` write — `.ai/run/harness-v43-critical/brief.md`'s
+  reproduction table). Replaced with `.ai/harness/lib.mjs`'s `gateDiff()`: compares
+  the tree against the run's `base_commit` and blocks further non-run-directory
+  edits while an undisclosed crossing exists, instead of parsing command text.
+  `verify.sh full` and `deep` both green post-apply with the new `hook-test.sh`
+  (23/23). **Applying it live surfaced one more gap**, now fixed in the same
+  commit and in `.ai/run/harness-v43-critical/PATCH-NOTES.md`/`.ai/HARNESS.md`:
+  the patch's own new preflight fails on the uncommitted diff that applying the
+  patch itself creates (no active run to disclose into) — the apply instructions
+  didn't say to commit before verifying. Fixed by documenting "commit, then
+  verify" as the standard apply sequence, not by weakening the preflight.
+  Source: `.ai/run/harness-v42-r1/journal.md`, `.ai/run/harness-v42-r2/journal.md`,
+  `docs/reviews/vibe-harness-v4.3-delta-2026-09-10.md` §1.1.
+
+- **New, found preparing the patch above, not fixed by it either: a Bash write to
+  a run's `state.json` via a verb the regex doesn't list** (e.g. `node -e
+  "...writeFileSync('.ai/run/x/state.json', ...)"`) **still isn't blocked.** The
+  narrow `state.json` regex (kept as the delta note recommended, "path-specific,
+  rarely misfires") sits behind the same write-verb gate the removed checks did.
+  Recorded as a `[KNOWN GAP]` case in the pending `hook-test.sh` patch so it's
+  visible on every `full` once applied, not silently unnoticed. Real fix (not
+  attempted — same shape as the state.json check's original design tradeoff):
+  tie the regex to the actual write target the way `gateDiff` does, or drop the
+  write-verb prefilter for this one check specifically.
+
+- **New: a protected-path crossing with no active run, that gets COMMITTED (not
+  left uncommitted), is invisible to both the new hook sweep and the new
+  `verify.sh` preflight.** Both compare against `HEAD` when no run is open, and a
+  commit becomes the new `HEAD` — tested directly, `.ai/run/harness-v43-critical/
+  test-verify-preflight.sh`'s last case. Bounded (requires no run open at all,
+  outside the harness's normal flow) but real; not attempted to fix, since it
+  needs a no-run disclosure mechanism the harness doesn't have anywhere else.
 
 - **`.ai/harness/verify.sh`: `deep` runs `e2e/smoke.spec.ts` twice** — once
   explicitly for the `smoke` tier's own check, once again inside `deep`'s
@@ -41,15 +59,12 @@ session that created it. Cite the documented floor and where to look instead.
   `e2e/app.spec.ts` only. Cosmetic, not urgent.
   Source: `.ai/run/harness-v42-r2/digest.md`.
 
-- **`.ai/harness/verify.sh:111`: the citation gate picks its run by mtime.**
-  `ls -1t .ai/run | head -1` means "most recently touched," not "most recent
-  work" — editing any file in an old run makes that run the one gated. Happened
-  once already: correcting `harness-v42-r1`'s digest in place pulled a two-day-old
-  run into `deep`, where it surfaced a synthetic fixture path written as a real
-  citation. Useful by accident that time, but the gate can check the wrong run and
-  skip the one actually being handed back. Fix: select the run whose `state.json`
-  is `status: active`, falling back to the latest `started_at` — both already in
-  every `state.json`. Low urgency.
+- ~~**`.ai/harness/verify.sh:111`: the citation gate picks its run by mtime.**~~
+  **Fixed for `check-citations.sh` and `handoff.sh`** (`.ai/run/harness-v43-critical`,
+  now route through `.ai/harness/lib.mjs`'s `currentRun()` — status-based, falling
+  back to the greatest `started_at`, not `ls -1t`). **`verify.sh`'s own `LATEST_RUN`
+  pick is fixed too, but only in the pending patch above** (`verify.sh` is
+  gate-scope) — applying that patch closes this entry fully.
   Source: `.ai/run/harness-v42-landing/PATCH-NOTES.md`.
 
 ## Checks retros found missing
@@ -62,10 +77,12 @@ session that created it. Cite the documented floor and where to look instead.
   branch away from `master` for a day, after a stacked-PR merge landed in the
   wrong order, surfacing only because a slash command added in those commits came
   back "Unknown command" (`.ai/run/harness-v42-landing/retro.md`). Nothing
-  distinguishes "merged" from "on the trunk." Shape of a fix: have
-  `.ai/harness/close-run.sh` record the run's head commit in `state.json`, and a
-  check that warns when a `done` run's head is not an ancestor of the default
-  branch. Not designed yet.
+  distinguishes "merged" from "on the trunk." **`close-run.sh` now records
+  `head_commit` in `state.json`** (`.ai/run/harness-v43-critical`) — the anchor
+  this fix needs. **The actual check (warn when a `done` run's `head_commit` is
+  not an ancestor of the default branch) is still not built** — no single run has
+  the stacked-PR shape this needs to exercise against; deferred, per
+  `.ai/run/harness-v43-critical/brief.md`.
 
 ## Bank cards with an unbuilt mechanism
 
@@ -80,6 +97,9 @@ session that created it. Cite the documented floor and where to look instead.
   than this run's scope.
 
 ## Pending human application
+
+- ~~**`.claude/hooks/budget.mjs`, `.ai/harness/verify.sh`, `.ai/harness/hook-test.sh`**
+  — the door-7 tree-check patch.~~ **Done, see commit `b55f988`.**
 
 - ~~**`.ai/MODEL.md`** — proposed diff awaiting application.~~ **Done, see commit
   `21703f5`** — applied byte-identical to

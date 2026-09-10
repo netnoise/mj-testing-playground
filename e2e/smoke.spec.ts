@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { SMOKE_ROUTES as ROUTES } from './smoke-routes';
 
 // Generic runtime smoke, not a feature spec. docs/reviews/harness-v4.2-
 // implementation-audit-2026-09-08.md 1.2/§1.2: app.spec.ts is entirely the
@@ -11,8 +12,9 @@ import { test, expect, type Page } from '@playwright/test';
 //
 // Deliberately asserts NOTHING about text content. If this spec needs to
 // change because a heading's wording changed, it has drifted from its job.
-
-const ROUTES = ['/', '/advanced-form'];
+//
+// ROUTES now lives in ./smoke-routes.ts, checked against the Angular
+// routing module by src/app/smoke-routes.spec.ts - see that file's header.
 
 function trackErrors(page: Page) {
   const pageErrors: Error[] = [];

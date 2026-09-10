@@ -20,6 +20,16 @@ first person, plainly — no spin, no self-flagellation either.
                          if it's genuinely true, don't manufacture one to fill
                          the section.
 ## What the harness made harder than the task needed
+## Human touches       — advisory: (self-reported, so cross-check it, not a
+                         blind trust) every door-7 patch you handed over for
+                         application, every question you stopped and asked
+                         instead of resolving yourself, and every correction
+                         the human made to your work. List them, don't just
+                         count them (docs/reviews/vibe-harness-v4.3-delta-
+                         2026-09-10.md §1.8 - OWED.md's "no running tallies"
+                         rule applies here too). Cross-checkable against
+                         `ls .ai/run/<slug>/patch-*` and `door-crossings.md`.
+                         None is a fine, real outcome - say so plainly.
 ## What actually happened      — only if it diverges from what digest.md implies.
 ```
 

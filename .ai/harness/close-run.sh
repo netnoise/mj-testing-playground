@@ -28,16 +28,20 @@ esac
 
 node -e "
 const fs = require('node:fs');
-const { execSync } = require('node:child_process');
-const p = '$P';
-const s = JSON.parse(fs.readFileSync(p, 'utf8'));
-s.status = '$STATUS';
-try {
-  const tracked = execSync('git diff --name-only HEAD', { encoding: 'utf8' });
-  const untracked = execSync('git ls-files --others --exclude-standard', { encoding: 'utf8' });
-  const touched = [...new Set([...tracked.split('\n'), ...untracked.split('\n')].map((x) => x.trim()).filter(Boolean))];
-  s.files_touched = touched.sort();
-} catch { /* keep whatever files_touched already held */ }
-fs.writeFileSync(p, JSON.stringify(s, null, 2) + '\n');
+(async () => {
+  const p = '$P';
+  const s = JSON.parse(fs.readFileSync(p, 'utf8'));
+  s.status = '$STATUS';
+  try {
+    // Same ruler budget.mjs enforces (base_commit, run artifacts excluded) -
+    // not a raw git diff --name-only HEAD, which is the ruler that let
+    // files_touched read 5 against a real 30-file change (docs/reviews/
+    // vibe-harness-v4.3-delta-2026-09-10.md §1.3).
+    const { runTouched, gitHead } = await import('$ROOT/.ai/harness/lib.mjs');
+    s.files_touched = [...runTouched(s)].sort();
+    s.head_commit = gitHead();
+  } catch { /* keep whatever files_touched already held */ }
+  fs.writeFileSync(p, JSON.stringify(s, null, 2) + '\n');
+})();
 "
 echo "close-run: $SLUG -> $STATUS"
