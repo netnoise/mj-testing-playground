@@ -34,7 +34,9 @@ that does not depend on the answer.
    invocation — read that file for what is actually guarded. Do not re-state the
    list here: this line was a hand-kept copy until 2026-09-09 and had already gone
    stale, omitting `.claude/settings.json` for two days after the hook began
-   blocking it.
+   blocking it. `.ai/MODEL.md` is a related but separate, older door (human-owned
+   structure, not a gate's own scope) protected by the same tree-diff mechanism —
+   see Budgets below for how enforcement actually works, including for Bash.
 
 Door 7 exists because the symptom is a *better* number. A gate metric that improves
 after the gate's own config was edited is not evidence.
@@ -79,22 +81,53 @@ reported as if the app had been exercised.
 
 Declared in each prompt's frontmatter, tagged `enforced:` (a hook checks it) or
 `advisory:` (only you can trigger it — say so when you do). Enforced limits live in
-`.ai/run/<slug>/state.json`, whose single writer is `.claude/hooks/budget.mjs` — the
-hook blocks any other write to an existing `state.json`, including a shell `rm`
-followed by a rewrite. The active run's own `.ai/run/<slug>/**` is always inside
-blast radius, so a brief needing a mid-run correction is a normal edit, not a reason
-to touch `state.json`.
+`.ai/run/<slug>/state.json`, opened once by `sh .ai/harness/open-run.sh` (called from
+`understand.md`, never written by hand — see `.ai/harness/lib.mjs`'s header for why a
+model-typed `started_at` isn't trustworthy). The hook blocks any other write to an
+existing `state.json`, creation included, including a shell write followed by a
+rewrite. The active run's own `.ai/run/<slug>/**` is always inside blast radius, so a
+brief needing a mid-run correction is a normal edit, not a reason to touch
+`state.json`.
 
-`files_touched` is derived from `git diff --name-only HEAD` plus untracked files on
-every guarded call, not accumulated from which tool you happened to use — a deletion
-or a shell edit counts the same as an `Edit` call. The guard covers `Bash` as well as
-`Edit`/`Write`/`MultiEdit`/`NotebookEdit`: a shell command containing a write verb
-(`>`, `sed -i`, `mv`, `rm`, …) against a door-7 file or a run's `state.json` is
-blocked the same as a direct edit would be. It does not apply blast radius or the
-file budget to Bash — that's covered by the git-derived count above regardless of
-which tool wrote the file.
+`files_touched` is `.ai/harness/lib.mjs`'s `runTouched(state)`: everything that
+differs from the run's `base_commit` (stamped once at open, not a moving `HEAD`),
+plus untracked files, minus the run's own paperwork under `.ai/run/**` and anything
+already dirty before the run started. Not accumulated from which tool you happened to
+use — a deletion, a shell edit, or a file committed mid-run (this harness's own
+"commit WIP on green" rule) all still count, because the ruler is git against a fixed
+point, not the working tree against itself.
 
-Run `sh .ai/harness/hook-test.sh` (part of `verify.sh full`) to confirm the guard
+Bash is not scanned for write verbs against door-7 file *names* any more — that
+whole-command-string check let a write through whenever it didn't use one of a fixed
+verb list (`node -e`, `python3 -c`, `git apply`, …), while blocking unrelated commands
+that merely *mentioned* a protected path. In its place: `.ai/harness/lib.mjs`'s
+`gateDiff` compares the actual tree against `base_commit` (or `HEAD` with no run open)
+on every guarded call. It can't prevent a Bash write before it happens, so instead —
+once an undisclosed door-7 (or `.ai/MODEL.md`) diff exists, every subsequent
+`Edit`/`Write`/`MultiEdit`/`NotebookEdit` **outside the active run's own directory**
+is refused until it's disclosed (`.ai/run/<slug>/door-crossings.md`, naming the file)
+or reverted (`git checkout -- <path>`, via Bash — Bash itself is never blocked by
+this, since it's the only way to revert). `verify.sh`'s preflight makes the same
+check before any tier runs, so an undisclosed crossing can't produce a green gate even
+if it slips past a single missed hook call. This sweep only runs while a run is
+genuinely active — there's nowhere to disclose into otherwise, and a committed (not
+just uncommitted) crossing with no run open is a real, undetected gap; ad-hoc/`tiny`
+work was never meant to carry this machinery, and a direct edit whose own target is a
+door-7 file is still blocked unconditionally either way.
+
+**The `HARNESS_DOOR_OPEN=1` override does not work as a prefix on one Bash call.** The
+hook reads its own process environment, not the environment of the command it's
+checking — a value set mid-conversation, or prefixed onto a single shell command, is
+invisible to it. The two forms that actually work: the human sets it for the *entire
+session* before it starts (not available in the Claude Code desktop app — there is no
+path to it there; go straight to a patch for the human), or the human runs
+`HARNESS_DOOR_OPEN=1 sh .ai/harness/verify.sh` themselves. If a gate-scope edit is
+needed, propose it as a patch (a unified diff — `git diff --no-index <live> <proposed>
+> x.patch` in the run directory, so a human reviews a diff, not a full-file
+replacement) and say so in the digest; don't chase the override.
+
+Run `sh .ai/harness/hook-test.sh` (part of `verify.sh full`) — now built entirely
+inside a throwaway `mktemp` git repo, never the live `.ai/run` — to confirm the guard
 itself is firing rather than silently passing everything through.
 
 Stop conditions: `one_way_door`, `hypothesis_falsified`, `runtime_falsified`,

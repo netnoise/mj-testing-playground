@@ -27,23 +27,18 @@
   "max_files": 30,
   "max_minutes": 150,
   "files_touched": [
-    ".ai/harness/check-citations.sh",
-    ".ai/harness/close-run.sh",
-    ".ai/harness/emit.sh",
-    ".ai/harness/handoff.sh",
-    ".ai/harness/ledger.sh",
-    ".ai/harness/lib.mjs",
-    ".ai/harness/open-run.sh",
+    ".ai/HARNESS.md",
+    ".ai/harness/OWED.md",
+    ".ai/prompts/retro.md",
+    ".ai/prompts/understand.md",
     ".ai/run/harness-v42-landing/HANDOFF.md",
     ".ai/run/harness-v43-critical/HANDOFF.md",
-    ".ai/run/harness-v43-critical/brief.md",
-    ".ai/run/harness-v43-critical/implement.json",
-    ".ai/run/harness-v43-critical/journal.md",
+    ".ai/run/harness-v43-critical/PATCH-NOTES.md",
+    ".ai/run/harness-v43-critical/patch-budget.mjs",
+    ".ai/run/harness-v43-critical/patch-hook-test.sh",
+    ".ai/run/harness-v43-critical/patch-verify.sh",
+    ".ai/run/harness-v43-critical/preflight-check.mjs",
     ".ai/run/harness-v43-critical/state.json",
-    ".ai/run/harness-v43-critical/understand.json",
-    "e2e/smoke-routes.ts",
-    "e2e/smoke.spec.ts",
-    "src/app/app-routing.module.ts",
-    "src/app/smoke-routes.spec.ts"
+    ".ai/run/harness-v43-critical/test-verify-preflight.sh"
   ]
 }
