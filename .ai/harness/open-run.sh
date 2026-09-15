@@ -5,8 +5,9 @@
 # and dirty_at_start (pre-existing uncommitted work, so it isn't charged to
 # this run). docs/reviews/vibe-harness-v4.3-delta-2026-09-10.md §1.2.
 #
-# understand.md calls this instead of writing state.json's opening fields by
-# hand. The hook still refuses any *edit* to an existing state.json (write-
+# implement.md calls this (moved from understand.md in harness-v44-intake, so
+# the clock starts when questions stop) instead of writing state.json's
+# opening fields by hand. The hook still refuses any *edit* to an existing state.json (write-
 # once, unchanged); this script refuses to *create* a second one for the
 # same slug, so "the hook is state.json's sole writer" now also covers the
 # open, not just every write after it.
