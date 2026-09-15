@@ -1,0 +1,22 @@
+{
+  "status": "done",
+  "opened_by": "open-run.sh",
+  "started_at": "2026-09-15T11:59:52.964Z",
+  "base_commit": "d3a50243c03926090effad6ad3562f6b62fce7c5",
+  "dirty_at_start": [
+    "docs/vibe-harness.html"
+  ],
+  "allowed_paths": [
+    "docs/vibe-harness.html",
+    "docs/cheatsheet.html",
+    "docs/reviews/harness-v44-roadmap-2026-09-15.md",
+    ".ai/run/harness-v44-docs/**"
+  ],
+  "max_files": 5,
+  "max_minutes": 60,
+  "files_touched": [
+    "docs/cheatsheet.html",
+    "docs/reviews/harness-v44-roadmap-2026-09-15.md"
+  ],
+  "head_commit": "3d0de495022e80c9a70d2fa422a369a9da8bee99"
+}
