@@ -97,7 +97,7 @@ brief needing a mid-run correction is a normal edit, not a reason to touch
 
 | | |
 |---|---|
-| `open-run.sh <slug> <files> <minutes> <paths>...` | `/implement`. Stamps the clock and the ruler. Once per run. |
+| `open-run.sh <slug> [--type refactor\|redesign] <files> <minutes> <paths>...` | `/implement`. Stamps the clock and the ruler. Once per run. Default type `feature`. |
 | `revise-run.sh <slug> --add-path \| --extend` | Mid-run, when the allowlist or budget turns out too narrow. Max 3, each with a `--reason`. |
 | `close-run.sh <slug> [done\|dead]` | After `/digest`. Flips status, records `head_commit`, and **refuses to close a `done` run whose digest never mentions a revision or door-7 crossing it recorded.** |
 
@@ -115,6 +115,16 @@ cover Edit/Write; the hook returns before either check on the Bash path
 (`.claude/hooks/budget.mjs:175-187`), so a shell edit succeeds silently and nothing
 records it. Every run here before `revise-run.sh` existed took that route
 (`.ai/run/vehicle-selection/journal.md:9-13`, `:19-21`).
+
+**A declared refactor (`--type refactor`) may not change a test.** `close-run.sh` refuses
+to close a `done` refactor run if any `*.spec.ts` file differs from `base_commit` —
+door 4 (`test_deleted_or_weakened`)'s first actual enforcement, since "weakened" isn't
+mechanically checkable but "no test edit at all" is. It refuses to *assert* rather than
+pass on two cases that would otherwise be a rubber stamp: a spec already dirty when the
+run opened (invisible to the ruler either way it went), and git itself not answering. The
+escape hatch is `--skip-refactor-check`, same shape as `--no-disclosure-check`. Not a
+gate — `verify.sh` is "the only gate contract" and stays untouched; this blocks *closing*
+a run that made a specific claim, checked at the one point the whole run's diff exists.
 
 `files_touched` is `.ai/harness/lib.mjs`'s `runTouched(state)`: everything that
 differs from the run's `base_commit` (stamped once at open, not a moving `HEAD`),

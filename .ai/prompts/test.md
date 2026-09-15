@@ -13,6 +13,11 @@ Turn the brief's hypothesis into assertions.
 - **Bug:** the failing spec lands first and you show it failing. A fix without a
   test that failed before it is unverified.
 - **Feature:** each spec names the invariant it protects in its own `it(...)` text.
+- **Refactor:** the existing specs *are* the assertion — you do not write new ones.
+  The brief's Blast radius should already exclude test files (`.ai/HARNESS.md`); if a
+  spec genuinely needs to change, the change wasn't behaviour-preserving. Stop and say
+  so under `hypothesis_falsified` rather than editing it — `close-run.sh` will refuse
+  to close the run on a touched spec anyway (door 4's first real tooth).
 - Gate on *changed lines covered*, never a global coverage number. A repo at 4%
   will never reach 80%, so that target gets disabled and takes the harness with it.
 
@@ -20,7 +25,9 @@ Turn the brief's hypothesis into assertions.
 and ask of each spec: what would have to break for this to fail? The repo's own
 `src/app/app.component.spec.ts:24` is `expect(app).toBeTruthy()` — it passes,
 looks like diligence, and verifies nothing. Report vacuous specs in `test.json`
-as `vacuous: N`; zero specs added is `vacuous: null`, never a pass.
+as `vacuous: N`; zero specs added is `vacuous: null`, never a pass — **except for a
+refactor**, where zero specs added is the correct outcome and `vacuous: null` reads
+as intended, not as a gap.
 
 Never weaken, skip, or delete an existing test to get green — door 4. Never widen
 or narrow a config that defines what the gate measures — door 7.
