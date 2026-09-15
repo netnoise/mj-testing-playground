@@ -67,6 +67,34 @@ session that created it. Cite the documented floor and where to look instead.
   gate-scope) — applying that patch closes this entry fully.
   Source: `.ai/run/harness-v42-landing/PATCH-NOTES.md`.
 
+- **`.ai/harness/verify.sh`: three blind spots once runs open at `/implement` and
+  standalone `.ai/run/<date>-<topic>/` directories exist** (`harness-v44-intake`).
+  (a) `deep` citation-checks only `currentRun()`'s digest/retro, and the picker skips any
+  directory without `state.json` (`.ai/harness/lib.mjs:89`), so a standalone retro or
+  ideate is never checked by the gate. (b) With no run active, `currentRun()` falls back
+  to the latest `started_at`, so `deep` re-checks an old *done* run's digest and prints a
+  pass that says nothing about the current work (`.ai/harness/verify.sh:164`). (c) The
+  door-crossing disclosure check only *warns* when a run has `door-crossings.md` but no
+  `digest.md` (`.ai/harness/verify.sh:123`), and digest is now one step among several,
+  not the run's guaranteed last act. Fix sketch: pass standalone dirs modified since the
+  last commit to `check-citations.sh`; skip the fallback for citation checking; fail,
+  not warn, on a crossing in a run whose `state.json` says `done`.
+
+- **Optional tooth: no questions after the walk-away point.** `.ai/prompts/implement.md`
+  says the human may have left once the run opens, but only advisory text enforces it.
+  A `PreToolUse` matcher for `AskUserQuestion` in `.claude/settings.json` plus a
+  `.claude/hooks/budget.mjs` branch that blocks it while a run is `active` (message: write
+  it under Open decisions with your default and continue) would make it real, with a
+  `hook-test.sh` case. First confirm a `PreToolUse` hook actually fires for that tool —
+  a hook that never fires reports nothing. Human's call whether pairing mid-run should
+  stay possible; that's the argument against.
+
+- **Consider `.claude/settings.local.json` in `GATE_SCOPE`.** It now holds the
+  permission allowlist that decides what an agent may run without asking
+  (`harness-v44-intake`); an agent widening its own allowlist is the same shape as
+  door 7. Limit: the file is gitignored (user's global ignore), so `gateDiff`'s git-based
+  sweep can't see a Bash write to it — only the direct Edit/Write block would apply.
+
 ## Checks retros found missing
 
 - **Nothing looks across runs, or at the trunk.** Every digest checks its own run
@@ -83,6 +111,14 @@ session that created it. Cite the documented floor and where to look instead.
   not an ancestor of the default branch) is still not built** — no single run has
   the stacked-PR shape this needs to exercise against; deferred, per
   `.ai/run/harness-v43-critical/brief.md`.
+
+- **`check-citations.sh` can't tell a brief's forward reference from a fabrication.**
+  A Done-when box that names a file the run will create (`` `.ai/prompts/intake.md` exists ``)
+  fails the check until the file exists — `harness-v44-intake`'s brief failed on five of
+  them before any work started. `/intake` now puts Done when in every brief, so this will
+  recur on any run that adds a file. Fix sketch (not gate scope — `check-citations.sh` isn't in
+  `GATE_SCOPE`): skip the `## Done when` section for bare-path existence, or accept a
+  `(new)` suffix as a declared forward reference that must resolve by `digest.md` time.
 
 ## Bank cards with an unbuilt mechanism
 
@@ -105,3 +141,9 @@ session that created it. Cite the documented floor and where to look instead.
   `21703f5`** — applied byte-identical to
   `.ai/run/harness-v42-r3/proposed-MODEL.md`. This entry kept saying "not yet
   applied" for a day after it was.
+
+- **`.ai/MODEL.md`** — one invariant is stale since `harness-v44-intake`: `state.json`
+  is now created when `/implement` opens the run, not by `/understand`
+  (`.ai/MODEL.md:36`). Proposed diff: `.ai/run/harness-v44-intake/patch-MODEL.md.patch`
+  (two lines). Apply, then commit before running `verify.sh` — `.ai/MODEL.md` is a
+  protected path and the preflight fails on an uncommitted diff to it.

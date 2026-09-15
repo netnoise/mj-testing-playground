@@ -7,10 +7,14 @@ non-trivial change.
 
 ## The loop
 
-`understand → implement → test → verify → digest → record`
+The sequence lives in one place: `flows` in `.ai/harness/config.yml` (`fix` for a
+change, `idea` for open-ended thinking, `tiny` for a provable one-liner).
 
-You run it end to end without asking. The human reads the digest afterwards. The
-only thing that stops you is a door.
+**Ask first, then walk away.** `/intake` is the one place where asking the human is
+normal: at most four questions, one round, only for product intent the repo can't
+answer. Once `/implement` opens the run, assume the human has left. From there you
+run to the end without asking, the human reads the digest afterwards, and the only
+thing that stops you is a door.
 
 ## Doors
 
@@ -82,7 +86,7 @@ reported as if the app had been exercised.
 Declared in each prompt's frontmatter, tagged `enforced:` (a hook checks it) or
 `advisory:` (only you can trigger it — say so when you do). Enforced limits live in
 `.ai/run/<slug>/state.json`, opened once by `sh .ai/harness/open-run.sh` (called from
-`understand.md`, never written by hand — see `.ai/harness/lib.mjs`'s header for why a
+`implement.md`, so the clock starts when the questions stop; never written by hand — see `.ai/harness/lib.mjs`'s header for why a
 model-typed `started_at` isn't trustworthy). The hook blocks any other write to an
 existing `state.json`, creation included, including a shell write followed by a
 rewrite. The active run's own `.ai/run/<slug>/**` is always inside blast radius, so a
@@ -158,7 +162,8 @@ overwritten on the next stop regardless.
 
 ## Where things live
 
-`.ai/run/<slug>/` brief, journal, state, emits, digest, retro (hours) ·
+`.ai/run/<slug>/` input, brief, journal, state, emits, digest, retro (hours) ·
+`.ai/run/<YYYY-MM-DD>-<topic>/` standalone ideate or retro — no state, no budget ·
 `.ai/decisions/` why a change happened (permanent) ·
 `.ai/bank/` lessons that outlive this repo (human-curated) ·
 `.ai/MODEL.md` structure and invariants (human-owned) ·
@@ -171,7 +176,8 @@ technical summary, which has no section where the agent is the subject.
 
 ## Right-sizing the loop
 
-Not every change is `understand → implement → test → verify → digest → record`.
+Not every piece of work is `flows.fix`. An open question with no job yet is
+`flows.idea`: `/ideate`, then `/intake` on the pitch the human picks.
 `.ai/harness/config.yml`'s `flows.tiny` (`implement → verify`) is for a change
 that is provably local and small enough that a brief would cost more than it
 saves — a typo, a one-line config value already covered by an existing test, a
@@ -185,6 +191,8 @@ ceremony it would have cost.
 
 ## After editing any prompt, hook or command file
 
-Say so, and tell the human to restart the session. Those files load at session start;
-a file written mid-session is invisible to that session, and a hook that never fires
-reports nothing at all.
+Say so, and tell the human to restart the session. Hooks and settings are the reliable
+case for this: a hook that never fires reports nothing at all. New `.claude/commands/`
+files have been seen appearing mid-session (`harness-v44-intake`'s journal), and a prompt's
+body is read when it's invoked, but don't count on either — restarting costs less than
+chasing a stale file.

@@ -2,7 +2,7 @@
 skill: retro
 needs: []
 reads: [.ai/run/<slug>/**, git diff, git log]
-writes: [.ai/run/<slug>/retro.md]
+writes: [.ai/run/<slug>/retro.md, .ai/harness/OWED.md]
 model: large            # not clerical - it has to notice its own mistakes accurately
 budget: 15m
 ---
@@ -35,8 +35,21 @@ first person, plainly — no spin, no self-flagellation either.
 
 Every claim here needs the same discipline as a brief: cite `file:line` or a
 journal timestamp, don't reconstruct from memory. Run
-`sh .ai/harness/check-citations.sh` before you finish, same as `understand` and
-`record`.
+`sh .ai/harness/check-citations.sh <path-to-retro.md>` before you finish, same as
+`understand` and `record` — pass the path explicitly, because a standalone
+directory (below) has no `state.json` and the no-argument form won't find it.
+
+**No run for this work?** A design session or a chat still gets a retro when it was
+worth one: write it to `.ai/run/<YYYY-MM-DD>-<topic>/retro.md`, the same shape as
+`.ai/run/harness-v42-closeout/retro.md`. Cite what the session actually left behind —
+files, commits, docs. There is no journal to cite, so say that; don't invent
+timestamps to fill the gap.
+
+**A mistake with a concrete fix goes to `.ai/harness/OWED.md`**, not just into this
+file: under the door-7 section if the fix touches a gate-scope file, otherwise under
+"Checks retros found missing". Same rule as `/keep`'s `mechanism:` field. A fix that
+is named in a retro and then only ever re-read will recur. A mistake that is just a
+lesson — no mechanism — stays here.
 
 **This is not the digest with a different name.** The digest assembles what the
 run produced; the "Mistakes" section here exists because a digest has no section

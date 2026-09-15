@@ -37,7 +37,13 @@ budgets:
   state: .ai/run/<slug>/state.json    # single writer: the hook
 
 flows:
-  fix:  [recall, understand, implement, test, record, retro?]
+  # The one owner of the sequence - HARNESS.md points here instead of restating
+  # it (until harness-v44-intake the two copies disagreed on recall, digest and
+  # retro). recall runs inside understand's step 1, so it isn't listed.
+  # ? = optional: record when the change deserves a permanent decision record,
+  # retro when the run was long, odd, or the harness got in the way.
+  fix:  [intake, understand, implement, test, verify, digest, record?, retro?]
+  idea: [ideate]              # open-ended; a picked pitch becomes intake's input
   tiny: [implement, verify]   # provably local: a typo, a one-line config value
                                # already covered by an existing test, a comment
                                # fix. Unsure whether it qualifies? It doesn't -
@@ -47,7 +53,7 @@ flows:
 model_routing:
   # Route by "can this be wrong in a way nothing downstream catches",
   # not by whether it feels like typing.
-  large: [understand, implement, test, record, digest, retro]
+  large: [intake, ideate, understand, implement, test, record, digest, retro]
   # digest moved from small: its "One decision for you" block states a
   # default, a cost, and a reversibility judgment - synthesis across emits,
   # not concatenation of them, and a wrong cost-of-wrong is uncatchable by

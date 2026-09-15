@@ -2,7 +2,7 @@
 skill: implement
 needs: [understand]      # no brief on disk? run it first, then continue
 reads: [.ai/run/<slug>/brief.md, src/**]
-writes: [src/**, .ai/run/<slug>/implement.json]
+writes: [src/**, .ai/run/<slug>/implement.json, .ai/run/<slug>/state.json]   # state.json once, via open-run.sh
 model: large
 budget: 90m · 30 files
 stop_on:
@@ -15,6 +15,25 @@ on_stop: write handoff, leave the branch, exit clean
 ---
 
 Execute the approved brief. Nothing else.
+
+**First, open the run** — unless `.ai/run/<slug>/state.json` already exists:
+`sh .ai/harness/open-run.sh <slug> <max_files> <max_minutes> <allowed_path>...`, with the
+brief's Blast radius as the allowed paths. 30/90 is the default (`.ai/harness/config.yml`),
+sized to the largest real run on record; raise or lower it if the blast radius clearly
+warrants. This stamps `started_at` from the real clock and `base_commit`/`dirty_at_start`
+from git, not from anything you type — a model-typed `started_at` is not trustworthy (it
+drifted from the run's own first commit by two hours on `harness-v42-r3`, local time written
+down as UTC) and every budget in the hook measures from it. A path you forget from
+`allowed_path` will block a later step — that is the mechanism working, not a bug. **This
+runs once.** The hook is `state.json`'s sole writer after this: it re-derives `files_touched`
+from git (against `base_commit`, not a moving `HEAD`) on every edit, and blocks any tool —
+including a shell write — from touching this file again, creation included, while the run is
+active. If a budget or allowlist genuinely turns out wrong mid-run, say so in the digest;
+don't delete the file to reset it.
+
+**This is the walk-away point.** The human may leave once the run is open. From here on, no
+questions: a one-way door gets written down — door, both sides, your default, cost of being
+wrong — and you continue with everything that doesn't depend on it.
 
 - Work on a branch. Commit WIP after each green step — free, and the strongest
   recovery you have.
