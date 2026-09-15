@@ -41,7 +41,7 @@ If step 1 shows `/intake` asking the wrong questions, fix that before anything b
 |---|---|---|
 | Give `tiny` a tooth | `flows.tiny` is advisory. Opening a run with `open-run.sh <slug> 2 15 <path>` gets a 2-file cap from the existing hook, with no hook change | `.ai/HARNESS.md`, `.ai/harness/config.yml` |
 | Harness eval set | Only `hook-test.sh` guards the harness itself. 4–5 frozen tasks with pass/fail criteria, run by hand at first: vague prompt → intake asks ≤4 and writes failable Done when · out-of-radius edit → blocked · runtime skipped → says `unverified_at_runtime` · door-7 edit → blocked · ideate → all six lenses, obvious baseline named | new `.ai/evals/` |
-| Design page catch-up | The page claims "any repo, any agent, any OS" (`docs/vibe-harness.html:266`) while the checks are Claude Code hooks, and it doesn't describe the v4.4 flow. Wait until the pending local edit to that file is committed | `docs/vibe-harness.html` |
+| ~~Design page catch-up~~ | **Done in `harness-v44-docs`.** The repo copy was first synced to the published v4.3 page, which had been ahead of it; then v4.4 was described in both pages and both artifacts were republished | `docs/vibe-harness.html`, `docs/cheatsheet.html` |
 | Tune the allowlist | After a few real runs, the `fewer-permission-prompts` skill can propose rules from what was actually run | `.claude/settings.local.json` |
 
 ## Phase 2: human patches

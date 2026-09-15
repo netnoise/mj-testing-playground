@@ -258,14 +258,14 @@
 <div class="wrap">
 
 <header class="masthead">
-  <p class="eyebrow">Design v4.3 · portable AI harness</p>
+  <p class="eyebrow">Design v4.4 · an AI harness for Claude Code</p>
   <h1>Vibe&nbsp;Harness</h1>
-  <p class="deck">An agent that runs whole loops unattended, survives being killed mid-flight, comes back having taught you something about your own codebase — and keeps what you point at.</p>
+  <p class="deck">An agent that asks its questions up front, then runs the whole loop without you, survives being killed mid-flight, comes back having taught you something about your own codebase — and keeps what you point at.</p>
   <div class="meta">
     <span><b>Target</b> mj-testing-playground (Angular 14)</span>
-    <span><b>Portable to</b> any repo, any agent, any OS</span>
-    <span><b>Status</b> Phase 0+1 built and delivered a feature; door 7's Bash guard rebuilt as a tree-check, not a string scan</span>
-    <span><b>Shaped by</b> the TriTrack review · Angular 9→14 migration · two remediation passes on this harness itself, 2026-09-04 to 09-15</span>
+    <span><b>Portable</b> the ideas travel to any repo; the teeth are Claude Code hooks</span>
+    <span><b>Status</b> Phase 0+1 built and delivered a feature; v4.4 adds <code>/intake</code> and <code>/ideate</code>, not yet used on real work</span>
+    <span><b>Shaped by</b> the TriTrack review · Angular 9→14 migration · two remediation passes and two outside reviews of this harness, 2026-09-04 to 09-15</span>
   </div>
 </header>
 
@@ -301,7 +301,7 @@
   </div>
 
   <div class="note calm col">
-    <b>The lightweight test.</b> You type three words (<code>/fix</code>, <code>/keep</code>, <code>/handoff</code>), you occasionally write one line answering one question, and you own three files: <code>MODEL.md</code> (structure), <code>.ai/bank/</code> (what you chose to keep), <code>.ai/harness/OWED.md</code> (what you strike once it's applied). Everything else in <code>.ai/</code> is written by the agent for the agent. If you never open that folder, the workflow still works — that's the standard the boilerplate has to meet.
+    <b>The lightweight test.</b> You type a few words (<code>/intake</code> with whatever you have, <code>/implement</code>, occasionally <code>/keep</code>), answer at most four multiple-choice questions before the run starts and none after, and you own three files: <code>MODEL.md</code> (structure), <code>.ai/bank/</code> (what you chose to keep), <code>.ai/harness/OWED.md</code> (what you strike once it's applied). Everything else in <code>.ai/</code> is written by the agent for the agent. If you never open that folder, the workflow still works — that's the standard the boilerplate has to meet.
   </div>
 </section>
 
@@ -338,7 +338,7 @@
   </div>
 
   <div class="col">
-    <p style="margin-top:1.75rem;">Seven lines you can hold in your head, versus a tier matrix you'd have to consult. When the agent hits a one-way door it doesn't ask permission — it writes down what the door is, what's on both sides, what it would do by default and what being wrong would cost. Then it carries on with everything that <em>doesn't</em> depend on the answer, and the question waits for you in the digest.</p>
+    <p style="margin-top:1.75rem;">Seven lines you can hold in your head, versus a tier matrix you'd have to consult. When the agent hits a one-way door it doesn't ask permission — it writes down what the door is, what's on both sides, what it would do by default and what being wrong would cost. Then it carries on with everything that <em>doesn't</em> depend on the answer, and the question waits for you in the digest. Since v4.4 there is exactly one place where asking <em>is</em> the norm — <code>/intake</code>, before the run opens (§04) — and none after it.</p>
     <p><b>Door 7 is the review's addition, and it's the only always-enforced one.</b> It exists because its symptom is a <em>better</em> number: the reviewed repo shipped a mutation glob narrowed to one file — no test deleted, score still green, coverage of everything else silently gone. No gate can see that, so <code>budget.mjs</code> blocks those edits whether or not a run is active; the deliberate override is <code>HARNESS_DOOR_OPEN=1</code>, named in the digest and logged in the run's own <code>door-crossings.md</code>. Corollary: a gate metric that improves after an agent edited the gate's config is not evidence.</p>
     <p style="font-size:0.92rem;color:var(--ink-soft);"><b>The override has a platform dependency worth naming.</b> It works when the agent's own process can reach an environment where that variable is set — a terminal session. It does <em>not</em> work in the Claude Code desktop app: there is no exposed terminal the hook-runner process reads its environment from, confirmed by trying twice, including once immediately after the human exported it in a separate terminal window. In that environment, every door-7 change becomes a prepared patch file the human applies directly — slower, but no less sanctioned; the disclosure still happens, it just happens as a diff handed over rather than an env var set.</p>
     <p style="font-size:0.92rem;color:var(--ink-soft);"><b>Door 7 through Bash was a second, quieter failure — this page didn't say so until now.</b> The check above was Edit/Write only; a separate Bash check existed too, and it scanned whole command <em>strings</em> for a write verb and a protected filename with no relation between them. An external audit found this live: <code>node -e "...writeFileSync('jest.config.js', ...)"</code>, <code>python3 -c "open('angular.json','w')"</code>, <code>git apply</code>, and <code>eslint --fix</code> on a protected file all went straight through — six for six — while a harmless read like <code>cp angular.json /tmp/x</code> got blocked outright. The false positives had already trained a documented workaround ("copy with Python") that was itself one of the bypasses. Replaced: <code>.ai/harness/lib.mjs</code>'s <code>gateDiff()</code> compares the actual working tree against the run's <code>base_commit</code>, so it catches whichever tool wrote the file rather than parsing the command that invoked it, and once an undisclosed crossing exists it blocks further edits outside the run directory until it's disclosed or reverted. Two gaps remain and are named rather than hidden: a Bash write to a run's own <code>state.json</code> via a write verb the narrow regex doesn't list, and a protected-path crossing that gets committed with no run open to disclose into — both tracked in <code>.ai/harness/OWED.md</code>, not silently absorbed into a "fixed" claim.</p>
@@ -407,8 +407,8 @@ expensive to keep true. Same shape at
 <span class="k">needs:</span>    understand              <span class="c"># auto-runs it if brief.md is absent</span>
 <span class="k">model:</span>    large                   <span class="c"># small | large — see §07</span>
 <span class="k">reads:</span>    .ai/run/*/brief.md, src/**
-<span class="k">writes:</span>   src/**, .ai/run/*/implement.json
-<span class="k">budget:</span>   45m · 12 files
+<span class="k">writes:</span>   src/**, .ai/run/*/implement.json, .ai/run/*/state.json  <span class="c"># once, via open-run.sh</span>
+<span class="k">budget:</span>   90m · 30 files        <span class="c"># sized to the largest real run on record</span>
 <span class="k">stop_on:</span>
   - <span class="g">enforced: one_way_door</span>           <span class="c"># door 7 blocks always, run or no run</span>
   - <span class="g">enforced: blast_radius_exceeded</span>  <span class="c"># against the brief's allowed_paths</span>
@@ -418,8 +418,9 @@ expensive to keep true. Same shape at
 <span class="k">on_stop:</span>  write handoff, leave branch, exit clean</code></pre>
 
   <div class="col">
-    <p><b>The enforced/advisory tag is the honest line.</b> Enforced entries are checked by a <code>PreToolUse</code> hook before every edit: it is the <em>sole writer</em> of <code>state.json</code> (files touched, wall clock, the brief's path allowlist), so the budget's book-keeping can't drift, and blast radius stops being a judgment call — <code>/understand</code> writes the allowlist, the hook does path checks. Advisory entries are labelled as such so nobody mistakes an instruction for a mechanism. The hook fails <em>open</em> on anything unexpected: a guard that blocks every edit on a schema change is worse than no guard.</p>
+    <p><b>The enforced/advisory tag is the honest line.</b> Enforced entries are checked by a <code>PreToolUse</code> hook before every edit: it is the <em>sole writer</em> of <code>state.json</code> (files touched, wall clock, the brief's path allowlist), so the budget's book-keeping can't drift, and blast radius stops being a judgment call — <code>/understand</code> writes the brief's blast radius, <code>/implement</code> opens the run with it as the allowlist, the hook does path checks. Advisory entries are labelled as such so nobody mistakes an instruction for a mechanism. The hook fails <em>open</em> on anything unexpected: a guard that blocks every edit on a schema change is worse than no guard.</p>
     <p><b>Two of "enforced" turned out to be measuring the wrong thing, both fixed by the same field.</b> <code>started_at</code> used to be typed by the model from a template (<code>"<iso>"</code>); one real run recorded a value two hours and eight minutes <em>after</em> its own first commit — local time written down as UTC — so its wall-clock budget didn't start counting until most of the run had already happened. And the file count was <code>git diff --name-only HEAD</code>, which only sees <em>uncommitted</em> changes — but this harness's own durability rule (§05) is to commit WIP after every green step, so a run that follows its own rules reset its file budget to zero on every commit and could never trip <code>budget_spent</code>. <code>.ai/harness/open-run.sh</code> now stamps both from the real clock and <code>git rev-parse HEAD</code> at the moment a run opens — <code>started_at</code> and <code>base_commit</code> — and every count runs against <code>base_commit</code> instead of a moving <code>HEAD</code>, with the run's own paperwork (brief, journal, digest, emits) excluded from the tally entirely so the budget measures the change, not the record of making it.</p>
+    <p><b>Then the clock itself moved (v4.4), because it was measuring the human.</b> <code>open-run.sh</code> used to be called at the end of <code>/understand</code>, so every minute spent reading the brief, answering a question or thinking it over was charged to the agent's 90-minute budget — and the hook's brakes switched on while the human was still at the keyboard, not after they'd left. It's called at the start of <code>/implement</code> now. Nothing about <em>what</em> is enforced changed, and no gate-scope file moved: budget, allowlist and the protected-diff sweep have always applied only while a <code>state.json</code> says <code>active</code>. Moving one line between two prompts moved <em>when</em> they engage — to exactly the moment the human is free to walk away.</p>
     <p><b><code>hypothesis_falsified</code> is the valuable stop.</b> The agent set out to prove something and the code said no. That's the most informative outcome available, and it leads the digest. An agent that can't stop this way will instead quietly reshape the problem until its first guess looks right — the most expensive failure mode in agentic coding. <code>runtime_falsified</code> is its sibling: the gates were green and the running app said no. Static reasoning about a runtime failure was independently wrong twice in the reviewed repo's worst incident; only executing the thing settled it.</p>
     <p><b>Every stop is a handoff, not a dead end.</b> Whatever ends a run — a door, a budget, a falsified hypothesis, a dropped connection — the exit path is the same: write the handoff, leave the branch, exit clean.</p>
   </div>
@@ -450,7 +451,7 @@ expensive to keep true. Same shape at
   <div class="duo">
     <div>
       <h3>The contract</h3>
-      <p><b>Self-healing preconditions.</b> Call <code>/implement</code> cold with no brief and it runs <code>/understand</code> first, then continues. Call it inside a flow and the brief already exists, so it skips through. Same prompt, same code path — the only difference is what's already on disk.</p>
+      <p><b>Self-healing preconditions.</b> Call <code>/implement</code> cold with no brief and it runs <code>/understand</code> first — which in turn runs <code>/intake</code> first if the brief has no <em>Done when</em> yet — then continues. Call it inside a flow and the brief already exists, so it skips through. Same prompt, same code path — the only difference is what's already on disk.</p>
       <p><b>Structured emit.</b> Each skill ends by writing one JSON file. That's the entire integration surface: the next skill reads it, the digest aggregates it, you can <code>cat</code> it.</p>
       <p><b>Idempotent and resumable.</b> Re-running with unchanged inputs is a no-op — which is precisely what makes an interrupted run safe to continue rather than restart.</p>
     </div>
@@ -471,33 +472,73 @@ expensive to keep true. Same shape at
   <table>
     <thead><tr><th class="mono">Skill</th><th>Runs alone as</th><th>In a flow it also</th><th class="mono">Model</th><th>Status</th></tr></thead>
     <tbody>
-      <tr><td class="mono">understand</td><td>"explain this area" — read-only, writes a brief</td><td>Seeds the blast radius later steps are bounded by</td><td><span class="m-large">large</span></td><td>built</td></tr>
-      <tr><td class="mono">implement</td><td>"just fix this" — writes its own brief first</td><td>Consumes the brief, skips re-reading</td><td><span class="m-large">large</span></td><td>built</td></tr>
+      <tr><td class="mono">intake</td><td>"here's a screenshot / a link / a vague ask" — saves it, asks ≤4 questions if intent is missing</td><td>Writes Intent, Done when and Out of scope at the top of the brief; the last place questions are normal</td><td><span class="m-large">large</span></td><td>built · unused</td></tr>
+      <tr><td class="mono">ideate</td><td>"think about X" — six fixed lenses, judged separately, no code</td><td>A picked pitch becomes <code>/intake</code>'s input (<code>flows.idea</code>)</td><td><span class="m-large">large</span></td><td>built · unused</td></tr>
+      <tr><td class="mono">understand</td><td>"explain this area" — read-only, grounds the brief in cited code</td><td>Writes the blast radius; no longer opens the run</td><td><span class="m-large">large</span></td><td>built</td></tr>
+      <tr><td class="mono">implement</td><td>"just fix this" — writes its own brief first</td><td>Opens the run: the clock, the allowlist and the budget start here</td><td><span class="m-large">large</span></td><td>built</td></tr>
       <tr><td class="mono">test</td><td>"cover this file" — infers intent from code</td><td>Turns the hypothesis into assertions</td><td><span class="m-large">large</span></td><td>built</td></tr>
       <tr><td class="mono">record</td><td>"write this up" — reads the diff</td><td>Makes checkable claims about the diff — not clerical, see §07</td><td><span class="m-large">large</span></td><td>built</td></tr>
       <tr><td class="mono">digest</td><td>—</td><td>Assembles emits <em>and</em> states one decision, its default and cost</td><td><span class="m-large">large</span></td><td>built</td></tr>
-      <tr><td class="mono">retro</td><td>"how did that go" — process critique, not a technical summary</td><td>Optional after any run; the one place you're the subject, not the code</td><td><span class="m-large">large</span></td><td>built</td></tr>
+      <tr><td class="mono">retro</td><td>"how did that go" — process critique, not a technical summary</td><td>Optional after a run that was long or odd — or after a session with no run at all; a mistake with a concrete fix goes to <code>OWED.md</code></td><td><span class="m-large">large</span></td><td>built</td></tr>
       <tr><td class="mono">handoff</td><td>"stop, write it down for the next agent"</td><td>Fires on every Stop hook while a run is active, not just on interruption — stamped as a mid-run snapshot when it isn't one</td><td><span class="m-small">small</span></td><td>built</td></tr>
       <tr><td class="mono">resume</td><td>"pick up where that died"</td><td>Entry point after any interruption</td><td><span class="m-small">small</span></td><td>built</td></tr>
       <tr><td class="mono">keep</td><td>"remember this" — one card to the bank</td><td>Offers candidates at the end of a run</td><td><span class="m-small">small</span></td><td>built</td></tr>
       <tr><td class="mono">recall</td><td>"what do I know about X?"</td><td>Injects matching cards ahead of understand</td><td><span class="m-small">small</span></td><td>built</td></tr>
       <tr><td class="mono">review</td><td>"review my tree" — findings only, no edits</td><td>Diffs result against the brief that predicted it</td><td><span class="m-large">large</span></td><td>design intent</td></tr>
-      <tr><td class="mono">diverge</td><td>"three ways to do this" — no code</td><td>Fans out into parallel <code>spike/*</code> worktrees</td><td><span class="m-large">large</span></td><td>design intent</td></tr>
+      <tr><td class="mono">diverge</td><td>"three ways to do this" — no code</td><td>Fans out into parallel <code>spike/*</code> worktrees — <code>/ideate</code> now covers the cheap, no-code half</td><td><span class="m-large">large</span></td><td>design intent</td></tr>
       <tr><td class="mono">adopt</td><td>One-time: infers verify script, conventions, doors</td><td>—</td><td><span class="m-large">large</span></td><td>design intent</td></tr>
     </tbody>
   </table>
   </div>
 
-<pre><code><span class="c"># .ai/harness/config.yml — the shipped flows, not the design-intent ones</span>
+<pre><code><span class="c"># .ai/harness/config.yml — the one owner of the sequence (HARNESS.md points here)</span>
 <span class="k">flows:</span>
-  fix:  [recall, understand, implement, test, record, retro?]
+  fix:  [<span class="o">intake</span>, understand, <span class="g">implement</span>, test, verify, digest, record?, retro?]
+  idea: [<span class="o">ideate</span>]              <span class="c"># open-ended; a picked pitch becomes intake's input</span>
   tiny: [implement, verify]   <span class="c"># provably local only - unsure means it doesn't qualify</span>
-<span class="c"># explore: [diverge, spike, keep?] - design intent, not shipped. diverge/spike aren't built.</span></code></pre>
+<span class="c"># questions allowed up to implement; the run opens there and the human can walk away</span></code></pre>
+
+  <div class="duo">
+    <div>
+      <h3>Ask first, then walk away</h3>
+      <p>Until v4.4 the loop was written for an unattended agent — <em>run it end to end without asking</em> — and the harness had no front door. A vague ask became a brief anyway, because <code>/understand</code> read the code first and inferred the product from it; <code>question_is_underspecified</code> was an advisory stop nothing enforced. Meanwhile the human was at the keyboard all along, mostly to click through permission prompts. Both halves are now explicit: questions happen before the run opens, a local allowlist lets the harness's own commands run without approval, and after <code>/implement</code> opens the run the doors are the only thing that stops the agent.</p>
+      <p><b><code>/intake</code> narrows.</b> The most common input is not a spec — it's a screenshot, a link, a sentence. Intake saves it to disk before interpreting it (a pasted screenshot otherwise dies with the session — the same rule as the journal's), writes the job as checkboxes that could fail, and asks only what the repo can't answer: one round, at most four multiple-choice questions, its own default listed first with what a wrong pick would cost. Unattended, the same questions go under <em>Open decisions</em> with their defaults instead of blocking.</p>
+      <p><b><code>/ideate</code> widens.</b> For an open question, not a job: one idea per lens — the obvious answer (named, so the rest are measured against it), invert, drop a constraint, ten times smaller, borrow from another field, do nothing — each with the one assumption it stands on and the cheapest test of it. Judging happens after, separately. It exists as the counterweight to the most expensive failure on this page: a brief with room for one hypothesis is how an agent ends up reshaping the problem until its first guess looks right.</p>
+      <p style="font-size:0.92rem;color:var(--ink-soft);">Keep them apart. An unclear ask brainstormed is confident fiction; a clear ask sent through a questionnaire is ceremony. Intake stops and suggests <code>/ideate</code> when there's no job yet; ideate stops and suggests <code>/intake</code> when the ask itself is the problem.</p>
+    </div>
+    <div>
+      <p class="caption">.ai/run/form-feedback/brief.md — the top, as /intake writes it (illustrative)</p>
+<pre><code><span class="c"># The submit form gives no feedback until the network answers</span>
+<span class="c">run: form-feedback · intake 2026-09-16</span>
+
+<span class="k">## Intent</span>
+Show the user their input is being checked while
+the async availability check runs.
+&gt; "form feels dead after I type a username"
+&gt;  + screenshot, see input.md (interpreted)
+
+<span class="k">## Done when</span>
+- [ ] a pending state shows within 100 ms of the
+      last keystroke
+- [ ] submit is disabled while the check runs
+- [ ] e2e: typing a taken name shows the error
+      without a page reload
+
+<span class="k">## Out of scope</span>
+- validation rules themselves
+- the header and shell layout
+
+<span class="o">## Open decisions</span>
+<span class="o">Spinner or inline text? Asked; answer: inline</span>
+<span class="o">text (Recommended). Cost if wrong: one template.</span></code></pre>
+      <p style="font-size:0.88rem;color:var(--ink-soft);">Everything below this — Understand, Hypothesis, Blast radius, Doors — is still <code>/understand</code>'s, grounded in cited code. If the code contradicts a Done-when box, that's <code>hypothesis_falsified</code>, not a license to rewrite the box.</p>
+    </div>
+  </div>
 
   <p class="col"><b>Parallelism is git worktrees, not a framework.</b> <code>/diverge</code> spawns three worktrees off one commit, runs a spike in each, and puts the three findings side by side. Nothing to install, works with any agent, and the losers are deleted directories. Worktrees also solve a subtler problem: a second concurrent session once <code>git add</code>-ed an unrelated 645-line file into the reviewed repo's shared working tree, and a pathspec-less commit nearly landed it. Separate trees make that impossible; until then, always commit with an explicit pathspec.</p>
 
   <div class="note col">
-    <b>Skills load at session start — a file written mid-session is invisible.</b> The reviewed repo ran a whole phase through a generic fallback agent because the intended agent's file didn't exist when the session began; the one hook keyed on it silently never fired, and nothing said so. Two rules follow: any change to a prompt, command or hook file ends with "restart the session", stated by the skill itself; and a run asserts that each expected hook fired at least once — "nothing failed" over zero firings is a vacuous pass. Built in the v4.2 remediation as <code>.ai/harness/hook-test.sh</code>, wired into <code>verify.sh full</code>, with a negative control that patches a copy of the hook to disable a real check and confirms the suite goes red for exactly that — the earlier version of this claim had neither a fired-check nor a blocked-correctly check, which is a distinct, sharper vacuous pass than the one this paragraph originally described: the hook can fire and still be wrong about what it blocks. One nuance surfaced building it: whether "restart the session" is even accurate turned out to depend on <em>which</em> file changed — a prompt or command file genuinely needs one, but a <code>.claude/settings.json</code> hook-matcher change took effect immediately, mid-session, no restart required. The two mechanisms load differently; the rule as stated conflated them.
+    <b>Skills load at session start — a file written mid-session is invisible.</b> The reviewed repo ran a whole phase through a generic fallback agent because the intended agent's file didn't exist when the session began; the one hook keyed on it silently never fired, and nothing said so. Two rules follow: any change to a prompt, command or hook file ends with "restart the session", stated by the skill itself; and a run asserts that each expected hook fired at least once — "nothing failed" over zero firings is a vacuous pass. Built in the v4.2 remediation as <code>.ai/harness/hook-test.sh</code>, wired into <code>verify.sh full</code>, with a negative control that patches a copy of the hook to disable a real check and confirms the suite goes red for exactly that — the earlier version of this claim had neither a fired-check nor a blocked-correctly check, which is a distinct, sharper vacuous pass than the one this paragraph originally described: the hook can fire and still be wrong about what it blocks. One nuance surfaced building it: whether "restart the session" is even accurate turned out to depend on <em>which</em> file changed — a prompt or command file genuinely needs one, but a <code>.claude/settings.json</code> hook-matcher change took effect immediately, mid-session, no restart required. The two mechanisms load differently; the rule as stated conflated them — and v4.4 found the same thing for command files: <code>/intake</code> and <code>/ideate</code> showed up in the session's skill list the moment they were committed. Hooks and settings remain the case to restart for.
     <br><br><b>Rebuilt again since, and for a reason worth stating plainly: it was testing against the live working tree, which is exactly the shared-state hazard this page warns about elsewhere</b> (§04's worktree paragraph, below). A SIGKILL mid-<code>full</code> could leave an active run's <code>state.json</code> stashed and never restored — the guard silently disabled by the thing meant to prove it works. Now 23 cases, run inside a fresh <code>mktemp -d</code> git repo that never touches <code>.ai/run</code>. Building that surfaced a bug with nothing to do with harness logic: on macOS, <code>/var</code> is a symlink to <code>/private/var</code>, so a fixture path built from <code>mktemp</code>'s raw output and the hook's own <code>process.cwd()</code> silently disagreed, and the failure looked like scattered, unrelated test breakage rather than pointing at its actual cause. Cost more debugging time than the door-7 fix it was meant to test.
   </div>
 </section>
@@ -584,7 +625,7 @@ git checkout fix/vehicle-models && /resume</code></pre>
     <div class="shelf">
       <div class="shelf-path">.ai/run/&lt;slug&gt;/</div>
       <div class="shelf-who">agent · hours</div>
-      <p>Brief, journal, emits, digest, handoff, retro. Deleted when the work lands.</p>
+      <p>Input, brief, journal, emits, digest, handoff, retro. Deleted when the work lands. A dated <code>&lt;YYYY-MM-DD&gt;-&lt;topic&gt;/</code> holds an ideate or a retro with no run behind it — no state, no budget.</p>
     </div>
     <div class="shelf">
       <div class="shelf-path">.ai/decisions/</div>
@@ -675,7 +716,7 @@ component, not the store.</code></pre>
     <tbody>
       <tr>
         <td>Model routing</td>
-        <td>Frontmatter <code>model: small | large</code> — routed by <em>"can this be wrong in a way nothing downstream catches?"</em>, never by whether it feels like typing. Digest, handoff, resume, keep, recall assemble what exists → small. <code>record</code> makes checkable claims about a diff → large</td>
+        <td>Frontmatter <code>model: small | large</code> — routed by <em>"can this be wrong in a way nothing downstream catches?"</em>, never by whether it feels like typing. Handoff, resume, keep, recall assemble what exists → small. <code>record</code> makes checkable claims about a diff, <code>digest</code> states a cost-of-wrong nothing downstream can check, <code>intake</code> and <code>ideate</code> decide what the job is → large</td>
         <td>The looks-clerical-but-isn't step is the trap; the reviewed repo's docs review looked like typing and behaved like reasoning</td>
       </tr>
       <tr>
@@ -700,8 +741,13 @@ component, not the store.</code></pre>
       </tr>
       <tr>
         <td>Right-sized flow</td>
-        <td><code>flows.tiny</code> for provably local changes: implement, verify, done. No brief, no review, no record</td>
+        <td><code>flows.tiny</code> for provably local changes: implement, verify, done. No brief, no review, no record. <code>flows.idea</code> for an open question: one <code>/ideate</code>, no run at all</td>
         <td>A typo fix should not cost what a state refactor costs</td>
+      </tr>
+      <tr>
+        <td>Clock placement</td>
+        <td>The run's budget clock starts when <code>/implement</code> opens the run, after the last question — not while the human is still reading the brief</td>
+        <td>A budget that includes human think-time measures the human, and runs out on the wrong party</td>
       </tr>
       <tr>
         <td>Journal + WIP commits</td>
@@ -744,12 +790,16 @@ component, not the store.</code></pre>
   </div>
 
   <p class="col">A rule overridden eleven times and useful once isn't a standard, it's a speed bump you've learned to drive around — and it teaches the agent the file is negotiable. <b>The same ledger measures your checkpoints:</b> a decision where you always take the default should stop being asked. Attention gets reallocated by evidence, not policy.</p>
+
+  <div class="note col">
+    <b>The table above is illustrative, not measured.</b> <code>/prune</code> and the rule ledger are Phase 3 and unbuilt; no run has produced those counts, and <code>.ai/decisions/</code> doesn't contain an 0007. Both outside reviews of v4.3 called a ledger without data evidence-shaped design — the same costume this page criticises in an emit that fakes judgment (§04) — and that's fair of the table if it's read as a record. It's the shape the ledger should take once there are enough runs to fill it, and nothing more.
+  </div>
 </section>
 
 <section>
   <span class="h2-num">09 — ROLLOUT</span>
   <h2>Where it stands</h2>
-  <p class="sub">Phase 0 and 1 are built, committed, and dogfooded — the scaffold ran as its own first run, brief to decision record. What each phase claims below is what its verification actually showed, not what was intended.</p>
+  <p class="sub">Phase 0 and 1 are built, committed, and dogfooded — the scaffold ran as its own first run, brief to decision record. v4.4 adds the front door and hasn't met real work yet. What each phase claims below is what its verification actually showed, not what was intended.</p>
 
   <div class="phases">
     <div class="phase">
@@ -782,6 +832,20 @@ component, not the store.</code></pre>
       </div>
     </div>
     <div class="phase">
+      <div class="phase-label">v4.4 FRONT DOOR<span>✓ built · unused</span></div>
+      <div>
+        <p><b>Ask first, then walk away</b></p>
+        <p>Two outside reviews of v4.3 agreed on the spine and disagreed with the premise: the loop was written for an agent nobody watches, while the actual mode was a human steering short bursts — mostly present, it turned out, to approve the harness's own shell commands. Their team-and-ticket proposals (a <code>spec.md</code>, a PR-finalize step, CODEOWNERS as the real door) don't fit a solo lab and were left out. What did fit: <code>/intake</code> (save the input, ask at most four questions for missing intent, write a failable <em>Done when</em>), <code>/ideate</code> (six forced lenses, judged separately), the run clock moved from <code>/understand</code> to <code>/implement</code> (§03), <code>/retro</code> allowed without a run and routed to <code>OWED.md</code> when it names a fix, the loop written in exactly one place (<code>config.yml</code>'s <code>flows</code> — <code>HARNESS.md</code> and the config had quietly disagreed about it), and a local permission allowlist so walking away is possible at all. Prompt, doc and config edits only; no gate-scope file changed, and <code>verify full</code> stayed green throughout. <em>Not yet proven:</em> none of the new prompts had been invoked on real work when this was written — the green gate says nothing broke, not that the questions are the right ones. Plan: <code>docs/reviews/harness-v44-roadmap-2026-09-15.md</code>.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label">NEXT<span>before any more harness</span></div>
+      <div>
+        <p><b>Use it on the app</b></p>
+        <p>One <code>/intake</code> on a vague feature request for the Angular app — ideally with a screenshot — through the whole <code>fix</code> flow, then one <code>/ideate</code> on an open question. Nine of the eleven run directories before v4.4 were work on the harness itself; both reviews named that as the main risk, and this page's §10 now does too. After that, one small agent-editable run (a real cap for <code>tiny</code>, a handful of frozen eval tasks for the harness), and the human-owed patches already listed in <code>OWED.md</code>.</p>
+      </div>
+    </div>
+    <div class="phase">
       <div class="phase-label">PHASE 2<span>not started</span></div>
       <div>
         <p><b><code>/adopt</code>, on its own</b></p>
@@ -806,6 +870,7 @@ component, not the store.</code></pre>
 
   <div class="note col">
     <b>This page did the thing it warns about, to itself.</b> The eyebrow above went from v4.1 to v4.2 to v4.3 across two commits that each changed exactly one line — the label — while the v4.3 critical-fixes work landed, verified, and sat undescribed here for days. A reader trusting the number at the top of the page would have believed the Bash guard was the tree-check described above before a single sentence about it existed. The mechanism that would have caught this sooner already exists elsewhere on this page (<code>check-citations.sh</code>, §02) and doesn't reach prose that cites no file; the practical fix is not a new script, it's what actually happened here — a version bump and a content rewrite land in the same commit, or not at all.
+    <br><br>It happened once more before v4.4, in a different shape: the v4.3 prose was published to the shared copy of this page and never made it back into the repo file, which kept only the one-line label bump. The repo copy was brought back in line first, as its own commit, and v4.4's label and prose landed together on top of it. The published page is a copy; the repo file is the owner.
   </div>
 </section>
 
@@ -823,13 +888,19 @@ component, not the store.</code></pre>
 
   <p><b>Branch sprawl.</b> Unattended runs produce branches faster than you review them. One flow in flight at a time until you trust the digests.</p>
 
+  <p><b>Questions as ceremony.</b> <code>/intake</code> is allowed four questions and will be tempted to use them. The rule that keeps it honest is that a question the repo can answer belongs to <code>/understand</code>, and a question with a cheap, reversible default belongs in <em>Open decisions</em> — not in front of you. The watch item: if you find yourself picking "(Recommended)" every time, the defaults were good enough to write down without asking.</p>
+
+  <p><b>The allowlist is a trust boundary now.</b> Walking away only works because harness scripts, tests and local git no longer prompt. That list lives in a gitignored local settings file, so it isn't reviewed with the code, and an agent that could edit it could widen its own permissions. Push, installs, <code>rm</code> and resets are deliberately off it; whether the file belongs under door 7 is an open entry in <code>OWED.md</code>.</p>
+
+  <p><b>The harness as the work.</b> Nine of eleven runs before v4.4 were on the harness, and v4.4 itself is a tenth. Every one of them was individually justified, which is exactly how this happens. The countermeasure is the plain one in §09: the next run touches the app, not <code>.ai/</code>.</p>
+
   <p><b>Green but never executed — closed.</b> <code>verify deep</code> now boots the app and drives it with Playwright; a real feature (vehicle selection) was verified this way, not just compiled. <code>unverified_at_runtime</code> still exists as a state and still matters for any run that only reaches <code>fast</code> or <code>full</code> — the watch item now is making sure that distinction stays visible rather than reading every green the same way.</p>
 
   <p><b>The gate's own config.</b> Enforced now (door 7, always on) via a tree-check rather than the Bash string scan that shipped first and was found inverted — blocking harmless reads, letting six different deliberate writes straight through (§01). Self-tested (<code>hook-test.sh</code> asserts it fires and blocks correctly, with a live negative control, in a throwaway repo rather than the live one). Two gaps are known and tracked rather than papered over: a Bash write to a run's own <code>state.json</code> via a write verb the narrow regex doesn't cover, and a protected-path crossing committed with no run open to disclose into. The override exists and the failure's signature is a better number — so the residual risk is an override that never made it into a digest. Overrides are grep-able (<code>HARNESS_DOOR_OPEN</code>, and in an environment where that mechanism doesn't reach the hook at all, a prepared patch file in a run directory instead); <code>verify.sh deep</code> now greps for one not named in its run's digest, rather than leaving "check occasionally" as the only defense. Given that the first fix here was itself wrong for a full remediation cycle, the honest posture is that this paragraph describes the current best understanding, not a closed case.</p>
 </section>
 
 <footer class="col">
-  <p><b>Provenance:</b> v1–v3 were design; v4 reconciled that design with a build and with the TriTrack review — a repo that ran agents unattended for two weeks and logged 780 lines of what broke. v4.1 reconciles it again with an Angular 9→14 migration that landed mid-build on this repo's own timeline, and with the harness's first delivered feature. v4.2 closed the gap an implementation audit found between this page's claims and what was actually on disk (§00, §09) — real, but re-verified live rather than trusted, per v4.3's own re-run of every one of v4.2's reproductions before building on top of them, which is what actually found the Bash guard still inverted and the budget still measuring the wrong clock. v4.3's own version label shipped two commits ahead of this prose (§09's closing note) — the same lesson, applied to itself, is why that note exists rather than a quietly corrected footer. Every mechanism above that cites an incident cites one of theirs, or one from this harness's own history (the citation checker catching its own brief's miscited lines; a sneaky in-place hook edit that silently no-oped and was caught by its pipe-test; a citation that drifted onto a blank line after an unrelated edit shifted the file underneath it). The living copy of this page is <code>docs/vibe-harness.html</code> in the repo, whose git history from here on is the changelog; the rules an agent actually loads are one page, in <code>.ai/HARNESS.md</code>.</p>
+  <p><b>Provenance:</b> v1–v3 were design; v4 reconciled that design with a build and with the TriTrack review — a repo that ran agents unattended for two weeks and logged 780 lines of what broke. v4.1 reconciles it again with an Angular 9→14 migration that landed mid-build on this repo's own timeline, and with the harness's first delivered feature. v4.2 closed the gap an implementation audit found between this page's claims and what was actually on disk (§00, §09) — real, but re-verified live rather than trusted, per v4.3's own re-run of every one of v4.2's reproductions before building on top of them, which is what actually found the Bash guard still inverted and the budget still measuring the wrong clock. v4.3's own version label shipped two commits ahead of this prose (§09's closing note) — the same lesson, applied to itself, is why that note exists rather than a quietly corrected footer. v4.4 took two outside reviews' verdict — keep the brakes, fix the front door — and dropped the half of their advice that assumed a team and a ticket system; it's the first version whose new parts were described here before they were used. Every mechanism above that cites an incident cites one of theirs, or one from this harness's own history (the citation checker catching its own brief's miscited lines; a sneaky in-place hook edit that silently no-oped and was caught by its pipe-test; a citation that drifted onto a blank line after an unrelated edit shifted the file underneath it). The living copy of this page is <code>docs/vibe-harness.html</code> in the repo, whose git history from here on is the changelog; the rules an agent actually loads are one page, in <code>.ai/HARNESS.md</code>.</p>
 </footer>
 
 </div>
