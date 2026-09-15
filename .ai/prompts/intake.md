@@ -33,7 +33,9 @@ run: <slug> · intake <date>
 
 ## Intent        — the job in one sentence, then the input quote it came from
 ## Done when     — at most 7 checkboxes. Each one a test, a runtime check, or your eyes could fail.
-## Out of scope  — what you will not touch. Default: no rewrite, no drive-by refactor.
+## Out of scope  — what you will not touch. Default: no rewrite, no drive-by refactor —
+                    unless refactoring the named area IS the job: say so under Intent, so
+                    /implement opens the run with `--type refactor` (see .ai/HARNESS.md).
 ```
 
 4. **Ask only where a checkbox can't be written without guessing product intent.** One

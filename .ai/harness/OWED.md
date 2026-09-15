@@ -44,6 +44,19 @@ session that created it. Cite the documented floor and where to look instead.
   tie the regex to the actual write target the way `gateDiff` does, or drop the
   write-verb prefilter for this one check specifically.
 
+  **Only one of those two fixes is available — take the second.** Dropping the
+  write-verb prefilter is safe: the sanctioned wrappers (`close-run.sh`,
+  `revise-run.sh`) pass a *slug*, never a literal `.ai/run/<slug>/state.json`
+  path, so they keep working. Tying the check to the real write target via
+  `gateDiff`'s swept set is **unbuildable, not merely breaking**: the hook itself
+  rewrites `state.json` on every guarded call (`budget.mjs`'s `recordAndExit`)
+  and `state.json` is tracked, so it is permanently dirty against `base_commit`
+  for the whole life of a run. `gateDiff` has no `.ai/run/` exclusion — unlike
+  `runTouched` (`lib.mjs:65`) — so adding it would block the first Edit of every
+  run and fail `verify.sh`'s preflight on every tier, forever. Whoever closes
+  this gap: read this paragraph first, and if you pick the `gateDiff` route
+  anyway, `close-run.sh` and `revise-run.sh` are the casualties to look for.
+
 - **New: a protected-path crossing with no active run, that gets COMMITTED (not
   left uncommitted), is invisible to both the new hook sweep and the new
   `verify.sh` preflight.** Both compare against `HEAD` when no run is open, and a
@@ -147,3 +160,40 @@ session that created it. Cite the documented floor and where to look instead.
   (`.ai/MODEL.md:36`). Proposed diff: `.ai/run/harness-v44-intake/patch-MODEL.md.patch`
   (two lines). Apply, then commit before running `verify.sh` — `.ai/MODEL.md` is a
   protected path and the preflight fails on an uncommitted diff to it.
+
+## Deferred by design, with a stated trigger
+
+Not missing, not owed to anyone yet — designed, evaluated, and deliberately not built,
+because building it now would be exactly the "a design says it should exist" trap
+`docs/reviews/harness-v44-roadmap-2026-09-15.md:59` warns against. Listed here so the
+trigger is checkable and the design doesn't have to be redone from scratch when it fires.
+
+- **Spike mode** — a throwaway worktree with no `state.json`, no brief, no journal, no
+  digest: the run ceremony deliberately skipped, because the undo for a spike is deleting
+  a directory. **Trigger: the first time you want to try something genuinely throwaway
+  and the run ceremony is what stops you.** Not before — nobody has been blocked by this
+  yet, and `.ai/bank/`'s `kind: failure` slot (the thing a spike mainly feeds,
+  `.ai/prompts/keep.md:30`) has zero cards six weeks in, so building the feeder now would
+  be building well ahead of the shelf it feeds.
+
+  Two non-obvious traps, found while evaluating this, worth reading before building it:
+  1. **An in-repo worktree is counted by the ruler.** `.claude/worktrees/` has no
+     `.gitignore` entry, and `lib.mjs`'s `runTouched` counts untracked files via
+     `git ls-files --others`. A spike worktree there would inflate the file budget of any
+     concurrently-active run. Already bitten once by exactly this shape
+     (`.ai/run/ui-shell-redesign/brief.md:141-149`: a stray in-repo worktree double-ran
+     the whole jest suite and failed the gate; patched on the jest side only,
+     `jest.config.js`'s `testPathIgnorePatterns` excludes `/\.claude/`, but the
+     git-untracked side was never fixed). Put a spike worktree *outside* the repo
+     (e.g. `../.spikes/<repo>-<name>`) and the whole class goes away, rather than adding
+     it to `.gitignore` and patching the next symptom.
+  2. **A spike is unusable during an active run, wherever the worktree lives.**
+     `budget.mjs` computes a path relative to `ROOT`, falling back to the absolute path
+     when a file is outside it — and an absolute path matches no `allowed_paths` glob, so
+     every Edit/Write inside the worktree would trip `blast_radius_exceeded`. Moving the
+     worktree out of the repo fixes trap 1, not this one. Whatever builds this must refuse
+     to start while a run is `active` — which is the right rule anyway: finish or abandon
+     the run first.
+
+  `/diverge` (parallel fan-out, three-way comparison) is a separate, still-parked idea and
+  is not what this entry describes.

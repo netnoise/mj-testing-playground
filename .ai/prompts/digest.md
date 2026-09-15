@@ -21,8 +21,22 @@ One screen. Assemble what the run already produced; invent nothing.
 ### What I learned about your system  — three cited findings, unasked for
 ### Concept: <name>        — the transferable idea + where it recurs
 ### What I did             — and what is NOT verified
+### What I widened or crossed — only if the run recorded one. See below.
 ### What I got wrong       — only if something is worth naming. See below.
 ```
+
+**"What I widened or crossed"** is gate-enforced, unlike every other section
+here. Include it whenever the run recorded either:
+
+- a **door-7 crossing** (`door-crossings.md` exists in the run directory), or
+- a **revision** (`state.json` has a non-empty `revisions` array — every
+  `revise-run.sh --add-path` or `--extend`).
+
+Name each one and why. `close-run.sh` **refuses to close the run** if it recorded
+one of these and this section never mentions it, because the whole value of
+widening a blast radius or raising a budget *on the record* is that the record
+reaches the one screen a human actually reads. A run with neither omits the
+section.
 
 **"What I got wrong"** is the one section where you are the subject, not the code.
 A mistake you caught and fixed still belongs here — silently fixing it and saying

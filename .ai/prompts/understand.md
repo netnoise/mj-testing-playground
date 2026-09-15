@@ -27,9 +27,14 @@ run: <slug> · intake <date>
 ## Understand          — every claim cites file:line. No citation, no claim.
 ## Model of the system — ← human-owned. Your best guess, stated so it can be corrected in one edit.
 ## Hypothesis          — which Done-when box it serves, plus "Falsified if: ..." Without that line this is a guess, not a hypothesis.
+                          For a declared refactor there is no behaviour prediction to falsify -
+                          write "Falsified if: an existing spec has to change" instead; that is
+                          what `close-run.sh` actually checks (`.ai/HARNESS.md`).
 ## Blast radius        — the paths you expect to touch. /implement opens the run with these as an
                           enforced allowlist. Source paths only — the run's own `.ai/run/<slug>/**`
-                          is always implicitly allowed, so don't spend a line on it.
+                          is always implicitly allowed, so don't spend a line on it. **For a
+                          refactor, leave test files out of this list entirely** — that makes the
+                          hook block a spec edit the moment it's attempted, not just at close.
 ## Doors               — any of the seven crossed? State the door, both sides, your default, the cost of being wrong.
 ## Open decisions      — at most one. If none, say none.
 ```
