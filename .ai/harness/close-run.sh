@@ -21,20 +21,37 @@
 # yet, and verify.sh is gate-scope, so it would cost a door-7 patch round to
 # add a check that then fires at the wrong time.
 #
-# usage: close-run.sh <slug> [done|dead]   (default status: done)
-#        --no-disclosure-check   escape hatch; says so out loud
+# It is also where the refactor falsifier lives: a run opened with
+# `open-run.sh --type refactor` claims its change is behaviour-preserving, and
+# the mechanically checkable version of that claim is "no test file moved" -
+# same "not gate-scope, and the whole run's diff only exists at the end"
+# reasoning as the disclosure gate above. Gives door 4
+# (test_deleted_or_weakened, config.yml:8) its first tooth: nothing anywhere
+# else enforces it.
+#
+# usage: close-run.sh <slug> [done|dead] [--no-disclosure-check] [--skip-refactor-check]
 set -e
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
 cd "$ROOT"
 
-SLUG="${1:?usage: close-run.sh <slug> [done|dead]}"
-STATUS="${2:-done}"
-CHECK=1
-case "${3:-}" in
-  --no-disclosure-check) CHECK=0 ;;
-  "") ;;
-  *) echo "close-run: unknown argument: $3" >&2; exit 1 ;;
+USAGE='usage: close-run.sh <slug> [done|dead] [--no-disclosure-check] [--skip-refactor-check]'
+
+SLUG="${1:?$USAGE}"
+shift
+STATUS="done"
+case "${1:-}" in
+  done|dead) STATUS="$1"; shift ;;
 esac
+CHECK=1
+SKIP_REFACTOR=0
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --no-disclosure-check) CHECK=0; shift ;;
+    --skip-refactor-check) SKIP_REFACTOR=1; shift ;;
+    *) echo "close-run: unknown argument: $1" >&2; echo "$USAGE" >&2; exit 1 ;;
+  esac
+done
+
 P=".ai/run/$SLUG/state.json"
 [ -f "$P" ] || { echo "close-run: no such run: $P" >&2; exit 1; }
 
@@ -69,6 +86,52 @@ if [ "$CHECK" = "1" ] && [ "$STATUS" = "done" ]; then
       exit 1
     fi
   fi
+fi
+
+# Refactor falsifier. A run opened with `open-run.sh --type refactor` claims
+# its change is behaviour-preserving; the checkable version of that claim is
+# "no test file moved". Two failure modes are treated as "can't tell" rather
+# than "passes", because a rubber stamp is worse than no check: a spec file
+# already dirty before this run opened (runTouched's dirty_at_start exclusion
+# would hide it either way it went), and git itself not answering (runTouched
+# swallows git errors as "nothing changed" - correct for budgets, where
+# undercounting only makes a run look cheap; wrong for a falsifier, where the
+# same silence would read as proof). `dead` runs are exempt for the same
+# reason disclosure is: an abandoned run proved nothing to abandon.
+if [ "$STATUS" = "done" ] && [ "$SKIP_REFACTOR" = "0" ]; then
+  node --input-type=module -e "
+    import { readFileSync } from 'node:fs';
+    import { execSync } from 'node:child_process';
+    const s = JSON.parse(readFileSync('$P', 'utf8'));
+    if (s.type !== 'refactor') process.exit(0);
+
+    let gitOk = true;
+    try { execSync('git rev-parse --is-inside-work-tree', { cwd: '$ROOT', stdio: 'ignore' }); }
+    catch { gitOk = false; }
+    if (!gitOk) {
+      console.error(\"close-run: git isn't answering - can't verify the refactor claim (no test moved) either way.\");
+      console.error('close-run: fix git access, or re-run with --skip-refactor-check to close anyway (disclosed).');
+      process.exit(1);
+    }
+
+    const { runTouched } = await import('$ROOT/.ai/harness/lib.mjs');
+    const isSpec = (f) => /\.spec\.ts$/.test(f);
+
+    const dirtySpecs = (s.dirty_at_start ?? []).filter(isSpec);
+    if (dirtySpecs.length) {
+      console.error(\`close-run: \${dirtySpecs.length} spec file(s) were already dirty before this run opened (\${dirtySpecs.join(', ')}) - can't tell whether this run touched them.\`);
+      console.error('close-run: revert them to their committed state, or re-run with --skip-refactor-check to close anyway (disclosed).');
+      process.exit(1);
+    }
+
+    const specTouched = [...runTouched(s)].filter(isSpec);
+    if (specTouched.length) {
+      console.error(\`close-run: \${'$SLUG'} is type:refactor but changed \${specTouched.length} test file(s): \${specTouched.join(', ')}\`);
+      console.error('close-run: a behaviour-preserving change does not need a new or edited test. If this is real feature work, it is not a refactor.');
+      console.error('close-run: revert the test file(s), or re-run with --skip-refactor-check to close anyway (disclosed).');
+      process.exit(1);
+    }
+  "
 fi
 
 node -e "
