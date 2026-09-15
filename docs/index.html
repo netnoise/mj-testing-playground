@@ -1,0 +1,79 @@
+<meta charset="utf-8">
+<title>Vibe Harness Docs</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    /* Dark is the committed default: the desktop app's static local-file
+       preview always renders with the browser's light defaults, ignoring
+       prefers-color-scheme entirely, so a conditional dark theme never
+       actually shows there. Light is now the opt-in (data-theme="light"). */
+    --paper: #0C111A; --panel: #141B26; --ink: #E4E9F2; --ink-soft: #A3AEC2; --ink-faint: #6B7689;
+    --rule: #27313F; --rule-soft: #1D2531; --cobalt: #8AA0FF; --cobalt-dim: #1B243C;
+    --ochre: #E0A94A; --ochre-dim: #2C2416; --good: #56B98A; --good-dim: #16261F;
+
+    --f-display: "IBM Plex Sans Condensed", "Helvetica Neue", Arial, sans-serif;
+    --f-body:    "Source Serif 4", Georgia, "Times New Roman", serif;
+    --f-mono:    "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  }
+
+  :root[data-theme="light"] {
+    --paper:      #EDF0F5;
+    --panel:      #F7F9FC;
+    --ink:        #0F1520;
+    --ink-soft:   #47536A;
+    --ink-faint:  #8A94A8;
+    --rule:       #C9D2E0;
+    --rule-soft:  #DDE3ED;
+    --cobalt:     #2A4BD7;
+    --cobalt-dim: #DEE4FA;
+    --ochre:      #A8690A;
+    --ochre-dim:  #F6E8CC;
+    --good:       #1F7A4D;
+    --good-dim:   #DCEDE4;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper); color: var(--ink); font-family: var(--f-body);
+    font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 40rem; margin: 0 auto; padding: 4rem 1.5rem; }
+  h1 {
+    font-family: var(--f-display); font-weight: 700; letter-spacing: 0.01em;
+    font-size: 1.75rem; margin: 0 0 0.5rem;
+  }
+  p.lede { color: var(--ink-soft); margin: 0 0 2.5rem; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  li {
+    border: 1px solid var(--rule); border-radius: 8px; background: var(--panel);
+  }
+  a {
+    display: block; padding: 1.1rem 1.25rem; color: var(--ink); text-decoration: none;
+  }
+  a .title {
+    font-family: var(--f-display); font-weight: 600; font-size: 1.05rem; color: var(--cobalt);
+  }
+  a .desc { color: var(--ink-faint); font-size: 0.9rem; margin-top: 0.25rem; }
+  li:hover { border-color: var(--cobalt); }
+</style>
+
+<div class="wrap">
+  <h1>Vibe Harness</h1>
+  <p class="lede">Documentation for the .ai harness used in this repo.</p>
+  <ul>
+    <li>
+      <a href="vibe-harness.html">
+        <div class="title">Vibe Harness &mdash; Design Write-Up</div>
+        <div class="desc">The full write-up: structure, invariants, and rationale.</div>
+      </a>
+    </li>
+    <li>
+      <a href="cheatsheet.html">
+        <div class="title">Cheatsheet</div>
+        <div class="desc">Quick reference for day-to-day use.</div>
+      </a>
+    </li>
+  </ul>
+</div>
