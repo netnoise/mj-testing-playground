@@ -43,8 +43,26 @@ wrong — and you continue with everything that doesn't depend on it.
   brief was wrong, stop and write that down. It is the most useful thing you can
   produce. Reshaping the problem until your first guess looks right is the most
   expensive failure in this whole system.
-- If the hook blocks you, do not work around it. It is telling you the brief's
-  model of the system was wrong. Stop and say so.
+- **If the hook blocks you, it is a fork, not a wall.** Two different situations
+  look identical from inside the block, and only you can tell them apart:
+  - *The brief's model of the system was wrong* — the change is bigger, or
+    different in kind, from what the brief describes. Stop, write the handoff,
+    say so. Still the right answer, still the common one.
+  - *This is normal discovery* — a refactor found the next caller, a redesign
+    found the sibling component. The brief wasn't wrong so much as incomplete in
+    the way every prediction about existing code is incomplete. Widen it, on the
+    record:
+    `sh .ai/harness/revise-run.sh <slug> --add-path <glob> --reason <text>`
+    (or `--extend files|minutes <n>`). Three per run, then it refuses — and that
+    refusal *is* the first case above, reached with evidence instead of a guess.
+
+  **Do not route around a block by making the edit through Bash.** The allowlist
+  and the budget only cover Edit/Write — the hook returns before either check on
+  the Bash path (`.claude/hooks/budget.mjs:175-187`) — so a shell edit just
+  succeeds, silently and undisclosed. Every run here before `revise-run.sh`
+  existed took that route and wrote a note about it afterwards
+  (`.ai/run/vehicle-selection/journal.md:9-13`, `:19-21`). The widening is the
+  same either way; the difference is whether the gate can see it.
 - Run `sh .ai/harness/verify.sh fast` as you go, `smoke` at a natural checkpoint
   (a route added, navigation changed, a component wired into the app shell) and
   `full` before handing back. `smoke` is cheap enough to run more than once per

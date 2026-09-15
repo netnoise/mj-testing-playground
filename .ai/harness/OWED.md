@@ -44,6 +44,19 @@ session that created it. Cite the documented floor and where to look instead.
   tie the regex to the actual write target the way `gateDiff` does, or drop the
   write-verb prefilter for this one check specifically.
 
+  **Only one of those two fixes is available — take the second.** Dropping the
+  write-verb prefilter is safe: the sanctioned wrappers (`close-run.sh`,
+  `revise-run.sh`) pass a *slug*, never a literal `.ai/run/<slug>/state.json`
+  path, so they keep working. Tying the check to the real write target via
+  `gateDiff`'s swept set is **unbuildable, not merely breaking**: the hook itself
+  rewrites `state.json` on every guarded call (`budget.mjs`'s `recordAndExit`)
+  and `state.json` is tracked, so it is permanently dirty against `base_commit`
+  for the whole life of a run. `gateDiff` has no `.ai/run/` exclusion — unlike
+  `runTouched` (`lib.mjs:65`) — so adding it would block the first Edit of every
+  run and fail `verify.sh`'s preflight on every tier, forever. Whoever closes
+  this gap: read this paragraph first, and if you pick the `gateDiff` route
+  anyway, `close-run.sh` and `revise-run.sh` are the casualties to look for.
+
 - **New: a protected-path crossing with no active run, that gets COMMITTED (not
   left uncommitted), is invisible to both the new hook sweep and the new
   `verify.sh` preflight.** Both compare against `HEAD` when no run is open, and a

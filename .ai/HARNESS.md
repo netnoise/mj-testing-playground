@@ -93,6 +93,29 @@ rewrite. The active run's own `.ai/run/<slug>/**` is always inside blast radius,
 brief needing a mid-run correction is a normal edit, not a reason to touch
 `state.json`.
 
+**A run has three mechanical moments, and all three are scripts, never hand-edits:**
+
+| | |
+|---|---|
+| `open-run.sh <slug> <files> <minutes> <paths>...` | `/implement`. Stamps the clock and the ruler. Once per run. |
+| `revise-run.sh <slug> --add-path \| --extend` | Mid-run, when the allowlist or budget turns out too narrow. Max 3, each with a `--reason`. |
+| `close-run.sh <slug> [done\|dead]` | After `/digest`. Flips status, records `head_commit`, and **refuses to close a `done` run whose digest never mentions a revision or door-7 crossing it recorded.** |
+
+**Widening is disclosed, not forbidden.** A blast radius is a prediction about
+existing code, and predictions about existing code are incomplete — a refactor finds
+the next caller, a redesign finds the sibling component. That is not the same as the
+brief being wrong, and it should not cost a handoff. `revise-run.sh` widens on the
+record: `state.json` keeps the entry, `journal.md` gets the line, the digest has to
+name it, and `close-run.sh` enforces that. **The cap is the guard** — three revisions,
+then it refuses, and running out is the evidence-backed version of
+`blast_radius_exceeded`.
+
+Do **not** widen by doing the edit through Bash instead. The allowlist and budget only
+cover Edit/Write; the hook returns before either check on the Bash path
+(`.claude/hooks/budget.mjs:175-187`), so a shell edit succeeds silently and nothing
+records it. Every run here before `revise-run.sh` existed took that route
+(`.ai/run/vehicle-selection/journal.md:9-13`, `:19-21`).
+
 `files_touched` is `.ai/harness/lib.mjs`'s `runTouched(state)`: everything that
 differs from the run's `base_commit` (stamped once at open, not a moving `HEAD`),
 plus untracked files, minus the run's own paperwork under `.ai/run/**` and anything
