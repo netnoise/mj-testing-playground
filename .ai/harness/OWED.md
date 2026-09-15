@@ -112,6 +112,14 @@ session that created it. Cite the documented floor and where to look instead.
   the stacked-PR shape this needs to exercise against; deferred, per
   `.ai/run/harness-v43-critical/brief.md`.
 
+- **`check-citations.sh` can't tell a brief's forward reference from a fabrication.**
+  A Done-when box that names a file the run will create (`` `.ai/prompts/intake.md` exists ``)
+  fails the check until the file exists — `harness-v44-intake`'s brief failed on five of
+  them before any work started. `/intake` now puts Done when in every brief, so this will
+  recur on any run that adds a file. Fix sketch (not gate scope — `check-citations.sh` isn't in
+  `GATE_SCOPE`): skip the `## Done when` section for bare-path existence, or accept a
+  `(new)` suffix as a declared forward reference that must resolve by `digest.md` time.
+
 ## Bank cards with an unbuilt mechanism
 
 - **`.ai/bank/2026-09-04-citation-drift.md`** names its own fix in its
