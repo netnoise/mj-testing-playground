@@ -35,6 +35,12 @@ speed-measure-plugin*.json
 !.vscode/extensions.json
 .history/*
 
+# shots.sh output - .ai/run/ itself is tracked (the harness's own run
+# artifacts are meant to be readable in the repo), but PNGs from a redesign
+# run are not; runTouched already excludes .ai/run/** from every budget, so
+# this has no effect there. `git add -f` a before/after pair worth keeping.
+.ai/run/*/shots/
+
 # misc
 /.sass-cache
 /connect.lock
