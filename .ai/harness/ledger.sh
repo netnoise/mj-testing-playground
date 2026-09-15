@@ -138,19 +138,24 @@ for (const [slug, bucket] of byRun) {
   const flags = [];
   if (bucket.invalid) flags.push(\`\${bucket.invalid} invalid\`);
   if (bucket.legacy) flags.push(\`\${bucket.legacy} legacy\`);
-  // Revisions come from state.json, not an emit: revise-run.sh is not a skill
-  // and must not appear in the flow inference above, which matches emitted
-  // skill names against config.yml's flows. This is the number that answers
-  // how often the brief's blast radius was wrong and by how much - the
+  // Revisions and type both come from state.json, not an emit: revise-run.sh
+  // and open-run.sh's --type are not skills, so neither may appear in the
+  // flow inference above, which matches emitted skill names against
+  // config.yml's flows (a refactor/redesign run emits the identical skill
+  // set fix does - see open-run.sh's header for why the flow-inference route
+  // was rejected for type specifically). rev is the number that answers how
+  // often the brief's blast radius was wrong and by how much - the
   // measurement the design page's rule ledger admits it doesn't have.
   let rev = 0;
+  let type = 'feature';
   try {
     const st = JSON.parse(fs.readFileSync(\`.ai/run/\${slug}/state.json\`, 'utf8'));
     rev = (st.revisions ?? []).length;
+    type = st.type ?? 'feature'; // legacy runs (no field) default the same way open-run.sh does
   } catch { /* no state.json: a standalone ideate/retro dir. Not a run. */ }
   if (rev) flags.push(\`\${rev} revision\${rev === 1 ? '' : 's'}\`);
   const flagStr = flags.length ? \`  [\${flags.join(', ')}]\` : '';
-  console.log(\`\${slug.padEnd(28)} flow=\${flow.padEnd(9)} skills=\${(skills.join(',') || '(none valid)').padEnd(28)} \${label}\${flagStr}\`);
+  console.log(\`\${slug.padEnd(28)} type=\${type.padEnd(9)} flow=\${flow.padEnd(9)} skills=\${(skills.join(',') || '(none valid)').padEnd(28)} \${label}\${flagStr}\`);
 }
 
 if (anyInvalid) {
