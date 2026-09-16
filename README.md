@@ -1,6 +1,6 @@
 # MjTestingPlayground
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.0.
+This project runs on [Angular CLI](https://github.com/angular/angular-cli) 14.2. `CLAUDE.md` is the source of truth for build, test, and lint commands; the notes below are a quick orientation.
 
 ## Development server
 
@@ -12,15 +12,15 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Run `npm run build` to build the project into `dist/`. The production configuration (AOT, output hashing, bundle budgets) is the default in Angular 14 — there is no `--prod` flag.
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm test` to execute the unit tests via [Jest](https://jestjs.io/) (using [jest-preset-angular](https://github.com/thymikee/jest-preset-angular)). `npm run test:watch` and `npm run test:coverage` are also available.
 
 ## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Run `npm run e2e` to execute the end-to-end tests via [Playwright](https://playwright.dev/), which serves the app automatically. `npm run e2e:ui` opens Playwright's interactive UI.
 
 ## Further help
 

@@ -270,14 +270,14 @@
 <div class="wrap">
 
 <header class="masthead">
-  <p class="eyebrow">Design v4.1 · portable AI harness</p>
+  <p class="eyebrow">Design v4.2 · portable AI harness</p>
   <h1>Vibe&nbsp;Harness</h1>
   <p class="deck">An agent that runs whole loops unattended, survives being killed mid-flight, comes back having taught you something about your own codebase — and keeps what you point at.</p>
   <div class="meta">
     <span><b>Target</b> mj-testing-playground (Angular 14)</span>
     <span><b>Portable to</b> any repo, any agent, any OS</span>
-    <span><b>Status</b> Phase 0+1 built, verified end to end, and delivered a real feature</span>
-    <span><b>Shaped by</b> the TriTrack review · Angular 9→14 migration, 2026-09-04</span>
+    <span><b>Status</b> Phase 0+1 built, verified end to end; one feature and one docs run delivered</span>
+    <span><b>Shaped by</b> the TriTrack review · Angular 9→14 migration · a testing-techniques docs run, 2026-09</span>
   </div>
 </header>
 
@@ -750,9 +750,32 @@ component, not the store.</code></pre>
 </section>
 
 <section>
-  <span class="h2-num">09 — ROLLOUT</span>
+  <span class="h2-num">09 — IN USE</span>
+  <h2>The harness on a run that wasn't code</h2>
+  <p class="sub">The second delivered run was documentation, not a feature — a catalog of testing techniques and a phased roadmap for adopting them. It ran the same loop, and it broke in exactly the place this page warned it would.</p>
+
+  <div class="spine">
+    <div class="spine-row">
+      <div class="spine-key">Loop</div>
+      <p><b>Same shape, no code.</b> Brief and plan persisted to <code>.ai/run/&lt;slug&gt;/</code>, two docs shipped, a bank card kept, a decision recorded. A run that writes prose is still a run — it survives a fresh session the same way a feature does.</p>
+    </div>
+    <div class="spine-row">
+      <div class="spine-key">Doors</div>
+      <p><b>Held without being hit.</b> The work stayed inside <code>docs/**</code>, so no door was crossed — and the roadmap it produced <em>labels</em> every future door-1 (a dependency: Stryker, fast-check, axe) and door-7 (gate config) crossing per phase, so a human approves them in a batch instead of meeting them mid-run.</p>
+    </div>
+    <div class="spine-row">
+      <div class="spine-key">Payload</div>
+      <p><b>A catalog earns trust by its noes.</b> Most of its entries are ruled out — no HTTP anywhere in <code>src/</code> kills the contract-testing family; nothing deployed kills chaos and canary. Stating the disqualifying fact for each is what makes the short list of yeses worth reading.</p>
+    </div>
+  </div>
+
+  <div class="note"><b>And the predicted failure happened.</b> The run shipped its docs but skipped its own close-out: <code>state.json</code> and the handoff still read <em>planned, nothing implemented</em> while the files were already committed and pushed. That is the <em>journal drift</em> named under RISK below — a record written after the fact that describes a run that didn't happen — and a later <code>/resume</code> would have been misled by it. Caught and reconciled in decision <code>0005</code>, late rather than write-ahead. The mechanism worked; the discipline lapsed, which is the more useful thing to record.</div>
+</section>
+
+<section>
+  <span class="h2-num">10 — ROLLOUT</span>
   <h2>Where it stands</h2>
-  <p class="sub">Phase 0 and 1 are built, committed, and dogfooded — the scaffold ran as its own first run, brief to decision record. What each phase claims below is what its verification actually showed, not what was intended.</p>
+  <p class="sub">Phase 0 and 1 are built, committed, and dogfooded — the scaffold ran as its own first run, and two runs have delivered on top of it since: a feature and a documentation set. What each phase claims below is what its verification actually showed, not what was intended.</p>
 
   <div class="phases">
     <div class="phase">
@@ -767,6 +790,13 @@ component, not the store.</code></pre>
       <div>
         <p><b>The runtime tier, for free</b></p>
         <p>An unrelated Angular 9 → 14 upgrade replaced Karma/Protractor/tslint with Jest/Playwright/ESLint on the host repo's own timeline — and Playwright's dev-server bootstrap made <code>verify deep</code> a genuine runtime oracle without the dedicated session this page originally deferred it to. The lesson isn't "get lucky" — it's that door 7's file list is pinned to specific paths that go stale the moment the toolchain moves, silently, with the old paths simply no longer existing. The retool also surfaced a smaller drift worth naming honestly: <code>config.yml</code>'s <code>gate_scope_paths</code> and <code>budget.mjs</code>'s hardcoded list now duplicate the same door-7 list from two places, because the hook has no YAML parser and adding one is itself a dependency change. Logged, not fixed — one owner per fact, bent on purpose for a real constraint.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label">DELIVERED<span>2026-09</span></div>
+      <div>
+        <p><b>A second run, in docs</b></p>
+        <p>A testing-techniques catalog and adoption roadmap (<code>docs/testing-techniques.md</code>, <code>docs/testing-roadmap.md</code>) went brief → plan → shipped → bank card → decision <code>0005</code>, never leaving <code>docs/**</code> and so crossing no door. It is also the run whose close-out lapsed — recorded in the decision rather than hidden, and the reason <code>state.json</code> and its handoff were reconciled after the fact.</p>
       </div>
     </div>
     <div class="phase">
@@ -787,12 +817,12 @@ component, not the store.</code></pre>
 </section>
 
 <section class="col">
-  <span class="h2-num">10 — RISK</span>
+  <span class="h2-num">11 — RISK</span>
   <h2>What I'd still watch</h2>
 
   <p><b>Bank hoarding.</b> Capture is so cheap it becomes reflexive, and the signal drowns. The attic sweep helps; the real discipline is that a card must say what it <em>costs you</em> to not know the thing.</p>
 
-  <p><b>Journal drift.</b> A journal that gets written after the fact rather than before is worse than none — it looks authoritative and describes a run that didn't happen. Write-ahead or off, no middle setting.</p>
+  <p><b>Journal drift — seen once now.</b> A journal or state file written after the fact rather than before is worse than none: it looks authoritative and describes a run that didn't happen. The docs run proved the risk was not hypothetical — its <code>state.json</code> read <em>planned, nothing implemented</em> over already-shipped files until decision <code>0005</code> reconciled it. Write-ahead or off, no middle setting; a late reconciliation repairs a lapse, it does not substitute for the discipline.</p>
 
   <p><b>Confident fiction.</b> More autonomy means more unread text, and unread text is where fabrication hides. <code>file:line</code> everywhere, one spot-check a week. Cheap, and it works because being caught is total.</p>
 
@@ -806,7 +836,7 @@ component, not the store.</code></pre>
 </section>
 
 <footer class="col">
-  <p><b>Provenance:</b> v1–v3 were design; v4 reconciled that design with a build and with the TriTrack review — a repo that ran agents unattended for two weeks and logged 780 lines of what broke. v4.1 reconciles it again with an Angular 9→14 migration that landed mid-build on this repo's own timeline, and with the harness's first delivered feature. Every mechanism above that cites an incident cites one of theirs, or one from this harness's own history (the citation checker catching its own brief's miscited lines; a sneaky in-place hook edit that silently no-oped and was caught by its pipe-test; a citation that drifted onto a blank line after an unrelated edit shifted the file underneath it). The living copy of this page is <code>docs/vibe-harness.html</code> in the repo, whose git history from here on is the changelog; the rules an agent actually loads are one page, in <code>.ai/HARNESS.md</code>.</p>
+  <p><b>Provenance:</b> v1–v3 were design; v4 reconciled that design with a build and with the TriTrack review — a repo that ran agents unattended for two weeks and logged 780 lines of what broke. v4.1 reconciled it again with an Angular 9→14 migration that landed mid-build on this repo's own timeline, and with the harness's first delivered feature. v4.2 reconciles it with the second delivered run — a documentation set (testing-techniques catalog and roadmap) — and with what that run got wrong: its own state file drifted after the fact, the exact failure this page names under RISK, now cited from the harness's own history rather than only warned about, and corrected in decision <code>0005</code> alongside two bank cards. Every mechanism above that cites an incident cites one of TriTrack's, or one from this harness's own history (the citation checker catching its own brief's miscited lines; a sneaky in-place hook edit that silently no-oped and was caught by its pipe-test; a citation that drifted onto a blank line after an unrelated edit shifted the file underneath it; a run whose close-out was skipped and had to be reconciled late). The living copy of this page is <code>docs/vibe-harness.html</code> in the repo, whose git history from here on is the changelog; the rules an agent actually loads are one page, in <code>.ai/HARNESS.md</code>.</p>
 </footer>
 
 </div>
