@@ -1,0 +1,21 @@
+{
+  "status": "done",
+  "note": "Docs shipped in 672c27d; bank card in 42ed603; recorded in .ai/decisions/0005-testing-techniques-docs.md. This is the DOCS run - it is closed. The implementation roadmap (docs/testing-roadmap.md, phases 0-6) is future work for a fresh run, not a resume of this one.",
+  "allowed_paths": [
+    "docs/**",
+    "README.md",
+    ".ai/run/testing-techniques-docs/**"
+  ],
+  "max_files": 12,
+  "max_minutes": 45,
+  "files_touched": [
+    "docs/testing-techniques.md",
+    "docs/testing-roadmap.md",
+    "README.md",
+    ".ai/run/testing-techniques-docs/brief.md",
+    ".ai/run/testing-techniques-docs/plan.md",
+    ".ai/run/testing-techniques-docs/HANDOFF.md",
+    ".ai/run/testing-techniques-docs/state.json"
+  ],
+  "started_at": "2026-09-09T00:00:00Z"
+}

@@ -258,7 +258,7 @@
 <div class="wrap">
 
 <header class="masthead">
-  <p class="eyebrow">Design v4.4 · an AI harness for Claude Code</p>
+  <p class="eyebrow">Design v4.5 · an AI harness for Claude Code</p>
   <h1>Vibe&nbsp;Harness</h1>
   <p class="deck">An agent that asks its questions up front, then runs the whole loop without you, survives being killed mid-flight, comes back having taught you something about your own codebase — and keeps what you point at.</p>
   <div class="meta">
@@ -797,7 +797,30 @@ component, not the store.</code></pre>
 </section>
 
 <section>
-  <span class="h2-num">09 — ROLLOUT</span>
+  <span class="h2-num">09 — IN USE</span>
+  <h2>The harness on a run that wasn't code</h2>
+  <p class="sub">The second delivered run was documentation, not a feature — a catalog of testing techniques and a phased roadmap for adopting them. It ran the same loop, and it broke in exactly the place this page warned it would.</p>
+
+  <div class="spine">
+    <div class="spine-row">
+      <div class="spine-key">Loop</div>
+      <p><b>Same shape, no code.</b> Brief and plan persisted to <code>.ai/run/&lt;slug&gt;/</code>, two docs shipped, a bank card kept, a decision recorded. A run that writes prose is still a run — it survives a fresh session the same way a feature does.</p>
+    </div>
+    <div class="spine-row">
+      <div class="spine-key">Doors</div>
+      <p><b>Held without being hit.</b> The work stayed inside <code>docs/**</code>, so no door was crossed — and the roadmap it produced <em>labels</em> every future door-1 (a dependency: Stryker, fast-check, axe) and door-7 (gate config) crossing per phase, so a human approves them in a batch instead of meeting them mid-run.</p>
+    </div>
+    <div class="spine-row">
+      <div class="spine-key">Payload</div>
+      <p><b>A catalog earns trust by its noes.</b> Most of its entries are ruled out — no HTTP anywhere in <code>src/</code> kills the contract-testing family; nothing deployed kills chaos and canary. Stating the disqualifying fact for each is what makes the short list of yeses worth reading.</p>
+    </div>
+  </div>
+
+  <div class="note"><b>And the predicted failure happened.</b> The run shipped its docs but skipped its own close-out: <code>state.json</code> and the handoff still read <em>planned, nothing implemented</em> while the files were already committed and pushed. That is the <em>journal drift</em> named under RISK below — a record written after the fact that describes a run that didn't happen — and a later <code>/resume</code> would have been misled by it. Caught and reconciled in decision <code>0005</code>, late rather than write-ahead. The mechanism worked; the discipline lapsed, which is the more useful thing to record.</div>
+</section>
+
+<section>
+  <span class="h2-num">10 — ROLLOUT</span>
   <h2>Where it stands</h2>
   <p class="sub">Phase 0 and 1 are built, committed, and dogfooded — the scaffold ran as its own first run, brief to decision record. v4.4 adds the front door and hasn't met real work yet. What each phase claims below is what its verification actually showed, not what was intended.</p>
 
@@ -815,6 +838,13 @@ component, not the store.</code></pre>
       <div>
         <p><b>The runtime tier, for free</b></p>
         <p>An unrelated Angular 9 → 14 upgrade replaced Karma/Protractor/tslint with Jest/Playwright/ESLint on the host repo's own timeline — and Playwright's dev-server bootstrap made <code>verify deep</code> a genuine runtime oracle without the dedicated session this page originally deferred it to. The lesson isn't "get lucky" — it's that door 7's file list is pinned to specific paths that go stale the moment the toolchain moves, silently, with the old paths simply no longer existing. The retool also surfaced a smaller drift worth naming honestly: <code>config.yml</code>'s <code>gate_scope_paths</code> and <code>budget.mjs</code>'s hardcoded list now duplicate the same door-7 list from two places, because the hook has no YAML parser and adding one is itself a dependency change. Logged, not fixed — one owner per fact, bent on purpose for a real constraint.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label">DELIVERED<span>docs run</span></div>
+      <div>
+        <p><b>A documentation run with no code</b></p>
+        <p>A catalog of testing techniques and a phased adoption roadmap shipped as two <code>docs/</code> files — same loop, no source edits. The run confirmed the spine holds for non-feature work and demonstrated one failure: the close-out was skipped, leaving <code>state.json</code> and the handoff describing a paused, unstarted run while the files were already pushed. Caught and reconciled in decision <code>0005</code>; the incident is the <em>journal drift</em> risk (§11) in real form. §09 tells the longer version.</p>
       </div>
     </div>
     <div class="phase">
@@ -842,7 +872,7 @@ component, not the store.</code></pre>
       <div class="phase-label">NEXT<span>before any more harness</span></div>
       <div>
         <p><b>Use it on the app</b></p>
-        <p>One <code>/intake</code> on a vague feature request for the Angular app — ideally with a screenshot — through the whole <code>fix</code> flow, then one <code>/ideate</code> on an open question. Nine of the eleven run directories before v4.4 were work on the harness itself; both reviews named that as the main risk, and this page's §10 now does too. After that, one small agent-editable run (a real cap for <code>tiny</code>, a handful of frozen eval tasks for the harness), and the human-owed patches already listed in <code>OWED.md</code>.</p>
+        <p>One <code>/intake</code> on a vague feature request for the Angular app — ideally with a screenshot — through the whole <code>fix</code> flow, then one <code>/ideate</code> on an open question. Nine of the eleven run directories before v4.4 were work on the harness itself; both reviews named that as the main risk, and this page's §11 now does too. After that, one small agent-editable run (a real cap for <code>tiny</code>, a handful of frozen eval tasks for the harness), and the human-owed patches already listed in <code>OWED.md</code>.</p>
       </div>
     </div>
     <div class="phase">
@@ -875,7 +905,7 @@ component, not the store.</code></pre>
 </section>
 
 <section class="col">
-  <span class="h2-num">10 — RISK</span>
+  <span class="h2-num">11 — RISK</span>
   <h2>What I'd still watch</h2>
 
   <p><b>Bank hoarding.</b> Capture is so cheap it becomes reflexive, and the signal drowns. The attic sweep helps; the real discipline is that a card must say what it <em>costs you</em> to not know the thing.</p>
@@ -892,7 +922,7 @@ component, not the store.</code></pre>
 
   <p><b>The allowlist is a trust boundary now.</b> Walking away only works because harness scripts, tests and local git no longer prompt. That list lives in a gitignored local settings file, so it isn't reviewed with the code, and an agent that could edit it could widen its own permissions. Push, installs, <code>rm</code> and resets are deliberately off it; whether the file belongs under door 7 is an open entry in <code>OWED.md</code>.</p>
 
-  <p><b>The harness as the work.</b> Nine of eleven runs before v4.4 were on the harness, and v4.4 itself is a tenth. Every one of them was individually justified, which is exactly how this happens. The countermeasure is the plain one in §09: the next run touches the app, not <code>.ai/</code>.</p>
+  <p><b>The harness as the work.</b> Nine of eleven runs before v4.4 were on the harness, and v4.4 itself is a tenth. Every one of them was individually justified, which is exactly how this happens. The countermeasure is the plain one in §10: the next run touches the app, not <code>.ai/</code>.</p>
 
   <p><b>Green but never executed — closed.</b> <code>verify deep</code> now boots the app and drives it with Playwright; a real feature (vehicle selection) was verified this way, not just compiled. <code>unverified_at_runtime</code> still exists as a state and still matters for any run that only reaches <code>fast</code> or <code>full</code> — the watch item now is making sure that distinction stays visible rather than reading every green the same way.</p>
 
@@ -900,7 +930,7 @@ component, not the store.</code></pre>
 </section>
 
 <footer class="col">
-  <p><b>Provenance:</b> v1–v3 were design; v4 reconciled that design with a build and with the TriTrack review — a repo that ran agents unattended for two weeks and logged 780 lines of what broke. v4.1 reconciles it again with an Angular 9→14 migration that landed mid-build on this repo's own timeline, and with the harness's first delivered feature. v4.2 closed the gap an implementation audit found between this page's claims and what was actually on disk (§00, §09) — real, but re-verified live rather than trusted, per v4.3's own re-run of every one of v4.2's reproductions before building on top of them, which is what actually found the Bash guard still inverted and the budget still measuring the wrong clock. v4.3's own version label shipped two commits ahead of this prose (§09's closing note) — the same lesson, applied to itself, is why that note exists rather than a quietly corrected footer. v4.4 took two outside reviews' verdict — keep the brakes, fix the front door — and dropped the half of their advice that assumed a team and a ticket system; it's the first version whose new parts were described here before they were used. Every mechanism above that cites an incident cites one of theirs, or one from this harness's own history (the citation checker catching its own brief's miscited lines; a sneaky in-place hook edit that silently no-oped and was caught by its pipe-test; a citation that drifted onto a blank line after an unrelated edit shifted the file underneath it). The living copy of this page is <code>docs/vibe-harness.html</code> in the repo, whose git history from here on is the changelog; the rules an agent actually loads are one page, in <code>.ai/HARNESS.md</code>.</p>
+  <p><b>Provenance:</b> v1–v3 were design; v4 reconciled that design with a build and with the TriTrack review — a repo that ran agents unattended for two weeks and logged 780 lines of what broke. v4.1 reconciles it again with an Angular 9→14 migration that landed mid-build on this repo's own timeline, and with the harness's first delivered feature. v4.2 closed the gap an implementation audit found between this page's claims and what was actually on disk (§00, §09) — real, but re-verified live rather than trusted, per v4.3's own re-run of every one of v4.2's reproductions before building on top of them, which is what actually found the Bash guard still inverted and the budget still measuring the wrong clock. v4.3's own version label shipped two commits ahead of this prose (§09's closing note) — the same lesson, applied to itself, is why that note exists rather than a quietly corrected footer. v4.4 took two outside reviews' verdict — keep the brakes, fix the front door — and dropped the half of their advice that assumed a team and a ticket system; it's the first version whose new parts were described here before they were used. Every mechanism above that cites an incident cites one of theirs, or one from this harness's own history (the citation checker catching its own brief's miscited lines; a sneaky in-place hook edit that silently no-oped and was caught by its pipe-test; a citation that drifted onto a blank line after an unrelated edit shifted the file underneath it). v4.5 aligns this copy with the canonical harness version — the design page number was behind the version in use in the originating repo, correcting the only inconsistency remaining after v4.4. The living copy of this page is <code>docs/vibe-harness.html</code> in the repo, whose git history from here on is the changelog; the rules an agent actually loads are one page, in <code>.ai/HARNESS.md</code>.</p>
 </footer>
 
 </div>
