@@ -1,5 +1,10 @@
 # HANDOFF - testing-techniques-docs
-written by hand 2026-09-09 - planning session, no implementation
+written by hand 2026-09-09 · reconciled to shipped reality 2026-09-16
+
+## Status: DONE — this run is closed
+Do not `/resume` this run to "finish" it; the docs shipped. See "Done" below.
+A future session that wants to *act on* the roadmap starts a fresh run — the
+Traps section still applies to that work.
 
 ## Goal
 Document the testing techniques worth knowing beyond what this repo already
@@ -7,31 +12,29 @@ does, with an honest per-technique verdict, plus a phased roadmap for adopting
 them. Docs only. See `brief.md` for the problem, `plan.md` for the spec.
 
 ## Done
-Nothing implemented. Planning and verification of the ground truth only:
+Shipped and verified. (This section was originally, wrongly, "Nothing
+implemented"; corrected 2026-09-16 — see `.ai/decisions/0005` "What actually
+happened" for why the close-out was late.)
 
-- Repo state mapped: what each test layer covers and where the gaps are.
-- Every `file:line` in `brief.md` verified by direct read on 2026-09-09.
-- Format, scope and split settled with the human (Markdown in `docs/`;
-  comprehensive catalog including not-applicable entries; docs now,
-  implementation later).
+- `docs/testing-techniques.md`, `docs/testing-roadmap.md`, and the `README.md`
+  pointer shipped in `672c27d`. `verify.sh full` passed (lint + 11 Jest specs);
+  `check-citations.sh` resolved; diff stayed inside the declared radius.
+- Bank card `.ai/bank/2026-09-09-silent-decisions.md` shipped in `42ed603`.
+- Recorded in `.ai/decisions/0005-testing-techniques-docs.md`.
 
 ## In flight
-Nothing. Clean tree apart from this run directory.
+Nothing. This run is closed.
 
 ## Next
-1. Write `docs/testing-techniques.md` to the entry skeleton in `plan.md`.
-   Six sections, ~33 entries, one verdict each, closing index table.
-2. Write `docs/testing-roadmap.md`, phases 0-6 plus the deferred set. Every
-   phase names its doors.
-3. Add both to the README's docs list (pointer only, 3-4 lines).
-4. Verify per `plan.md` - `verify.sh fast`, `git diff --stat`,
-   `check-citations.sh`, then the manual read.
+Nothing for *this* run. The implementation work the roadmap describes
+(`docs/testing-roadmap.md`, phases 0-6) is a separate future run with its own
+brief, not a continuation of this one.
 
 ## Open decision
-None outstanding for the docs. One item to *raise*, not fix: `README.md:3,19,23`
-still claims Angular CLI 9.1.0, Karma and Protractor - all untrue since the v14
-retool (`.ai/decisions/0003-angular-14-and-harness-retool.md`). That is its own
-change; do not ride it along on a docs commit.
+None outstanding for the docs. One item still to *raise*, not fixed here:
+`README.md:3,19,23` still claims Angular CLI 9.1.0, Karma and Protractor - all
+untrue since the v14 retool (`.ai/decisions/0003-angular-14-and-harness-retool.md`).
+That is its own change; it was deliberately not ridden along on the docs commit.
 
 ## Traps
 - **`state.json` is `"paused"` with `"started_at": null`.** Both are deliberate.
