@@ -1,20 +1,20 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrandSelectComponent } from './vehicle/brand-select.component';
-import { ModelListComponent } from './vehicle/model-list.component';
+import { AdvancedFormComponent } from './advanced-form/advanced-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BrandSelectComponent,
-    ModelListComponent
+    AdvancedFormComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,138 @@
+<h1>Advanced Form</h1>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+  <fieldset>
+    <legend>Account</legend>
+
+    <label for="username">Username</label>
+    <input id="username" type="text" formControlName="username" />
+    <span class="hint" *ngIf="form.get('username').pending">Checking availability&hellip;</span>
+    <div class="error-message" *ngIf="form.get('username').invalid && (form.get('username').dirty || form.get('username').touched || submitted)">
+      <span *ngIf="form.get('username').errors?.['required']">Username is required.</span>
+      <span *ngIf="form.get('username').errors?.['minlength']">Must be at least 3 characters.</span>
+      <span *ngIf="form.get('username').errors?.['maxlength']">Must be at most 20 characters.</span>
+      <span *ngIf="form.get('username').errors?.['pattern']">Only letters, numbers and underscore are allowed.</span>
+      <span *ngIf="form.get('username').errors?.['usernameTaken']">This username is already taken.</span>
+    </div>
+
+    <label for="email">Email</label>
+    <input id="email" type="email" formControlName="email" />
+    <div class="error-message" *ngIf="form.get('email').invalid && (form.get('email').dirty || form.get('email').touched || submitted)">
+      <span *ngIf="form.get('email').errors?.['required']">Email is required.</span>
+      <span *ngIf="form.get('email').errors?.['email']">Enter a valid email address.</span>
+    </div>
+
+    <label for="age">Age</label>
+    <input id="age" type="number" formControlName="age" />
+    <div class="error-message" *ngIf="form.get('age').invalid && (form.get('age').dirty || form.get('age').touched || submitted)">
+      <span *ngIf="form.get('age').errors?.['required']">Age is required.</span>
+      <span *ngIf="form.get('age').errors?.['min']">Must be at least 18.</span>
+      <span *ngIf="form.get('age').errors?.['max']">Must be at most 120.</span>
+    </div>
+
+    <div formGroupName="passwordGroup">
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password" placeholder="Password" />
+      <div class="error-message" *ngIf="form.get('passwordGroup.password').invalid && (form.get('passwordGroup.password').dirty || form.get('passwordGroup.password').touched || submitted)">
+        <span *ngIf="form.get('passwordGroup.password').errors?.['required']">Password is required.</span>
+        <span *ngIf="form.get('passwordGroup.password').errors?.['minlength']">Must be at least 8 characters.</span>
+      </div>
+
+      <label for="confirmPassword">Confirm password</label>
+      <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="Confirm password" />
+      <div class="error-message" *ngIf="form.get('passwordGroup.confirmPassword').invalid && (form.get('passwordGroup.confirmPassword').dirty || form.get('passwordGroup.confirmPassword').touched || submitted)">
+        <span *ngIf="form.get('passwordGroup.confirmPassword').errors?.['required']">Please confirm your password.</span>
+      </div>
+      <div class="error-message" *ngIf="form.get('passwordGroup').errors?.['passwordMismatch'] && (form.get('passwordGroup.confirmPassword').dirty || form.get('passwordGroup.confirmPassword').touched || submitted)">
+        <span>Passwords do not match.</span>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Preferences</legend>
+
+    <label for="country">Country</label>
+    <select id="country" formControlName="country">
+      <option value="" disabled>Select a country</option>
+      <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+    </select>
+    <div class="error-message" *ngIf="form.get('country').invalid && (form.get('country').dirty || form.get('country').touched || submitted)">
+      <span *ngIf="form.get('country').errors?.['required']">Country is required.</span>
+    </div>
+
+    <label>
+      <input type="checkbox" formControlName="subscribeNewsletter" />
+      Subscribe to newsletter
+    </label>
+
+    <div class="radio-group">
+      <span>Contact preference:</span>
+      <label><input type="radio" formControlName="contactPreference" value="email" /> Email</label>
+      <label><input type="radio" formControlName="contactPreference" value="phone" /> Phone</label>
+      <label><input type="radio" formControlName="contactPreference" value="mail" /> Mail</label>
+    </div>
+
+    <ng-container *ngIf="form.get('contactPreference').value === 'phone'">
+      <label for="phone">Phone number</label>
+      <input id="phone" type="tel" formControlName="phone" />
+      <div class="error-message" *ngIf="form.get('phone').invalid && (form.get('phone').dirty || form.get('phone').touched || submitted)">
+        <span *ngIf="form.get('phone').errors?.['required']">Phone is required when contact preference is phone.</span>
+        <span *ngIf="form.get('phone').errors?.['pattern']">Enter a valid phone number.</span>
+      </div>
+    </ng-container>
+  </fieldset>
+
+  <fieldset formGroupName="address">
+    <legend>Address</legend>
+
+    <label for="street">Street</label>
+    <input id="street" type="text" formControlName="street" />
+    <div class="error-message" *ngIf="form.get('address.street').invalid && (form.get('address.street').dirty || form.get('address.street').touched || submitted)">
+      <span *ngIf="form.get('address.street').errors?.['required']">Street is required.</span>
+    </div>
+
+    <label for="city">City</label>
+    <input id="city" type="text" formControlName="city" />
+    <div class="error-message" *ngIf="form.get('address.city').invalid && (form.get('address.city').dirty || form.get('address.city').touched || submitted)">
+      <span *ngIf="form.get('address.city').errors?.['required']">City is required.</span>
+    </div>
+
+    <label for="postalCode">Postal code</label>
+    <input id="postalCode" type="text" formControlName="postalCode" />
+    <div class="error-message" *ngIf="form.get('address.postalCode').invalid && (form.get('address.postalCode').dirty || form.get('address.postalCode').touched || submitted)">
+      <span *ngIf="form.get('address.postalCode').errors?.['required']">Postal code is required.</span>
+      <span *ngIf="form.get('address.postalCode').errors?.['pattern']">Enter a valid postal code (4-10 digits).</span>
+    </div>
+  </fieldset>
+
+  <fieldset formArrayName="skills">
+    <legend>Skills</legend>
+
+    <div class="skill-row" *ngFor="let row of skills.controls; let i = index" [formGroupName]="i">
+      <input type="text" formControlName="skillName" placeholder="Skill" />
+      <span class="error-message" *ngIf="row.get('skillName').invalid && (row.get('skillName').dirty || row.get('skillName').touched || submitted)">
+        Skill name is required.
+      </span>
+
+      <input type="number" formControlName="yearsOfExperience" placeholder="Years" />
+      <span class="error-message" *ngIf="row.get('yearsOfExperience').invalid && (row.get('yearsOfExperience').dirty || row.get('yearsOfExperience').touched || submitted)">
+        Enter a value between 0 and 50.
+      </span>
+
+      <button type="button" (click)="removeSkill(i)" [disabled]="skills.length === 1">Remove</button>
+    </div>
+
+    <button type="button" (click)="addSkill()">Add skill</button>
+  </fieldset>
+
+  <div class="actions">
+    <button type="submit">Submit</button>
+    <button type="button" (click)="onReset()">Reset</button>
+  </div>
+
+  <p class="submit-error" *ngIf="submitted && form.invalid">Please fix the errors above before submitting.</p>
+</form>
+
+<pre class="submitted-value" *ngIf="submittedValue">{{ submittedValue | json }}</pre>

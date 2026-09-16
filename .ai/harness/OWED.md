@@ -1,0 +1,199 @@
+# Owed
+
+Human-owed door-7 fixes, bank cards whose own named mechanism was never built,
+checks that retros found missing, and orphaned `HARNESS_DOOR_OPEN` overrides —
+collected here instead of being re-discovered from a journal or re-read from a
+bank card each time. Agent-owned: propose an entry when you find one (`/keep`'s
+`mechanism:` field appends here automatically when set); human-owned: strike an
+entry when it's actually applied, don't just delete the line — a short "done,
+see commit" beats silent removal.
+
+**No running tallies in entries.** A count of how many times something recurred
+goes stale the next time it recurs — this file's own first entry did, inside the
+session that created it. Cite the documented floor and where to look instead.
+
+## Door-7 (needs a human edit)
+
+- ~~**`.claude/hooks/budget.mjs` + `.ai/harness/verify.sh` + `.ai/harness/hook-test.sh`:
+  the Bash door-7 check scanned the whole command string, not the write verb's
+  actual target.**~~ **Applied, commit `b55f988`.** At least five documented
+  instances across R1–R3 (`.ai/run/harness-v42-r3/digest.md:38`), confirmed still
+  present at `1e644ea` (six commands probed live, three of them new: `git apply`,
+  `eslint --fix`, a `node -e` write — `.ai/run/harness-v43-critical/brief.md`'s
+  reproduction table). Replaced with `.ai/harness/lib.mjs`'s `gateDiff()`: compares
+  the tree against the run's `base_commit` and blocks further non-run-directory
+  edits while an undisclosed crossing exists, instead of parsing command text.
+  `verify.sh full` and `deep` both green post-apply with the new `hook-test.sh`
+  (23/23). **Applying it live surfaced one more gap**, now fixed in the same
+  commit and in `.ai/run/harness-v43-critical/PATCH-NOTES.md`/`.ai/HARNESS.md`:
+  the patch's own new preflight fails on the uncommitted diff that applying the
+  patch itself creates (no active run to disclose into) — the apply instructions
+  didn't say to commit before verifying. Fixed by documenting "commit, then
+  verify" as the standard apply sequence, not by weakening the preflight.
+  Source: `.ai/run/harness-v42-r1/journal.md`, `.ai/run/harness-v42-r2/journal.md`,
+  `docs/reviews/vibe-harness-v4.3-delta-2026-09-10.md` §1.1.
+
+- **New, found preparing the patch above, not fixed by it either: a Bash write to
+  a run's `state.json` via a verb the regex doesn't list** (e.g. `node -e
+  "...writeFileSync('.ai/run/x/state.json', ...)"`) **still isn't blocked.** The
+  narrow `state.json` regex (kept as the delta note recommended, "path-specific,
+  rarely misfires") sits behind the same write-verb gate the removed checks did.
+  Recorded as a `[KNOWN GAP]` case in the pending `hook-test.sh` patch so it's
+  visible on every `full` once applied, not silently unnoticed. Real fix (not
+  attempted — same shape as the state.json check's original design tradeoff):
+  tie the regex to the actual write target the way `gateDiff` does, or drop the
+  write-verb prefilter for this one check specifically.
+
+  **Only one of those two fixes is available — take the second.** Dropping the
+  write-verb prefilter is safe: the sanctioned wrappers (`close-run.sh`,
+  `revise-run.sh`) pass a *slug*, never a literal `.ai/run/<slug>/state.json`
+  path, so they keep working. Tying the check to the real write target via
+  `gateDiff`'s swept set is **unbuildable, not merely breaking**: the hook itself
+  rewrites `state.json` on every guarded call (`budget.mjs`'s `recordAndExit`)
+  and `state.json` is tracked, so it is permanently dirty against `base_commit`
+  for the whole life of a run. `gateDiff` has no `.ai/run/` exclusion — unlike
+  `runTouched` (`lib.mjs:65`) — so adding it would block the first Edit of every
+  run and fail `verify.sh`'s preflight on every tier, forever. Whoever closes
+  this gap: read this paragraph first, and if you pick the `gateDiff` route
+  anyway, `close-run.sh` and `revise-run.sh` are the casualties to look for.
+
+- **New: a protected-path crossing with no active run, that gets COMMITTED (not
+  left uncommitted), is invisible to both the new hook sweep and the new
+  `verify.sh` preflight.** Both compare against `HEAD` when no run is open, and a
+  commit becomes the new `HEAD` — tested directly, `.ai/run/harness-v43-critical/
+  test-verify-preflight.sh`'s last case. Bounded (requires no run open at all,
+  outside the harness's normal flow) but real; not attempted to fix, since it
+  needs a no-run disclosure mechanism the harness doesn't have anywhere else.
+
+- **`.ai/harness/verify.sh`: `deep` runs `e2e/smoke.spec.ts` twice** — once
+  explicitly for the `smoke` tier's own check, once again inside `deep`'s
+  unfiltered `npx playwright test`. Harmless (same 3 tests pass both times),
+  costs about a second. Fix: scope `deep`'s second invocation to
+  `e2e/app.spec.ts` only. Cosmetic, not urgent.
+  Source: `.ai/run/harness-v42-r2/digest.md`.
+
+- ~~**`.ai/harness/verify.sh:111`: the citation gate picks its run by mtime.**~~
+  **Fixed for `check-citations.sh` and `handoff.sh`** (`.ai/run/harness-v43-critical`,
+  now route through `.ai/harness/lib.mjs`'s `currentRun()` — status-based, falling
+  back to the greatest `started_at`, not `ls -1t`). **`verify.sh`'s own `LATEST_RUN`
+  pick is fixed too, but only in the pending patch above** (`verify.sh` is
+  gate-scope) — applying that patch closes this entry fully.
+  Source: `.ai/run/harness-v42-landing/PATCH-NOTES.md`.
+
+- **`.ai/harness/verify.sh`: three blind spots once runs open at `/implement` and
+  standalone `.ai/run/<date>-<topic>/` directories exist** (`harness-v44-intake`).
+  (a) `deep` citation-checks only `currentRun()`'s digest/retro, and the picker skips any
+  directory without `state.json` (`.ai/harness/lib.mjs:89`), so a standalone retro or
+  ideate is never checked by the gate. (b) With no run active, `currentRun()` falls back
+  to the latest `started_at`, so `deep` re-checks an old *done* run's digest and prints a
+  pass that says nothing about the current work (`.ai/harness/verify.sh:164`). (c) The
+  door-crossing disclosure check only *warns* when a run has `door-crossings.md` but no
+  `digest.md` (`.ai/harness/verify.sh:123`), and digest is now one step among several,
+  not the run's guaranteed last act. Fix sketch: pass standalone dirs modified since the
+  last commit to `check-citations.sh`; skip the fallback for citation checking; fail,
+  not warn, on a crossing in a run whose `state.json` says `done`.
+
+- **Optional tooth: no questions after the walk-away point.** `.ai/prompts/implement.md`
+  says the human may have left once the run opens, but only advisory text enforces it.
+  A `PreToolUse` matcher for `AskUserQuestion` in `.claude/settings.json` plus a
+  `.claude/hooks/budget.mjs` branch that blocks it while a run is `active` (message: write
+  it under Open decisions with your default and continue) would make it real, with a
+  `hook-test.sh` case. First confirm a `PreToolUse` hook actually fires for that tool —
+  a hook that never fires reports nothing. Human's call whether pairing mid-run should
+  stay possible; that's the argument against.
+
+- **Consider `.claude/settings.local.json` in `GATE_SCOPE`.** It now holds the
+  permission allowlist that decides what an agent may run without asking
+  (`harness-v44-intake`); an agent widening its own allowlist is the same shape as
+  door 7. Limit: the file is gitignored (user's global ignore), so `gateDiff`'s git-based
+  sweep can't see a Bash write to it — only the direct Edit/Write block would apply.
+
+## Checks retros found missing
+
+- **Nothing looks across runs, or at the trunk.** Every digest checks its own run
+  and every gate checks its own branch, so work that falls *between* runs is
+  invisible to all of them. Twice now. The closeout found two plan items still
+  open after each run had honestly reported itself complete
+  (`.ai/run/harness-v42-closeout/retro.md`). Then eight reviewed commits sat one
+  branch away from `master` for a day, after a stacked-PR merge landed in the
+  wrong order, surfacing only because a slash command added in those commits came
+  back "Unknown command" (`.ai/run/harness-v42-landing/retro.md`). Nothing
+  distinguishes "merged" from "on the trunk." **`close-run.sh` now records
+  `head_commit` in `state.json`** (`.ai/run/harness-v43-critical`) — the anchor
+  this fix needs. **The actual check (warn when a `done` run's `head_commit` is
+  not an ancestor of the default branch) is still not built** — no single run has
+  the stacked-PR shape this needs to exercise against; deferred, per
+  `.ai/run/harness-v43-critical/brief.md`.
+
+- **`check-citations.sh` can't tell a brief's forward reference from a fabrication.**
+  A Done-when box that names a file the run will create (`` `.ai/prompts/intake.md` exists ``)
+  fails the check until the file exists — `harness-v44-intake`'s brief failed on five of
+  them before any work started. `/intake` now puts Done when in every brief, so this will
+  recur on any run that adds a file. Fix sketch (not gate scope — `check-citations.sh` isn't in
+  `GATE_SCOPE`): skip the `## Done when` section for bare-path existence, or accept a
+  `(new)` suffix as a declared forward reference that must resolve by `digest.md` time.
+
+## Bank cards with an unbuilt mechanism
+
+- **`.ai/bank/2026-09-04-citation-drift.md`** names its own fix in its
+  `Generalises` line: "a content hash of the cited span, not just its line
+  number." `.ai/harness/check-citations.sh`'s `<!-- cite-base: <sha> -->` header
+  (added `harness-v42-r3`) solves a related but different problem — a citation
+  resolving against the wrong *commit* — not this one: a citation whose line
+  still resolves, at the intended commit, but whose *content* silently drifted
+  after the citation was written and before it was next checked. Genuinely
+  still unbuilt. Would need per-citation hash storage, which is a bigger change
+  than this run's scope.
+
+## Pending human application
+
+- ~~**`.claude/hooks/budget.mjs`, `.ai/harness/verify.sh`, `.ai/harness/hook-test.sh`**
+  — the door-7 tree-check patch.~~ **Done, see commit `b55f988`.**
+
+- ~~**`.ai/MODEL.md`** — proposed diff awaiting application.~~ **Done, see commit
+  `21703f5`** — applied byte-identical to
+  `.ai/run/harness-v42-r3/proposed-MODEL.md`. This entry kept saying "not yet
+  applied" for a day after it was.
+
+- **`.ai/MODEL.md`** — one invariant is stale since `harness-v44-intake`: `state.json`
+  is now created when `/implement` opens the run, not by `/understand`
+  (`.ai/MODEL.md:36`). Proposed diff: `.ai/run/harness-v44-intake/patch-MODEL.md.patch`
+  (two lines). Apply, then commit before running `verify.sh` — `.ai/MODEL.md` is a
+  protected path and the preflight fails on an uncommitted diff to it.
+
+## Deferred by design, with a stated trigger
+
+Not missing, not owed to anyone yet — designed, evaluated, and deliberately not built,
+because building it now would be exactly the "a design says it should exist" trap
+`docs/reviews/harness-v44-roadmap-2026-09-15.md:59` warns against. Listed here so the
+trigger is checkable and the design doesn't have to be redone from scratch when it fires.
+
+- **Spike mode** — a throwaway worktree with no `state.json`, no brief, no journal, no
+  digest: the run ceremony deliberately skipped, because the undo for a spike is deleting
+  a directory. **Trigger: the first time you want to try something genuinely throwaway
+  and the run ceremony is what stops you.** Not before — nobody has been blocked by this
+  yet, and `.ai/bank/`'s `kind: failure` slot (the thing a spike mainly feeds,
+  `.ai/prompts/keep.md:30`) has zero cards six weeks in, so building the feeder now would
+  be building well ahead of the shelf it feeds.
+
+  Two non-obvious traps, found while evaluating this, worth reading before building it:
+  1. **An in-repo worktree is counted by the ruler.** `.claude/worktrees/` has no
+     `.gitignore` entry, and `lib.mjs`'s `runTouched` counts untracked files via
+     `git ls-files --others`. A spike worktree there would inflate the file budget of any
+     concurrently-active run. Already bitten once by exactly this shape
+     (`.ai/run/ui-shell-redesign/brief.md:141-149`: a stray in-repo worktree double-ran
+     the whole jest suite and failed the gate; patched on the jest side only,
+     `jest.config.js`'s `testPathIgnorePatterns` excludes `/\.claude/`, but the
+     git-untracked side was never fixed). Put a spike worktree *outside* the repo
+     (e.g. `../.spikes/<repo>-<name>`) and the whole class goes away, rather than adding
+     it to `.gitignore` and patching the next symptom.
+  2. **A spike is unusable during an active run, wherever the worktree lives.**
+     `budget.mjs` computes a path relative to `ROOT`, falling back to the absolute path
+     when a file is outside it — and an absolute path matches no `allowed_paths` glob, so
+     every Edit/Write inside the worktree would trip `blast_radius_exceeded`. Moving the
+     worktree out of the repo fixes trap 1, not this one. Whatever builds this must refuse
+     to start while a run is `active` — which is the right rule anyway: finish or abandon
+     the run first.
+
+  `/diverge` (parallel fan-out, three-way comparison) is a separate, still-parked idea and
+  is not what this entry describes.

@@ -1,0 +1,47 @@
+{
+  "status": "done",
+  "opened_by": "understand (by hand - open-run.sh does not exist yet; started_at is this session's first `date -u` reading, base_commit from `git rev-parse HEAD`)",
+  "started_at": "2026-09-10T16:40:34Z",
+  "base_commit": "1e644ea2b3db12ba505fa25a8cdb0d1529fbb9c9",
+  "dirty_at_start": [
+    ".ai/run/harness-v42-landing/HANDOFF.md"
+  ],
+  "allowed_paths": [
+    ".ai/harness/lib.mjs",
+    ".ai/harness/open-run.sh",
+    ".ai/harness/emit.sh",
+    ".ai/harness/ledger.sh",
+    ".ai/harness/close-run.sh",
+    ".ai/harness/handoff.sh",
+    ".ai/harness/check-citations.sh",
+    ".ai/harness/hook-test.sh",
+    ".ai/harness/OWED.md",
+    ".ai/prompts/understand.md",
+    ".ai/prompts/retro.md",
+    ".ai/HARNESS.md",
+    "src/app/app-routing.module.ts",
+    "src/app/smoke-routes.spec.ts",
+    "e2e/smoke.spec.ts",
+    "e2e/smoke-routes.ts"
+  ],
+  "max_files": 30,
+  "max_minutes": 150,
+  "files_touched": [
+    ".ai/HARNESS.md",
+    ".ai/harness/OWED.md",
+    ".ai/harness/check-citations.sh",
+    ".ai/harness/close-run.sh",
+    ".ai/harness/emit.sh",
+    ".ai/harness/handoff.sh",
+    ".ai/harness/ledger.sh",
+    ".ai/harness/lib.mjs",
+    ".ai/harness/open-run.sh",
+    ".ai/prompts/retro.md",
+    ".ai/prompts/understand.md",
+    "e2e/smoke-routes.ts",
+    "e2e/smoke.spec.ts",
+    "src/app/app-routing.module.ts",
+    "src/app/smoke-routes.spec.ts"
+  ],
+  "head_commit": "b8d13210bc4506cb2c7c8a93b05e1ce3ebeb53d3"
+}

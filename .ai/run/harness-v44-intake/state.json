@@ -1,0 +1,43 @@
+{
+  "status": "done",
+  "opened_by": "open-run.sh",
+  "started_at": "2026-09-15T09:35:29.657Z",
+  "base_commit": "0e18ca66376278eaaaf9ce5f7feab27c524c80ea",
+  "dirty_at_start": [
+    "docs/reviews/spec-bursts-research-2026-09-10.md",
+    "docs/vibe-harness.html"
+  ],
+  "allowed_paths": [
+    ".ai/prompts/intake.md",
+    ".ai/prompts/ideate.md",
+    ".claude/commands/intake.md",
+    ".claude/commands/ideate.md",
+    ".ai/prompts/understand.md",
+    ".ai/prompts/implement.md",
+    ".ai/prompts/retro.md",
+    ".ai/HARNESS.md",
+    ".ai/harness/config.yml",
+    ".ai/harness/OWED.md",
+    ".ai/harness/open-run.sh",
+    "docs/reviews/harness-v44-roadmap-2026-09-15.md",
+    "docs/reviews/spec-bursts-research-2026-09-10.md",
+    ".ai/run/harness-v44-intake/**"
+  ],
+  "max_files": 15,
+  "max_minutes": 90,
+  "files_touched": [
+    ".ai/HARNESS.md",
+    ".ai/harness/OWED.md",
+    ".ai/harness/config.yml",
+    ".ai/harness/open-run.sh",
+    ".ai/prompts/ideate.md",
+    ".ai/prompts/implement.md",
+    ".ai/prompts/intake.md",
+    ".ai/prompts/retro.md",
+    ".ai/prompts/understand.md",
+    ".claude/commands/ideate.md",
+    ".claude/commands/intake.md",
+    "docs/reviews/harness-v44-roadmap-2026-09-15.md"
+  ],
+  "head_commit": "2a900ef0ec8871c303823e65d07e23ffd5948e31"
+}

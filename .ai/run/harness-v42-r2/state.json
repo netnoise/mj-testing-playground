@@ -1,0 +1,29 @@
+{
+  "status": "done",
+  "allowed_paths": [
+    "e2e/**",
+    ".ai/harness/verify.sh",
+    ".ai/prompts/implement.md",
+    ".ai/HARNESS.md",
+    ".ai/harness/config.yml",
+    ".ai/run/harness-v42-r2/**"
+  ],
+  "max_files": 12,
+  "max_minutes": 60,
+  "files_touched": [
+    ".ai/harness/verify.sh",
+    ".ai/run/harness-v42-r2/HANDOFF.md",
+    ".ai/run/harness-v42-r2/PATCH-NOTES.md",
+    ".ai/run/harness-v42-r2/digest.md",
+    ".ai/run/harness-v42-r2/journal.md",
+    ".ai/run/harness-v42-r2/patch-jest.config.js",
+    ".ai/run/harness-v42-r2/patch-playwright.config.ts",
+    ".ai/run/harness-v42-r2/patch-verify.sh",
+    ".ai/run/harness-v42-r2/state.json",
+    "e2e/serve-dist.mjs",
+    "e2e/smoke.spec.ts",
+    "jest.config.js",
+    "playwright.config.ts"
+  ],
+  "started_at": "2026-09-08T18:30:00Z"
+}

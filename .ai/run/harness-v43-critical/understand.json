@@ -1,0 +1,7 @@
+{
+  "skill": "understand",
+  "status": "ok",
+  "artifacts": ["brief.md"],
+  "files_changed": [".ai/run/harness-v42-landing/HANDOFF.md",".ai/run/harness-v43-critical/brief.md",".ai/run/harness-v43-critical/state.json"],
+  "spent": {"min": 7, "files": 3}
+}
