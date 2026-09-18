@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klaxon Testing Lab</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #f7f6f3;
+    --panel: #ffffff;
+    --panel-2: #efece6;
+    --border: #ddd7cc;
+    --border-soft: #e8e3da;
+    --ink: #1b1915;
+    --ink-2: #5e574c;
+    --ink-3: #8a8275;
+    --accent: #a8500a;
+    --accent-tint: #f6ead9;
+    --sev1: #a62a22;
+    --sev2: #a8500a;
+    --caught: #2c6a47;
+    --caught-tint: #e2efe7;
+    --missed: #a62a22;
+    --missed-tint: #f7e5e3;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17161a;
+      --panel: #1f1d23;
+      --panel-2: #27252c;
+      --border: #3a3640;
+      --border-soft: #2e2b34;
+      --ink: #ece8e1;
+      --ink-2: #a49d92;
+      --ink-3: #7c7568;
+      --accent: #eb9a4e;
+      --accent-tint: #33261a;
+      --sev1: #e8746b;
+      --sev2: #eb9a4e;
+      --caught: #5dbd8a;
+      --caught-tint: #1d2f26;
+      --missed: #e8746b;
+      --missed-tint: #33211f;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17161a;
+    --panel: #1f1d23;
+    --panel-2: #27252c;
+    --border: #3a3640;
+    --border-soft: #2e2b34;
+    --ink: #ece8e1;
+    --ink-2: #a49d92;
+    --ink-3: #7c7568;
+    --accent: #eb9a4e;
+    --accent-tint: #33261a;
+    --sev1: #e8746b;
+    --sev2: #eb9a4e;
+    --caught: #5dbd8a;
+    --caught-tint: #1d2f26;
+    --missed: #e8746b;
+    --missed-tint: #33211f;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 20px;
+    padding-block: clamp(24px, 5vw, 56px) 80px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  code, .mono { font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace; }
+
+  /* ---- masthead ---- */
+  .masthead { border-bottom: 2px solid var(--ink); padding-bottom: 22px; margin-bottom: 14px; }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  h1 {
+    font-size: clamp(32px, 5.5vw, 46px); font-weight: 600; line-height: 1.08;
+    letter-spacing: -0.02em; margin: 0 0 14px; text-wrap: balance;
+  }
+  .standfirst { font-size: 17px; color: var(--ink-2); max-width: 64ch; margin: 0; }
+  .runline {
+    display: flex; flex-wrap: wrap; gap: 6px 18px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--ink-3);
+    margin-bottom: 44px;
+  }
+
+  /* ---- sections ---- */
+  section { margin-bottom: 48px; }
+  .sec-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+  }
+  .sec-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  h2 { font-size: 23px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 12px; text-wrap: balance; }
+  p { margin: 0 0 16px; max-width: 68ch; color: var(--ink-2); }
+  p strong, li strong { color: var(--ink); font-weight: 600; }
+  p.lead { color: var(--ink); }
+
+  /* ---- evidence block ---- */
+  .evidence {
+    border-left: 3px solid var(--sev1);
+    background: var(--panel);
+    padding: 16px 20px; margin: 0 0 20px;
+    font-size: 14px;
+  }
+  .evidence .src {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;
+    color: var(--ink-3); display: block; margin-bottom: 8px;
+  }
+  .evidence pre {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px;
+    background: var(--panel-2); padding: 10px 12px; margin: 0 0 10px;
+    overflow-x: auto; color: var(--ink);
+  }
+  .evidence p { margin: 0; font-size: 14px; }
+
+  /* ---- figures ---- */
+  figure {
+    margin: 0 0 20px; padding: 20px;
+    background: var(--panel); border: 1px solid var(--border-soft);
+    overflow-x: auto;
+  }
+  figure svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption { margin-top: 14px; font-size: 13px; color: var(--ink-3); line-height: 1.5; max-width: 70ch; }
+
+  /* ---- tables ---- */
+  .t-wrap { overflow-x: auto; margin-bottom: 20px; border: 1px solid var(--border-soft); background: var(--panel); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 560px; }
+  caption {
+    text-align: left; padding: 14px 16px 0; font-size: 13px; color: var(--ink-3);
+  }
+  th, td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border-soft); }
+  thead th {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--ink-3); font-weight: 500;
+    border-bottom: 1px solid var(--border);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td.defect { color: var(--ink); }
+  .mark {
+    display: inline-block; min-width: 22px; text-align: center;
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600;
+    padding: 1px 6px; border-radius: 2px;
+  }
+  .mark.y { background: var(--caught-tint); color: var(--caught); }
+  .mark.n { background: var(--missed-tint); color: var(--missed); }
+  .mark.na { color: var(--ink-3); }
+  td.verdict { font-size: 12.5px; color: var(--ink-2); }
+
+  /* ---- pains table ---- */
+  .pain {
+    display: inline-block; font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px; padding: 1px 7px; margin: 1px 3px 1px 0;
+    background: var(--panel-2); color: var(--ink-2); border-radius: 2px;
+  }
+
+  /* ---- decisions ---- */
+  dl.decisions { margin: 0 0 20px; display: flex; flex-direction: column; gap: 2px; }
+  dl.decisions > div {
+    display: grid; grid-template-columns: 170px 1fr; gap: 20px;
+    padding: 13px 16px; background: var(--panel); border: 1px solid var(--border-soft);
+  }
+  dl.decisions dt {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;
+    letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); padding-top: 2px;
+  }
+  dl.decisions dd { margin: 0; font-size: 14px; }
+  dl.decisions dd b { font-weight: 600; color: var(--ink); display: block; }
+  dl.decisions dd span { color: var(--ink-2); font-size: 13.5px; }
+  @media (max-width: 620px) {
+    dl.decisions > div { grid-template-columns: 1fr; gap: 4px; }
+  }
+
+  /* ---- ordered build list ---- */
+  ol.build { list-style: none; padding: 0; margin: 0 0 20px; counter-reset: s; }
+  ol.build li {
+    counter-increment: s; position: relative;
+    padding: 0 0 22px 46px; border-left: 1px solid var(--border);
+    margin-left: 13px;
+  }
+  ol.build li:last-child { border-left-color: transparent; padding-bottom: 0; }
+  ol.build li::before {
+    content: counter(s); position: absolute; left: -13px; top: -2px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--panel); border: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+  }
+  ol.build b { display: block; font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+  ol.build span { font-size: 13.5px; color: var(--ink-2); }
+  ol.build code { font-size: 12.5px; background: var(--panel-2); padding: 1px 5px; }
+
+  /* ---- doors ---- */
+  .door {
+    display: grid; grid-template-columns: 62px 1fr; gap: 16px;
+    padding: 14px 16px; background: var(--accent-tint);
+    border: 1px solid var(--border-soft); margin-bottom: 2px;
+  }
+  .door .tag {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600;
+    color: var(--accent); letter-spacing: 0.04em; padding-top: 2px;
+  }
+  .door div:last-child { font-size: 13.5px; color: var(--ink-2); }
+  .door b { color: var(--ink); font-weight: 600; }
+  @media (max-width: 620px) { .door { grid-template-columns: 1fr; gap: 4px; } }
+
+  footer {
+    margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--ink-3);
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">Rebuild proposal &middot; mj-testing-playground</div>
+    <h1>Klaxon Testing Lab</h1>
+    <p class="standfirst">
+      An Angular incident board where no test is trusted until it has caught a real defect.
+      The app exists to host bugs; the tests exist to prove they notice.
+    </p>
+  </header>
+  <div class="runline">
+    <span>frontend testing is the point</span>
+    <span>audience: colleagues</span>
+    <span>unit of work: one defect &rarr; which layer caught it</span>
+  </div>
+
+  <section>
+    <div class="sec-label">01 &nbsp;Why</div>
+    <h2>The repo already makes the argument</h2>
+    <p>
+      Three tests in <code>src/app/app.component.spec.ts</code> pass today. Two of them are
+      worth nothing, and the second one is worth less than nothing.
+    </p>
+    <div class="evidence">
+      <span class="src">src/app/app.component.spec.ts:20</span>
+      <pre>expect(app).toBeTruthy();</pre>
+      <p>Green whether the component renders correctly, renders blank, or throws in <code>ngOnInit</code>.</p>
+    </div>
+    <div class="evidence">
+      <span class="src">src/app/app.component.spec.ts:33</span>
+      <pre>expect(compiled.querySelector('.app-header h1').textContent)
+  .toContain('mj-testing-playground');</pre>
+      <p>
+        Rename that CSS class in a stylesheet &mdash; no behaviour change &mdash; and it goes <strong>red</strong>.
+        Demote the <code>&lt;h1&gt;</code> to a styled <code>&lt;div&gt;</code> &mdash; a real accessibility
+        regression &mdash; and it stays <strong>green</strong>. Inverted: fails on cosmetics, passes on defects.
+      </p>
+    </div>
+    <p>
+      That is the standard state of frontend test suites, generated or hand-written. A repo of
+      example patterns does nothing about it, and a model in your editor writes those patterns
+      faster than you can look them up anyway. A repo of <strong>experiments</strong> does something
+      about it, because an experiment has a result that cannot be generated &mdash; only run.
+    </p>
+  </section>
+
+  <section>
+    <div class="sec-label">02 &nbsp;Mechanism</div>
+    <h2>One defect, every layer, one recorded finding</h2>
+    <p>
+      This is the loop the whole repo turns on. Everything else &mdash; the app, the backend, the
+      component choices &mdash; exists to make this loop produce interesting results.
+    </p>
+    <figure>
+      <svg viewBox="0 0 880 250" role="img" aria-label="A Klaxon feature has one defect planted in it, producing a mutant build. Every test layer runs against it: unit Jest misses, component Testing Library catches, end-to-end Playwright catches, accessibility axe catches, visual screenshot misses. The verdict is recorded as one finding published to the showcase route.">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <g font-family="IBM Plex Sans, sans-serif">
+          <!-- feature -->
+          <rect x="8" y="85" width="132" height="66" fill="none" stroke="currentColor" stroke-opacity="0.75"/>
+          <text x="74" y="112" font-size="12.5" font-weight="600" text-anchor="middle" fill="currentColor">feature</text>
+          <text x="74" y="132" font-size="10.5" text-anchor="middle" fill="currentColor" opacity="0.6" font-family="IBM Plex Mono, monospace">incident table</text>
+
+          <!-- mutant -->
+          <rect x="232" y="85" width="132" height="66" fill="none" stroke="var(--sev1)"/>
+          <text x="298" y="112" font-size="12.5" font-weight="600" text-anchor="middle" fill="var(--sev1)">mutant</text>
+          <text x="298" y="132" font-size="10.5" text-anchor="middle" fill="var(--sev1)" opacity="0.8" font-family="IBM Plex Mono, monospace">h1 &rarr; div</text>
+
+          <!-- layers -->
+          <g font-size="11" font-family="IBM Plex Mono, monospace">
+            <rect x="448" y="16" width="166" height="30" fill="none" stroke="currentColor" stroke-opacity="0.45"/>
+            <text x="462" y="35" fill="currentColor" opacity="0.8">unit · jest</text>
+            <text x="600" y="35" text-anchor="end" fill="var(--missed)" font-weight="600">miss</text>
+
+            <rect x="448" y="58" width="166" height="30" fill="none" stroke="currentColor" stroke-opacity="0.45"/>
+            <text x="462" y="77" fill="currentColor" opacity="0.8">component · TL</text>
+            <text x="600" y="77" text-anchor="end" fill="var(--caught)" font-weight="600">catch</text>
+
+            <rect x="448" y="100" width="166" height="30" fill="none" stroke="currentColor" stroke-opacity="0.45"/>
+            <text x="462" y="119" fill="currentColor" opacity="0.8">e2e · playwright</text>
+            <text x="600" y="119" text-anchor="end" fill="var(--caught)" font-weight="600">catch</text>
+
+            <rect x="448" y="142" width="166" height="30" fill="none" stroke="currentColor" stroke-opacity="0.45"/>
+            <text x="462" y="161" fill="currentColor" opacity="0.8">a11y · axe</text>
+            <text x="600" y="161" text-anchor="end" fill="var(--caught)" font-weight="600">catch</text>
+
+            <rect x="448" y="184" width="166" height="30" fill="none" stroke="currentColor" stroke-opacity="0.45"/>
+            <text x="462" y="203" fill="currentColor" opacity="0.8">visual · pixels</text>
+            <text x="600" y="203" text-anchor="end" fill="var(--missed)" font-weight="600">miss</text>
+          </g>
+
+          <!-- finding -->
+          <rect x="676" y="58" width="196" height="114" fill="none" stroke="currentColor"/>
+          <text x="692" y="82" font-size="11.5" font-weight="600" fill="currentColor">finding</text>
+          <g font-size="10.5" font-family="IBM Plex Mono, monospace">
+            <text x="692" y="106" fill="var(--caught)">caught by 3</text>
+            <text x="692" y="124" fill="var(--missed)">missed by 2</text>
+            <text x="692" y="150" fill="currentColor" opacity="0.6">pixels can't see</text>
+            <text x="692" y="164" fill="currentColor" opacity="0.6">semantics</text>
+          </g>
+        </g>
+
+        <!-- connectors -->
+        <g stroke="currentColor" fill="none">
+          <path d="M140,118 L226,118" marker-end="url(#ar)" stroke-opacity="0.7"/>
+          <path d="M364,118 L424,118" stroke-opacity="0.7"/>
+          <path d="M424,31 L424,199" stroke-opacity="0.7"/>
+          <g stroke-opacity="0.7">
+            <path d="M424,31 L442,31" marker-end="url(#ar)"/>
+            <path d="M424,73 L442,73" marker-end="url(#ar)"/>
+            <path d="M424,115 L442,115" marker-end="url(#ar)"/>
+            <path d="M424,157 L442,157" marker-end="url(#ar)"/>
+            <path d="M424,199 L442,199" marker-end="url(#ar)"/>
+          </g>
+          <g stroke-opacity="0.35">
+            <path d="M614,31 L670,100"/>
+            <path d="M614,73 L670,108"/>
+            <path d="M614,115 L670,115" marker-end="url(#ar)" stroke-opacity="0.7"/>
+            <path d="M614,157 L670,122"/>
+            <path d="M614,199 L670,130"/>
+          </g>
+        </g>
+
+        <text x="183" y="108" font-size="10" text-anchor="middle" fill="currentColor" opacity="0.6" font-family="IBM Plex Mono, monospace">plant</text>
+        <text x="424" y="232" font-size="10" text-anchor="middle" fill="currentColor" opacity="0.6" font-family="IBM Plex Mono, monospace">run all</text>
+      </svg>
+      <figcaption>
+        The punchline is the bottom row. A heading demoted to a styled div looks pixel-identical, so
+        visual regression sails past it &mdash; while the role-based queries catch it instantly. You cannot
+        learn that from reading about testing; you learn it by running this.
+      </figcaption>
+    </figure>
+    <p>
+      Mutation testing (Stryker) automates the cheap half of this: it plants hundreds of defects and
+      reports what fraction your suite catches. The hand-planted defects above are for the cases
+      Stryker can't express &mdash; a semantic regression, a timezone assumption, a lost debounce.
+    </p>
+  </section>
+
+  <section>
+    <div class="sec-label">03 &nbsp;Payoff</div>
+    <h2>What the showcase route actually shows</h2>
+    <p>
+      This table is the artifact you send a colleague. Rows are planted defects, columns are layers,
+      and every cell is a claim you have actually run. The interesting content is entirely in the
+      red cells.
+    </p>
+    <div class="t-wrap">
+      <table>
+        <caption>Findings &mdash; each row is one defect planted deliberately and run through every layer.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Planted defect</th>
+            <th scope="col">unit</th>
+            <th scope="col">cmp</th>
+            <th scope="col">e2e</th>
+            <th scope="col">axe</th>
+            <th scope="col">vis</th>
+            <th scope="col">What it teaches</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="defect">Heading demoted to styled div</td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark y">&check;</span></td>
+            <td><span class="mark y">&check;</span></td>
+            <td><span class="mark y">&check;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td class="verdict">Pixels can't see semantics</td>
+          </tr>
+          <tr>
+            <td class="defect">Severity conveyed by colour only</td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td class="verdict">No automated layer catches this. Manual only.</td>
+          </tr>
+          <tr>
+            <td class="defect">Sort loses stability on equal keys</td>
+            <td><span class="mark y">&check;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark na">&ndash;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td class="verdict">Only if the comparator is tested directly</td>
+          </tr>
+          <tr>
+            <td class="defect">Debounce removed on filter input</td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark y">&check;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark na">&ndash;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td class="verdict">E2E is too slow to notice extra requests</td>
+          </tr>
+          <tr>
+            <td class="defect">Optimistic ack not rolled back on 500</td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark y">&check;</span></td>
+            <td><span class="mark y">&check;</span></td>
+            <td><span class="mark na">&ndash;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td class="verdict">Needs a fault-injecting fake, not a happy path</td>
+          </tr>
+          <tr>
+            <td class="defect">Timestamps render in browser tz, not incident tz</td>
+            <td><span class="mark y">&check;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark na">&ndash;</span></td>
+            <td><span class="mark y">&check;</span></td>
+            <td class="verdict">Only caught because CI runs in UTC</td>
+          </tr>
+          <tr>
+            <td class="defect">Focus lost after closing triage dialog</td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark y">&check;</span></td>
+            <td><span class="mark y">&check;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td><span class="mark n">&middot;</span></td>
+            <td class="verdict">axe audits a snapshot, not a transition</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Row two is the one that wins arguments. <strong>Nothing automated catches colour-only meaning</strong>
+      &mdash; not axe, not Playwright, not a snapshot. That is a real, defensible claim about the limits of
+      an a11y pipeline, and you'll have the run to back it.
+    </p>
+  </section>
+
+  <section>
+    <div class="sec-label">04 &nbsp;The app</div>
+    <h2>Klaxon &mdash; an on-call board, chosen for difficulty</h2>
+    <p>
+      Features are picked because they are hard to test, not because they are useful. An incident
+      board is unusually rich: it is live, dense, time-sensitive, and has genuine accessibility
+      stakes &mdash; someone reads it at 3am under pressure.
+    </p>
+    <div class="t-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Feature</th>
+            <th scope="col">Exercises</th>
+            <th scope="col">Why it resists testing</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="defect">Incident board</td>
+            <td><span class="pain">async</span><span class="pain">perf</span><span class="pain">a11y</span></td>
+            <td class="verdict">Live updates arriving mid-interaction; virtualised rows; grid semantics; sort stability</td>
+          </tr>
+          <tr>
+            <td class="defect">Triage &amp; escalation form</td>
+            <td><span class="pain">forms</span><span class="pain">a11y</span></td>
+            <td class="verdict">Cross-field rules, async validation, dialog focus traps, unsaved-changes guard</td>
+          </tr>
+          <tr>
+            <td class="defect">Incident archive</td>
+            <td><span class="pain">perf</span><span class="pain">a11y</span></td>
+            <td class="verdict">Server-side vs client-side pagination, page-size drift mid-fetch, "jump to page" vs infinite scroll, keyboard nav across pages</td>
+          </tr>
+          <tr>
+            <td class="defect">Incident timeline</td>
+            <td><span class="pain">async</span><span class="pain">perf</span></td>
+            <td class="verdict">Streamed appends, relative timestamps that go flaky at midnight, optimistic acks</td>
+          </tr>
+          <tr>
+            <td class="defect">Findings showcase</td>
+            <td><span class="pain">the point</span></td>
+            <td class="verdict">The table in section 03, rendered from recorded runs &mdash; and itself under test</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      <strong>Deferred:</strong> on-call rota (the calendar-grid keyboard model and DST-boundary
+      recurrence rules) is real work but doesn't need to block the first loop &mdash; nothing in §01&ndash;03
+      depends on it. It re-enters the build sequence once the archive and its pagination patterns
+      have produced their first findings.
+    </p>
+    <p>
+      The archive is the deliberate long-table case: same incident data, but paged rather than
+      virtualised, so it forces the pagination failure modes a scrolling list never hits &mdash;
+      an item disappearing off the current page because a live update reordered the set underneath
+      the reader, a page number that outlives the data it pointed at, "Page 3 of 12" going stale
+      mid-read, and a "Next" control that a screen reader announces with no indication anything
+      changed. Good material for the same plant-a-defect loop: mutate the page-size guard, mutate
+      the aria-live region on page change, see which layer notices.
+    </p>
+  </section>
+
+  <section>
+    <div class="sec-label">05 &nbsp;Control</div>
+    <h2>The backend is a control variable &mdash; and something has to make it noisy</h2>
+    <p>
+      One real Node BFF, plus MSW handlers implementing the same contract. Run the identical suite
+      against both. The suite <strong>must not be able to tell them apart</strong> &mdash; and when it can,
+      you've located implementation coupling you didn't know you had.
+    </p>
+    <figure>
+      <svg viewBox="0 0 880 260" role="img" aria-label="A Go event generator, running one goroutine per simulated monitor, feeds the Node BFF with live incident events and injected faults. The Angular test suite runs against a switch that selects either that real Node BFF or MSW fake handlers implementing the same contract; MSW never talks to the Go generator. If the suite can tell which backend is serving, it is coupled to the implementation rather than the contract.">
+        <defs>
+          <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <g font-family="IBM Plex Sans, sans-serif">
+          <!-- Go event generator, feeds only the real BFF -->
+          <rect x="300" y="0" width="190" height="42" fill="none" stroke="var(--accent)" stroke-width="1.4"/>
+          <text x="395" y="17" font-size="12" font-weight="600" text-anchor="middle" fill="var(--accent)">Go event generator</text>
+          <text x="395" y="33" font-size="9.5" text-anchor="middle" fill="var(--accent)" opacity="0.85" font-family="IBM Plex Mono, monospace">1 goroutine / simulated monitor</text>
+
+          <rect x="8" y="116" width="150" height="66" fill="none" stroke="currentColor" stroke-opacity="0.75"/>
+          <text x="83" y="143" font-size="12.5" font-weight="600" text-anchor="middle" fill="currentColor">test suite</text>
+          <text x="83" y="162" font-size="10.5" text-anchor="middle" fill="currentColor" opacity="0.6" font-family="IBM Plex Mono, monospace">one suite</text>
+
+          <rect x="300" y="64" width="190" height="56" fill="none" stroke="currentColor" stroke-opacity="0.6"/>
+          <text x="316" y="89" font-size="12" fill="currentColor">Node BFF</text>
+          <text x="316" y="107" font-size="10" fill="currentColor" opacity="0.6" font-family="IBM Plex Mono, monospace">real latency, real 500s</text>
+
+          <rect x="300" y="178" width="190" height="56" fill="none" stroke="currentColor" stroke-opacity="0.6"/>
+          <text x="316" y="203" font-size="12" fill="currentColor">MSW handlers</text>
+          <text x="316" y="221" font-size="10" fill="currentColor" opacity="0.6" font-family="IBM Plex Mono, monospace">fault injection on demand</text>
+
+          <rect x="286" y="52" width="218" height="194" fill="none" stroke="var(--accent)" stroke-dasharray="4 4"/>
+          <text x="395" y="157" font-size="11" text-anchor="middle" fill="var(--accent)" font-family="IBM Plex Mono, monospace">same OpenAPI contract</text>
+
+          <rect x="600" y="116" width="272" height="66" fill="none" stroke="currentColor"/>
+          <text x="616" y="142" font-size="12" font-weight="600" fill="currentColor">Can the suite tell which?</text>
+          <text x="616" y="164" font-size="11" fill="var(--sev1)" font-family="IBM Plex Mono, monospace">yes &rarr; you found the coupling</text>
+        </g>
+        <g stroke="currentColor" fill="none" stroke-opacity="0.65">
+          <path d="M158,149 L216,149"/>
+          <path d="M216,92 L216,206"/>
+          <path d="M216,92 L294,92" marker-end="url(#ar2)"/>
+          <path d="M216,206 L294,206" marker-end="url(#ar2)"/>
+          <path d="M504,149 L594,149" marker-end="url(#ar2)"/>
+        </g>
+        <path d="M395,42 L395,64" stroke="var(--accent)" fill="none" marker-end="url(#ar2)"/>
+      </svg>
+      <figcaption>
+        Two runtimes give the same contract-coupling finding four would. The fake earns its place by
+        doing what the real one can't on demand: 500s, 3-second latency, out-of-order streams, a
+        half-written response. The Go generator earns a separate place: it's what makes the <em>real</em>
+        path noisy enough to be worth testing against, and MSW is drawn deliberately outside its box
+        &mdash; the fake fakes the BFF's output directly and never talks to Go at all.
+      </figcaption>
+    </figure>
+    <p>
+      The generator is the "deliberately hostile backend" idea made concrete, and it's why Go re-enters
+      after being ruled out for the contract itself (§06): many independent simulated monitors, each
+      misbehaving on its own schedule (one flaps every few seconds, another goes silent, a third emits
+      duplicates), fan concurrently into one event stream. That's what goroutines and channels are for,
+      and it's the same reason real synthetic-monitoring and chaos-injection tools are commonly written
+      in Go rather than reinvented in whatever language the frontend happens to use. Angular never knows
+      it exists &mdash; it only ever sees the BFF's shaped output.
+    </p>
+  </section>
+
+  <section>
+    <div class="sec-label">06 &nbsp;Decisions</div>
+    <h2>Settled, with reasons</h2>
+    <dl class="decisions">
+      <div>
+        <dt>Angular</dt>
+        <dd>
+          <b>Regenerate on the current major</b>
+          <span>Standalone, signals, new control flow, zoneless from day one. The repo is a near-empty
+          scaffold on 14.3 &mdash; there is nothing to preserve, and none of the modern idioms exist there.</span>
+        </dd>
+      </div>
+      <div>
+        <dt>Migration</dt>
+        <dd>
+          <b>One feature, built old then migrated</b>
+          <span>Not six majors of <code>ng update</code>. Build one Klaxon feature NgModule-and-RxJS style,
+          migrate it to standalone/signals, measure which tests survived. That's the part happening
+          without you at work.</span>
+        </dd>
+      </div>
+      <div>
+        <dt>Components</dt>
+        <dd>
+          <b>Material, plus one hand-rolled rival on CDK</b>
+          <span>Material everywhere (work-realistic), except one complex widget built twice. Same tests
+          against both reveals exactly how much a11y Material was quietly doing for you.</span>
+        </dd>
+      </div>
+      <div>
+        <dt>Contract</dt>
+        <dd>
+          <b>Node BFF + MSW, one contract, two runtimes</b>
+          <span>Kotlin stays out entirely &mdash; a third implementation of the same contract is upkeep
+          without a new finding. Go was ruled out here for the same reason, then re-entered with a
+          different job (below): it's not a second backend, it's what feeds the first one.</span>
+        </dd>
+      </div>
+      <div>
+        <dt>Event generator</dt>
+        <dd>
+          <b>Go, behind the BFF, never called by Angular</b>
+          <span>Concurrent, independently-misbehaving simulated monitors fanning into one stream is
+          goroutines' actual home turf &mdash; genuinely awkward to hand-write correctly in single-threaded
+          Node. Testable in isolation with Go's own table-driven tests, which becomes an honest
+          technique comparison for the showcase rather than a shipped feature nobody asked for.</span>
+        </dd>
+      </div>
+      <div>
+        <dt>Findings</dt>
+        <dd>
+          <b>In-app <code>/showcase</code> route</b>
+          <span>You send one URL. The showcase reads recorded run data &mdash; and being a dense interactive
+          table, it's a legitimate test subject in its own right.</span>
+        </dd>
+      </div>
+    </dl>
+  </section>
+
+  <section>
+    <div class="sec-label">07 &nbsp;Order</div>
+    <h2>Build sequence</h2>
+    <ol class="build">
+      <li>
+        <b>Modern baseline</b>
+        <span>Regenerate on the current Angular major; port nothing but <code>advanced-form</code>'s validators,
+        which are the only real logic in the repo. Harness gates green before anything else lands.</span>
+      </li>
+      <li>
+        <b>One feature, fully instrumented</b>
+        <span>The incident board alone, with all five layers wired: Jest, Testing Library, Playwright, axe,
+        visual. Resist adding feature two until every layer runs in CI.</span>
+      </li>
+      <li>
+        <b>Event generator, behind the BFF</b>
+        <span>The Go service: one goroutine per simulated monitor, fault injection on a schedule, feeding
+        the Node BFF only. MSW is built against the same contract in parallel and never touches it &mdash;
+        this is what makes the incident board's "live" feel real instead of a fixed fixture.</span>
+      </li>
+      <li>
+        <b>First three planted defects</b>
+        <span>Heading demotion, colour-only severity, lost debounce. Record the results by hand. This is
+        the moment the repo becomes worth having &mdash; before any showcase UI exists.</span>
+      </li>
+      <li>
+        <b>Showcase route</b>
+        <span>Render the findings table from recorded data. Only now, once there's something true to show.</span>
+      </li>
+      <li>
+        <b>Mutation testing</b>
+        <span>Stryker over the Angular specs, plus Go's own mutation tool over the generator, for a
+        coverage number that measures catching, not executing. Expect it to be humbling on both sides.</span>
+      </li>
+      <li>
+        <b>Remaining features, then the rivals</b>
+        <span>Triage form, incident archive, timeline. Then the Material-vs-CDK widget pair and the
+        old-vs-migrated feature &mdash; the comparisons, as byproducts. On-call rota returns after these.</span>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="sec-label">08 &nbsp;Doors</div>
+    <h2>Needs you, not an agent</h2>
+    <p>Three things in this plan an agent can't do alone under your own harness rules.</p>
+    <div class="door">
+      <div class="tag">door 1</div>
+      <div><b>Every dependency in steps 1 and 3.</b> The Angular major bump, Testing Library, MSW, axe,
+      Stryker, and the Go module itself (<code>go.mod</code>, its own toolchain version) &mdash; each is a
+      one-way door under <code>.ai/HARNESS.md</code>. They want stating and deciding, not asking.</div>
+    </div>
+    <div class="door">
+      <div class="tag">door 7</div>
+      <div><b><code>angular.json</code> is gate-scope config.</b> The test builder, the <code>.sass</code>&rarr;<code>.scss</code>
+      switch, new budgets &mdash; all live in a file the budget hook blocks agents from touching. A human edit
+      gates step 1, whichever path you take.</div>
+    </div>
+    <div class="door">
+      <div class="tag">rule</div>
+      <div><b>A planted defect must never be silently removed.</b> The repo's value is the record. Defects get
+      reverted in a commit that also records the finding, or the whole thing degrades into a normal
+      demo app within a month.</div>
+    </div>
+  </section>
+
+  <footer>
+    Klaxon Testing Lab &middot; rebuild proposal &middot; supersedes the Suite Console draft &middot; adds the Go event generator &middot; 2026-09-18
+  </footer>
+</div>
+</body>
+</html>
