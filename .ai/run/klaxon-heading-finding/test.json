@@ -1,0 +1,26 @@
+{
+  "skill": "test",
+  "status": "ok",
+  "at": "2026-09-18T23:00:35.742Z",
+  "base_commit": "732796468edd3f99b577795c4d94cd3592a860d0",
+  "artifacts": [
+    "brief.md",
+    "implement.json",
+    "input.md",
+    "journal.md",
+    "predictions.md",
+    "understand.json"
+  ],
+  "files_changed": [
+    "docs/design/klaxon/README.md",
+    "docs/design/klaxon/findings/heading-demotion.json",
+    "docs/design/klaxon/findings/heading-demotion.md"
+  ],
+  "spent": {
+    "min": 4,
+    "files": 3
+  },
+  "specs_added": 0,
+  "vacuous": null,
+  "note": "No spec written by design: the suite is frozen and any test edit is a later iteration row. The assertion this run adds is replay.sh vs results.tsv; audited with a negative control (falsified row -> exit 1) and a no-op-patch guard."
+}

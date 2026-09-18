@@ -89,6 +89,9 @@ Every test outcome in these docs is either **recorded** or a **hypothesis**. The
 status vocabulary is `hypothesis · caught · missed · not run · not applicable ·
 infrastructure error`. A result counts only when it names its baseline commit,
 mutation patch, test revision, command, scenario or seed, environment, and
-failure output. Today there is exactly one recorded result: the heading-demotion
-run against the existing `app.component.spec.ts` (write-up §01, evidence in
-`.ai/run/klaxon-claims-correction/evidence.md`).
+failure output. Recorded results so far: the heading-demotion run against the
+old `app.component.spec.ts` (write-up §01, `.ai/run/klaxon-claims-correction/evidence.md`); 24
+cells on the old scaffold's e2e layer and form validators
+(`.ai/run/old-baseline-findings/evidence.md`); and the first finding on the Klaxon board itself,
+[`findings/heading-demotion.md`](findings/heading-demotion.md) (36 cells, 2 caught). The
+write-up's matrix and the claude.ai artifacts haven't been updated to match.
