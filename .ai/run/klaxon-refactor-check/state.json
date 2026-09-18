@@ -1,0 +1,22 @@
+{
+  "status": "active",
+  "opened_by": "open-run.sh",
+  "started_at": "2026-09-18T23:03:45.737Z",
+  "base_commit": "c44571d08a6b3cedb399c1372d1c7940850a9794",
+  "dirty_at_start": [
+    "patchgen/",
+    "pg2/"
+  ],
+  "allowed_paths": [
+    "src/app/board/board.html",
+    "src/app/board/board.scss",
+    "src/app/board/board.ts",
+    "docs/design/klaxon/findings/**",
+    "docs/design/klaxon/README.md",
+    ".ai/run/klaxon-refactor-check/**"
+  ],
+  "max_files": 10,
+  "max_minutes": 45,
+  "files_touched": [],
+  "type": "feature"
+}
