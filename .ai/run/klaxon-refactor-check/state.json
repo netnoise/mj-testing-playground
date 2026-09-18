@@ -17,6 +17,8 @@
   ],
   "max_files": 10,
   "max_minutes": 45,
-  "files_touched": [],
+  "files_touched": [
+    "docs/design/klaxon/findings/harmless-refactors.json"
+  ],
   "type": "feature"
 }

@@ -67,6 +67,8 @@ rest of the test would still pass.
 - **Not run in this iteration:** whether a harmless refactor (renaming a class) leaves these tests
   green. It is predicted to, and it is untested, so the "does not fail on harmless changes" half of
   the comparison is still a hypothesis.
+  **Update, same day:** it has since been run: [`harmless-refactors.md`](harmless-refactors.md)
+  (three refactors, 105 cells, none flagged).
 
 ## Caveats
 

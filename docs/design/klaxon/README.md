@@ -93,5 +93,6 @@ failure output. Recorded results so far: the heading-demotion run against the
 old `app.component.spec.ts` (write-up §01, `.ai/run/klaxon-claims-correction/evidence.md`); 24
 cells on the old scaffold's e2e layer and form validators
 (`.ai/run/old-baseline-findings/evidence.md`); and the first finding on the Klaxon board itself,
-[`findings/heading-demotion.md`](findings/heading-demotion.md) (36 cells, 2 caught). The
+[`findings/heading-demotion.md`](findings/heading-demotion.md) (36 cells, 2 caught), with its
+companion [`findings/harmless-refactors.md`](findings/harmless-refactors.md) (105 cells, none flagged). The
 write-up's matrix and the claude.ai artifacts haven't been updated to match.

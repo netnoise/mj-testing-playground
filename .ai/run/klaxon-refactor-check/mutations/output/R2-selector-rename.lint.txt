@@ -1,0 +1,9 @@
+
+> mj-testing-playground@0.0.0 lint
+> ng lint
+
+
+Linting "mj-testing-playground"...
+
+All files pass linting.
+

@@ -1,0 +1,140 @@
+R1-class-rename	build	ng	-	pass
+R1-class-rename	e2e	board.spec.ts	filters by severity and shows the details of a clicked incident	pass
+R1-class-rename	e2e	board.spec.ts	is operable by keyboard alone, with a visible focus indicator	pass
+R1-class-rename	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > empty	pass
+R1-class-rename	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > failed	pass
+R1-class-rename	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > loading	pass
+R1-class-rename	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > stale keeps the table and says how old it is	pass
+R1-class-rename	e2e	smoke.spec.ts	/ mounts with no uncaught error and a non-empty root	pass
+R1-class-rename	e2e	smoke.spec.ts	/board mounts with no uncaught error and a non-empty root	pass
+R1-class-rename	jest	advanced-form.validators.spec.ts	passwordMatchValidator returns null when confirmPassword is empty	pass
+R1-class-rename	jest	advanced-form.validators.spec.ts	passwordMatchValidator returns null when passwords match	pass
+R1-class-rename	jest	advanced-form.validators.spec.ts	passwordMatchValidator returns passwordMismatch when passwords differ	pass
+R1-class-rename	jest	advanced-form.validators.spec.ts	usernameTakenValidator emits null for an available name	pass
+R1-class-rename	jest	advanced-form.validators.spec.ts	usernameTakenValidator emits null immediately for an empty value	pass
+R1-class-rename	jest	advanced-form.validators.spec.ts	usernameTakenValidator emits usernameTaken for a taken name	pass
+R1-class-rename	jest	advanced-form.validators.spec.ts	usernameTakenValidator matches taken names case-insensitively	pass
+R1-class-rename	jest	board.spec.ts	Board announces a failed load as an alert and renders no table	pass
+R1-class-rename	jest	board.spec.ts	Board keeps the table and says how old stale data is	pass
+R1-class-rename	jest	board.spec.ts	Board lists every incident in a table with column headers, and shows severity as visible text	pass
+R1-class-rename	jest	board.spec.ts	Board narrows the rows to the chosen severity and marks that filter as pressed	pass
+R1-class-rename	jest	board.spec.ts	Board says so for loading and empty, without a table	pass
+R1-class-rename	jest	board.spec.ts	Board shows the selected incident's details with its severity spelled out	pass
+R1-class-rename	jest	board.spec.ts	Board stops showing details for an incident the active filter hides	pass
+R1-class-rename	jest	format-age.spec.ts	formatAge never goes negative when the instant is in the future	pass
+R1-class-rename	jest	format-age.spec.ts	formatAge shows hours and remaining minutes under a day, and drops a zero remainder	pass
+R1-class-rename	jest	format-age.spec.ts	formatAge shows minutes under an hour	pass
+R1-class-rename	jest	format-age.spec.ts	formatAge shows whole days from 24 hours	pass
+R1-class-rename	jest	incident-source.spec.ts	IncidentSource reports each non-data scenario as its own status	pass
+R1-class-rename	jest	incident-source.spec.ts	IncidentSource serves the same incidents for the stale scenario, marked with when they were last refreshed	pass
+R1-class-rename	jest	incident-source.spec.ts	IncidentSource serves the whole fixture, fresh, with no scenario or an unknown one	pass
+R1-class-rename	jest	smoke-routes.spec.ts	smoke route coverage /board is covered by e2e/smoke-routes.ts	pass
+R1-class-rename	jest	smoke-routes.spec.ts	smoke route coverage every routed path has a route with a component (sanity on the fixture itself)	pass
+R1-class-rename	jest	smoke-routes.spec.ts	smoke route coverage root ("/") is covered even though the router only declares a redirect	pass
+R1-class-rename	layout	snapshot	-	pass
+R1-class-rename	lint	eslint	-	pass
+R2-selector-rename	build	ng	-	pass
+R2-selector-rename	e2e	board.spec.ts	filters by severity and shows the details of a clicked incident	pass
+R2-selector-rename	e2e	board.spec.ts	is operable by keyboard alone, with a visible focus indicator	pass
+R2-selector-rename	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > empty	pass
+R2-selector-rename	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > failed	pass
+R2-selector-rename	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > loading	pass
+R2-selector-rename	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > stale keeps the table and says how old it is	pass
+R2-selector-rename	e2e	smoke.spec.ts	/ mounts with no uncaught error and a non-empty root	pass
+R2-selector-rename	e2e	smoke.spec.ts	/board mounts with no uncaught error and a non-empty root	pass
+R2-selector-rename	jest	advanced-form.validators.spec.ts	passwordMatchValidator returns null when confirmPassword is empty	pass
+R2-selector-rename	jest	advanced-form.validators.spec.ts	passwordMatchValidator returns null when passwords match	pass
+R2-selector-rename	jest	advanced-form.validators.spec.ts	passwordMatchValidator returns passwordMismatch when passwords differ	pass
+R2-selector-rename	jest	advanced-form.validators.spec.ts	usernameTakenValidator emits null for an available name	pass
+R2-selector-rename	jest	advanced-form.validators.spec.ts	usernameTakenValidator emits null immediately for an empty value	pass
+R2-selector-rename	jest	advanced-form.validators.spec.ts	usernameTakenValidator emits usernameTaken for a taken name	pass
+R2-selector-rename	jest	advanced-form.validators.spec.ts	usernameTakenValidator matches taken names case-insensitively	pass
+R2-selector-rename	jest	board.spec.ts	Board announces a failed load as an alert and renders no table	pass
+R2-selector-rename	jest	board.spec.ts	Board keeps the table and says how old stale data is	pass
+R2-selector-rename	jest	board.spec.ts	Board lists every incident in a table with column headers, and shows severity as visible text	pass
+R2-selector-rename	jest	board.spec.ts	Board narrows the rows to the chosen severity and marks that filter as pressed	pass
+R2-selector-rename	jest	board.spec.ts	Board says so for loading and empty, without a table	pass
+R2-selector-rename	jest	board.spec.ts	Board shows the selected incident's details with its severity spelled out	pass
+R2-selector-rename	jest	board.spec.ts	Board stops showing details for an incident the active filter hides	pass
+R2-selector-rename	jest	format-age.spec.ts	formatAge never goes negative when the instant is in the future	pass
+R2-selector-rename	jest	format-age.spec.ts	formatAge shows hours and remaining minutes under a day, and drops a zero remainder	pass
+R2-selector-rename	jest	format-age.spec.ts	formatAge shows minutes under an hour	pass
+R2-selector-rename	jest	format-age.spec.ts	formatAge shows whole days from 24 hours	pass
+R2-selector-rename	jest	incident-source.spec.ts	IncidentSource reports each non-data scenario as its own status	pass
+R2-selector-rename	jest	incident-source.spec.ts	IncidentSource serves the same incidents for the stale scenario, marked with when they were last refreshed	pass
+R2-selector-rename	jest	incident-source.spec.ts	IncidentSource serves the whole fixture, fresh, with no scenario or an unknown one	pass
+R2-selector-rename	jest	smoke-routes.spec.ts	smoke route coverage /board is covered by e2e/smoke-routes.ts	pass
+R2-selector-rename	jest	smoke-routes.spec.ts	smoke route coverage every routed path has a route with a component (sanity on the fixture itself)	pass
+R2-selector-rename	jest	smoke-routes.spec.ts	smoke route coverage root ("/") is covered even though the router only declares a redirect	pass
+R2-selector-rename	layout	snapshot	-	pass
+R2-selector-rename	lint	eslint	-	pass
+R3-signal-rename	build	ng	-	pass
+R3-signal-rename	e2e	board.spec.ts	filters by severity and shows the details of a clicked incident	pass
+R3-signal-rename	e2e	board.spec.ts	is operable by keyboard alone, with a visible focus indicator	pass
+R3-signal-rename	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > empty	pass
+R3-signal-rename	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > failed	pass
+R3-signal-rename	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > loading	pass
+R3-signal-rename	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > stale keeps the table and says how old it is	pass
+R3-signal-rename	e2e	smoke.spec.ts	/ mounts with no uncaught error and a non-empty root	pass
+R3-signal-rename	e2e	smoke.spec.ts	/board mounts with no uncaught error and a non-empty root	pass
+R3-signal-rename	jest	advanced-form.validators.spec.ts	passwordMatchValidator returns null when confirmPassword is empty	pass
+R3-signal-rename	jest	advanced-form.validators.spec.ts	passwordMatchValidator returns null when passwords match	pass
+R3-signal-rename	jest	advanced-form.validators.spec.ts	passwordMatchValidator returns passwordMismatch when passwords differ	pass
+R3-signal-rename	jest	advanced-form.validators.spec.ts	usernameTakenValidator emits null for an available name	pass
+R3-signal-rename	jest	advanced-form.validators.spec.ts	usernameTakenValidator emits null immediately for an empty value	pass
+R3-signal-rename	jest	advanced-form.validators.spec.ts	usernameTakenValidator emits usernameTaken for a taken name	pass
+R3-signal-rename	jest	advanced-form.validators.spec.ts	usernameTakenValidator matches taken names case-insensitively	pass
+R3-signal-rename	jest	board.spec.ts	Board announces a failed load as an alert and renders no table	pass
+R3-signal-rename	jest	board.spec.ts	Board keeps the table and says how old stale data is	pass
+R3-signal-rename	jest	board.spec.ts	Board lists every incident in a table with column headers, and shows severity as visible text	pass
+R3-signal-rename	jest	board.spec.ts	Board narrows the rows to the chosen severity and marks that filter as pressed	pass
+R3-signal-rename	jest	board.spec.ts	Board says so for loading and empty, without a table	pass
+R3-signal-rename	jest	board.spec.ts	Board shows the selected incident's details with its severity spelled out	pass
+R3-signal-rename	jest	board.spec.ts	Board stops showing details for an incident the active filter hides	pass
+R3-signal-rename	jest	format-age.spec.ts	formatAge never goes negative when the instant is in the future	pass
+R3-signal-rename	jest	format-age.spec.ts	formatAge shows hours and remaining minutes under a day, and drops a zero remainder	pass
+R3-signal-rename	jest	format-age.spec.ts	formatAge shows minutes under an hour	pass
+R3-signal-rename	jest	format-age.spec.ts	formatAge shows whole days from 24 hours	pass
+R3-signal-rename	jest	incident-source.spec.ts	IncidentSource reports each non-data scenario as its own status	pass
+R3-signal-rename	jest	incident-source.spec.ts	IncidentSource serves the same incidents for the stale scenario, marked with when they were last refreshed	pass
+R3-signal-rename	jest	incident-source.spec.ts	IncidentSource serves the whole fixture, fresh, with no scenario or an unknown one	pass
+R3-signal-rename	jest	smoke-routes.spec.ts	smoke route coverage /board is covered by e2e/smoke-routes.ts	pass
+R3-signal-rename	jest	smoke-routes.spec.ts	smoke route coverage every routed path has a route with a component (sanity on the fixture itself)	pass
+R3-signal-rename	jest	smoke-routes.spec.ts	smoke route coverage root ("/") is covered even though the router only declares a redirect	pass
+R3-signal-rename	layout	snapshot	-	pass
+R3-signal-rename	lint	eslint	-	pass
+baseline	build	ng	-	pass
+baseline	e2e	board.spec.ts	filters by severity and shows the details of a clicked incident	pass
+baseline	e2e	board.spec.ts	is operable by keyboard alone, with a visible focus indicator	pass
+baseline	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > empty	pass
+baseline	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > failed	pass
+baseline	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > loading	pass
+baseline	e2e	board.spec.ts	non-happy states are reachable by URL and raise no errors > stale keeps the table and says how old it is	pass
+baseline	e2e	smoke.spec.ts	/ mounts with no uncaught error and a non-empty root	pass
+baseline	e2e	smoke.spec.ts	/board mounts with no uncaught error and a non-empty root	pass
+baseline	jest	advanced-form.validators.spec.ts	passwordMatchValidator returns null when confirmPassword is empty	pass
+baseline	jest	advanced-form.validators.spec.ts	passwordMatchValidator returns null when passwords match	pass
+baseline	jest	advanced-form.validators.spec.ts	passwordMatchValidator returns passwordMismatch when passwords differ	pass
+baseline	jest	advanced-form.validators.spec.ts	usernameTakenValidator emits null for an available name	pass
+baseline	jest	advanced-form.validators.spec.ts	usernameTakenValidator emits null immediately for an empty value	pass
+baseline	jest	advanced-form.validators.spec.ts	usernameTakenValidator emits usernameTaken for a taken name	pass
+baseline	jest	advanced-form.validators.spec.ts	usernameTakenValidator matches taken names case-insensitively	pass
+baseline	jest	board.spec.ts	Board announces a failed load as an alert and renders no table	pass
+baseline	jest	board.spec.ts	Board keeps the table and says how old stale data is	pass
+baseline	jest	board.spec.ts	Board lists every incident in a table with column headers, and shows severity as visible text	pass
+baseline	jest	board.spec.ts	Board narrows the rows to the chosen severity and marks that filter as pressed	pass
+baseline	jest	board.spec.ts	Board says so for loading and empty, without a table	pass
+baseline	jest	board.spec.ts	Board shows the selected incident's details with its severity spelled out	pass
+baseline	jest	board.spec.ts	Board stops showing details for an incident the active filter hides	pass
+baseline	jest	format-age.spec.ts	formatAge never goes negative when the instant is in the future	pass
+baseline	jest	format-age.spec.ts	formatAge shows hours and remaining minutes under a day, and drops a zero remainder	pass
+baseline	jest	format-age.spec.ts	formatAge shows minutes under an hour	pass
+baseline	jest	format-age.spec.ts	formatAge shows whole days from 24 hours	pass
+baseline	jest	incident-source.spec.ts	IncidentSource reports each non-data scenario as its own status	pass
+baseline	jest	incident-source.spec.ts	IncidentSource serves the same incidents for the stale scenario, marked with when they were last refreshed	pass
+baseline	jest	incident-source.spec.ts	IncidentSource serves the whole fixture, fresh, with no scenario or an unknown one	pass
+baseline	jest	smoke-routes.spec.ts	smoke route coverage /board is covered by e2e/smoke-routes.ts	pass
+baseline	jest	smoke-routes.spec.ts	smoke route coverage every routed path has a route with a component (sanity on the fixture itself)	pass
+baseline	jest	smoke-routes.spec.ts	smoke route coverage root ("/") is covered even though the router only declares a redirect	pass
+baseline	layout	snapshot	-	pass
+baseline	lint	eslint	-	pass
