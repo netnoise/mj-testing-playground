@@ -1,27 +1,35 @@
 {
   "skill": "implement",
   "status": "ok",
-  "at": "2026-09-18T22:02:39.969Z",
+  "at": "2026-09-18T22:29:57.056Z",
   "base_commit": "3932df75c94b3049cf18e8382f0bf7caea29f27a",
   "artifacts": [
+    "HANDOFF.md",
     "PATCH-NOTES.md",
     "brief.md",
     "door-crossings.md",
+    "implement.json",
     "input.md",
     "journal.md",
     "understand.json"
   ],
   "files_changed": [
+    ".ai/harness/gate-scope.json",
+    ".claude/hooks/budget.mjs",
+    ".eslintrc.json",
     ".storybook/main.js",
     ".storybook/preview.js",
     ".storybook/tsconfig.json",
     "CLAUDE.md",
+    "angular.json",
     "e2e/app.spec.ts",
     "e2e/smoke-routes.ts",
     "e2e/smoke.spec.ts",
+    "eslint.config.js",
     "package-lock.json",
     "package.json",
     "public/favicon.ico",
+    "setup-jest.ts",
     "src/app/advanced-form/advanced-form.component.html",
     "src/app/advanced-form/advanced-form.component.scss",
     "src/app/advanced-form/advanced-form.component.spec.ts",
@@ -45,10 +53,13 @@
     "src/environments/environment.ts",
     "src/favicon.ico",
     "src/main.ts",
-    "src/polyfills.ts"
+    "src/polyfills.ts",
+    "tsconfig.app.json",
+    "tsconfig.json",
+    "tsconfig.spec.json"
   ],
   "spent": {
-    "min": 5,
-    "files": 34
+    "min": 33,
+    "files": 43
   }
 }

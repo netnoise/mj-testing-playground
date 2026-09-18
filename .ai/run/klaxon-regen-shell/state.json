@@ -18,16 +18,22 @@
   "max_files": 40,
   "max_minutes": 90,
   "files_touched": [
+    ".ai/harness/gate-scope.json",
+    ".claude/hooks/budget.mjs",
+    ".eslintrc.json",
     ".storybook/main.js",
     ".storybook/preview.js",
     ".storybook/tsconfig.json",
     "CLAUDE.md",
+    "angular.json",
     "e2e/app.spec.ts",
     "e2e/smoke-routes.ts",
     "e2e/smoke.spec.ts",
+    "eslint.config.js",
     "package-lock.json",
     "package.json",
     "public/favicon.ico",
+    "setup-jest.ts",
     "src/app/advanced-form/advanced-form.component.html",
     "src/app/advanced-form/advanced-form.component.scss",
     "src/app/advanced-form/advanced-form.component.spec.ts",
@@ -51,7 +57,10 @@
     "src/environments/environment.ts",
     "src/favicon.ico",
     "src/main.ts",
-    "src/polyfills.ts"
+    "src/polyfills.ts",
+    "tsconfig.app.json",
+    "tsconfig.json",
+    "tsconfig.spec.json"
   ],
   "type": "redesign"
 }

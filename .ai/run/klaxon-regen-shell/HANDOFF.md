@@ -1,5 +1,5 @@
 # HANDOFF - klaxon-regen-shell
-generated mechanically 2026-09-18T22:02:51Z - no model call
+generated mechanically 2026-09-18T22:28:11Z - no model call
 
 > **ACTIVE - mid-run snapshot, not a final state.** This run is still
 > in progress; the Stop hook wrote this automatically, it wasn't
@@ -22,18 +22,23 @@ run: klaxon-regen-shell · intake 2026-09-18
 - applied the non-gate part to the repo (src, public, package*.json, e2e smoke, .storybook removal, CLAUDE.md); door-7 part exported to patch/gate-scope.patch (8 files).
 - deferred: @testing-library/dom (brief listed it; unused until run 2, so added there, not here).
 - STOP: door 7 needs the human to apply patch/gate-scope.patch and commit; branch is red until then (angular.json still Angular 14).
+- deviation: brief said ESLint 9; `ng add angular-eslint` in the scratch clone bumped package.json to eslint ^10.3.0 (lock 10.11.0) and every gate in the clone passed on it. Kept; docs corrected to ESLint 10. Digest must name it.
 ```
 
 ## Tree state (git is the truth, not any claim above)
 ```
-branch: claude/klaxon-regen-shell  head: 8d09540
+branch: claude/klaxon-regen-shell  head: 543eda7
+ M .ai/run/klaxon-regen-shell/HANDOFF.md
+ M package-lock.json
 ?? .ai/run/2026-09-15-landing-page/
 ?? .ai/run/2026-09-18-next-development-step/
 ?? .ai/run/harness-v42-landing/HANDOFF.md
 ?? .ai/run/harness-v43-critical/HANDOFF.md
 ?? .ai/run/hotfix-gate-and-claims/HANDOFF.md
-?? .ai/run/klaxon-regen-shell/HANDOFF.md
 --
+ .ai/run/klaxon-regen-shell/HANDOFF.md | 75 +++--------------------------------
+ package-lock.json                     |  1 +
+ 2 files changed, 6 insertions(+), 70 deletions(-)
 ```
 
 ## Last emit
