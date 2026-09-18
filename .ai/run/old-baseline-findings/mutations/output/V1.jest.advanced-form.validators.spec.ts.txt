@@ -1,0 +1,37 @@
+FAIL src/app/advanced-form/advanced-form.validators.spec.ts
+  passwordMatchValidator
+    ✕ returns null when confirmPassword is empty (1 ms)
+    ✓ returns null when passwords match
+    ✓ returns passwordMismatch when passwords differ
+  usernameTakenValidator
+    ✓ emits null immediately for an empty value (1 ms)
+    ✓ emits usernameTaken for a taken name (1 ms)
+    ✓ emits null for an available name
+    ✓ matches taken names case-insensitively
+
+  ● passwordMatchValidator › returns null when confirmPassword is empty
+
+    expect(received).toBeNull()
+
+    Received: {"passwordMismatch": true}
+
+      18 |
+      19 |   it('returns null when confirmPassword is empty', () => {
+    > 20 |     expect(passwordMatchValidator(buildGroup('secret123', ''))).toBeNull();
+         |                                                                 ^
+      21 |   });
+      22 |
+      23 |   it('returns null when passwords match', () => {
+
+      at src/app/advanced-form/advanced-form.validators.spec.ts:20:65
+      at _ZoneDelegate.Object.<anonymous>._ZoneDelegate.invoke (node_modules/zone.js/bundles/zone-testing-bundle.umd.js:409:30)
+      at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (node_modules/zone.js/bundles/zone-testing-bundle.umd.js:3830:43)
+      at _ZoneDelegate.Object.<anonymous>._ZoneDelegate.invoke (node_modules/zone.js/bundles/zone-testing-bundle.umd.js:408:56)
+      at Zone.Object.<anonymous>.Zone.run (node_modules/zone.js/bundles/zone-testing-bundle.umd.js:169:47)
+      at Object.wrappedFunc (node_modules/zone.js/bundles/zone-testing-bundle.umd.js:4330:34)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 6 passed, 7 total
+Snapshots:   0 total
+Time:        0.743 s, estimated 1 s
+Ran all test suites matching /src\/app\/advanced-form\/advanced-form.validators.spec.ts/i.

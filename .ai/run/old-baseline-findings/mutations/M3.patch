@@ -1,0 +1,23 @@
+diff --git a/src/app/app.component.html b/src/app/app.component.html
+index 9f98af8..9f44df2 100644
+--- a/src/app/app.component.html
++++ b/src/app/app.component.html
+@@ -1,4 +1,4 @@
+-<header class="app-header">
++<header class="site-header">
+   <h1>{{ title }}</h1>
+ </header>
+ 
+diff --git a/src/app/app.component.scss b/src/app/app.component.scss
+index 7a5dec3..99cd732 100644
+--- a/src/app/app.component.scss
++++ b/src/app/app.component.scss
+@@ -4,7 +4,7 @@
+   color: #222;
+ }
+ 
+-.app-header {
++.site-header {
+   padding: 16px 24px;
+   background-color: #1976d2;
+   color: white;

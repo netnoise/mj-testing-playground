@@ -1,0 +1,9 @@
+
+Running 3 tests using 3 workers
+
+  ✓  3 [chromium] › app.spec.ts:3:5 › should display the app shell and land on the advanced form (233ms)
+  ✓  2 [chromium] › app.spec.ts:10:5 › shows a validation error for an invalid username (250ms)
+  ✓  1 [chromium] › app.spec.ts:19:5 › fills out and submits the form successfully (1.2s)
+
+
+  3 passed (1.6s)

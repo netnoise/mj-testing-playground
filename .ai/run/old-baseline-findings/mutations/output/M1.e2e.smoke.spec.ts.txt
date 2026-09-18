@@ -1,0 +1,9 @@
+
+Running 3 tests using 3 workers
+
+  ✓  2 [chromium] › smoke.spec.ts:30:7 › / mounts with no uncaught error and a non-empty root (226ms)
+  ✓  1 [chromium] › smoke.spec.ts:30:7 › /advanced-form mounts with no uncaught error and a non-empty root (228ms)
+  ✓  3 [chromium] › smoke.spec.ts:50:5 › a plain (non-forced, non-evaluate) click reaches the submit button (260ms)
+
+
+  3 passed (683ms)

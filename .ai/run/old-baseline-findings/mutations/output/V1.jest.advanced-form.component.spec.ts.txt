@@ -1,0 +1,62 @@
+PASS src/app/advanced-form/advanced-form.component.spec.ts
+  AdvancedFormComponent
+    ✓ should create (39 ms)
+    ✓ should be invalid initially (12 ms)
+    ✓ should seed the skills FormArray with exactly one row (9 ms)
+    username
+      ✓ is required (7 ms)
+      ✓ enforces a minimum length (9 ms)
+      ✓ enforces a maximum length (7 ms)
+      ✓ enforces an allowed character pattern (8 ms)
+      ✓ is pending while the async check runs, then flags a taken name (8 ms)
+      ✓ resolves valid for an available name (7 ms)
+    email
+      ✓ is required (7 ms)
+      ✓ validates email format (7 ms)
+    age
+      ✓ is required (6 ms)
+      ✓ enforces a minimum (6 ms)
+      ✓ enforces a maximum (7 ms)
+      ✓ accepts the boundary values (6 ms)
+    country
+      ✓ is required (8 ms)
+    contactPreference / phone conditional validation
+      ✓ leaves phone optional when contact preference is the default (email) (6 ms)
+      ✓ makes phone required once contact preference switches to phone (7 ms)
+      ✓ accepts a well-formed phone number once contact preference is phone (5 ms)
+      ✓ clears phone validators when switching away from phone (6 ms)
+      ✓ hides the phone field in the template by default (8 ms)
+      ✓ shows the phone field in the template once contact preference is phone (8 ms)
+    address
+      ✓ requires street (6 ms)
+      ✓ requires city (6 ms)
+      ✓ validates postal code format (6 ms)
+    passwordGroup
+      ✓ flags a mismatch on the group, not on the individual controls (6 ms)
+      ✓ is valid once both passwords match and meet their own validators (7 ms)
+    error message rendering
+      ✓ shows the required message for username once touched (6 ms)
+      ✓ swaps the error message as the failing validator changes (7 ms)
+      ✓ shows the password mismatch message once confirmPassword is touched (8 ms)
+    skills FormArray
+      ✓ adds a new row (8 ms)
+      ✓ removes the correct row (6 ms)
+      ✓ invalidates the form when a row has an empty skill name (6 ms)
+      ✓ disables the remove button when only one row remains (8 ms)
+      ✓ enables the remove button once a second row is added (7 ms)
+    onSubmit
+      ✓ marks all controls as touched and does not set submittedValue when the form is invalid (6 ms)
+      ✓ renders the fix-the-errors message once submitted invalid (8 ms)
+      ✓ captures the form value once the form is valid (6 ms)
+      ✓ renders the submitted value once valid (8 ms)
+    onReset
+      ✓ clears submission state and rebuilds the form (7 ms)
+      ✓ re-attaches the conditional validator exactly once after reset (7 ms)
+    ngOnDestroy
+      ✓ unsubscribes from the contactPreference subscription (6 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       42 passed, 42 total
+Snapshots:   0 total
+Time:        1.085 s
+Ran all test suites matching /src\/app\/advanced-form\/advanced-form.component.spec.ts/i.
