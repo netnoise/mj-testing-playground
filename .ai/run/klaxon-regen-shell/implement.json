@@ -1,23 +1,17 @@
 {
-  "status": "active",
-  "opened_by": "open-run.sh",
-  "started_at": "2026-09-18T21:57:18.644Z",
+  "skill": "implement",
+  "status": "ok",
+  "at": "2026-09-18T22:02:39.969Z",
   "base_commit": "3932df75c94b3049cf18e8382f0bf7caea29f27a",
-  "dirty_at_start": [],
-  "allowed_paths": [
-    "src/**",
-    "e2e/app.spec.ts",
-    "e2e/smoke.spec.ts",
-    "e2e/smoke-routes.ts",
-    "package.json",
-    "package-lock.json",
-    ".storybook/**",
-    "CLAUDE.md",
-    ".ai/run/klaxon-regen-shell/**"
+  "artifacts": [
+    "PATCH-NOTES.md",
+    "brief.md",
+    "door-crossings.md",
+    "input.md",
+    "journal.md",
+    "understand.json"
   ],
-  "max_files": 40,
-  "max_minutes": 90,
-  "files_touched": [
+  "files_changed": [
     ".storybook/main.js",
     ".storybook/preview.js",
     ".storybook/tsconfig.json",
@@ -53,5 +47,8 @@
     "src/main.ts",
     "src/polyfills.ts"
   ],
-  "type": "redesign"
+  "spent": {
+    "min": 5,
+    "files": 34
+  }
 }
