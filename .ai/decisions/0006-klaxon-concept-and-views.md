@@ -120,3 +120,13 @@ Go-for-practice:
 Not yet built. This addendum records the accepted direction; scaffolding it
 (module layout, its own `go.mod`, how the Node BFF calls it — HTTP or gRPC) is
 future work and its own decision when it starts.
+
+### Correction — see 0008 (2026-09-18)
+Item 1's founding evidence was a prediction, and it was wrong when run. Demoting
+the `<h1>` makes `app.component.spec.ts:33` **fail** (null `TypeError`), not pass.
+A coordinated class rename fails with the identical error, and a stylesheet-only
+rename passes. The coupling lesson stands in that corrected form. The colour-only
+badge referenced by item 5 is not in the wireframe markup, and it is now a planned
+isolated mutation. Findings-matrix cells are hypotheses until run. This record's
+body is left as written.
+[`0008-klaxon-claims-to-hypotheses.md`](0008-klaxon-claims-to-hypotheses.md).

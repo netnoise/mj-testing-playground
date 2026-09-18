@@ -31,7 +31,9 @@ event stream that makes the board's "live" data actually live. Angular never
 calls it, and neither does MSW — the fake keeps faking the BFF's contract
 directly, so the real path (Go &rarr; BFF) and the fake path (MSW) stay
 independent of each other. Not yet built; see §05 and §06 of the write-up for
-the reasoning and the diagram.
+the reasoning and the diagram. Per decision 0008 it comes **after** the first
+measured frontend finding and the scripted-fake scenarios, not before them
+(write-up §07).
 
 ## Wireframes
 
@@ -40,16 +42,17 @@ no build step or server required:
 
 | View | File | What it's for |
 |---|---|---|
-| Incident Board | [`wireframes/board.html`](wireframes/board.html) | The live table + inspector panel. Carries the colour-only-severity finding as an in-context callout, linked to Findings. |
+| Incident Board | [`wireframes/board.html`](wireframes/board.html) | The live table + inspector panel. Carries an in-context callout for the planned colour-only-severity mutation, linked to Findings. The markup here is a prototype (all divs, fixed widths, 10px labels): take its hierarchy and type, not its structure. |
 | Triage & Escalation | [`wireframes/triage.html`](wireframes/triage.html) | The escalation dialog: real cross-field validation (escalating to Critical requires an Incident Commander) and an unsaved-changes indicator. |
 | Incident Archive | [`wireframes/archive.html`](wireframes/archive.html) | The paginated long-table case, distinct from the live board's scrolling table. Annotated with what its `aria-live` region actually announces. |
-| Findings | [`wireframes/findings.html`](wireframes/findings.html) | The in-app defect × test-layer matrix. Featured finding: severity-by-colour-only, caught by 0 of 5 layers. |
+| Findings | [`wireframes/findings.html`](wireframes/findings.html) | The in-app defect × test-layer matrix. Featured row: severity-by-colour-only, a hypothesis (predicted 0 of 5, not run). |
 
 These are static snapshots of an interactive prototype built as a Claude
 Artifact ([Klaxon Views](https://claude.ai/artifact/T8CfBzMBVpac9BCtDNfvPh)).
 Both artifact links require the account that created them — the files in this
 directory are the repo-durable copy and take precedence if the two ever
-disagree.
+disagree. As of decision 0008 (2026-09-18) they do: the artifacts still show
+the uncorrected claims.
 
 ## Visual language
 
@@ -65,11 +68,27 @@ Dark ops-console palette, chosen deliberately, not inherited:
   timestamps, anything tabular or code-shaped) — the same pairing used in the
   two write-up artifacts, for continuity across the whole project.
 
-## Known, deliberate gap
+## Planned mutation: colour-only severity
 
-The Incident Board's SEV badge conveys severity by colour alone. This is not
-an oversight — it is the repo's first planted defect, left live in the
-wireframe on purpose so the Findings view's featured claim ("nothing in this
-suite catches colour-only severity") has a real thing to point at once the
-app is built. Do not fix it as part of building the shell; it gets fixed only
-as a recorded finding, per the harness rule in `.ai/decisions/0006`.
+Earlier versions of this README said the board's SEV badge conveys severity by
+colour alone. It doesn't: every badge in `wireframes/board.html` carries
+visible text (`CRIT`, `MAJ`, `MIN`, and `CRITICAL` in the inspector). Decision
+[`0008`](../../../.ai/decisions/0008-klaxon-claims-to-hypotheses.md) corrects
+this.
+
+The normal app ships **accessible severity labels**. Colour-only severity is an
+**isolated mutation**: a patch that strips the badge text, applied to a frozen
+suite, run, recorded, and reverted. The inaccessible version is never the
+default. Whether that mutation is caught depends on the assertions the suite
+actually makes. The prediction that it's "caught by 0 of 5" is a hypothesis
+until it has been run.
+
+## Claims and evidence
+
+Every test outcome in these docs is either **recorded** or a **hypothesis**. The
+status vocabulary is `hypothesis · caught · missed · not run · not applicable ·
+infrastructure error`. A result counts only when it names its baseline commit,
+mutation patch, test revision, command, scenario or seed, environment, and
+failure output. Today there is exactly one recorded result: the heading-demotion
+run against the existing `app.component.spec.ts` (write-up §01, evidence in
+`.ai/run/klaxon-claims-correction/evidence.md`).
