@@ -41,7 +41,7 @@ These come from `eslint.config.js` / `angular.json` and will fail lint/build if 
 |------|---------|--------|
 | Jest + jest-preset-angular | Unit tests | `jest.config.js`, `setup-jest.ts`, `tsconfig.spec.json` |
 | Playwright | E2E tests | `playwright.config.ts`, `e2e/` |
-| ESLint 9 + angular-eslint | Linting (flat config) | `eslint.config.js` |
+| ESLint 10 + angular-eslint | Linting (flat config) | `eslint.config.js` |
 
 ## Layout notes
 

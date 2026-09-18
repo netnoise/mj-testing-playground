@@ -32,7 +32,7 @@ Then tell me the result and I'll write the digest and close the run.
 | `angular.json` | `@angular/build:application` builder; `outputPath` is `{ base: "dist/mj-testing-playground", browser: "" }` so `index.html` stays where `e2e/serve-dist.mjs` serves from; old production budgets kept (2mb/5mb initial, 6kb/10kb style); no `test` target and no `fileReplacements`; `lint` target from `ng add angular-eslint` |
 | `tsconfig.json`, `tsconfig.app.json`, `tsconfig.spec.json` | Angular 21 generated (strict, ES2022, `module: preserve`); spec config keeps `jest` and `node` types |
 | `setup-jest.ts` | `setupZonelessTestEnv()` from `jest-preset-angular/setup-env/zoneless` |
-| `eslint.config.js` (new), `.eslintrc.json` (deleted) | Flat ESLint 9 config. The old rules are carried over: `app` selector prefixes, single quotes, semicolons, `no-console`, 140-char `max-len` (warn) |
+| `eslint.config.js` (new), `.eslintrc.json` (deleted) | Flat ESLint 10 config. The old rules are carried over: `app` selector prefixes, single quotes, semicolons, `no-console`, 140-char `max-len` (warn) |
 | `.claude/hooks/budget.mjs` | `GATE_SCOPE` swaps `.eslintrc.json` for `eslint.config.js`. Must land in the same commit, or `verify.sh`'s preflight fails on a listed path that no longer exists |
 
 Not in the patch, because unchanged: `jest.config.js` (byte-identical), `playwright.config.ts`,

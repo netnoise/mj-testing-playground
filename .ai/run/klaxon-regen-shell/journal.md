@@ -8,3 +8,4 @@
 - applied the non-gate part to the repo (src, public, package*.json, e2e smoke, .storybook removal, CLAUDE.md); door-7 part exported to patch/gate-scope.patch (8 files).
 - deferred: @testing-library/dom (brief listed it; unused until run 2, so added there, not here).
 - STOP: door 7 needs the human to apply patch/gate-scope.patch and commit; branch is red until then (angular.json still Angular 14).
+- deviation: brief said ESLint 9; `ng add angular-eslint` in the scratch clone bumped package.json to eslint ^10.3.0 (lock 10.11.0) and every gate in the clone passed on it. Kept; docs corrected to ESLint 10. Digest must name it.
