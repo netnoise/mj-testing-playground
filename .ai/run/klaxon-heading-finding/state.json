@@ -1,5 +1,5 @@
 {
-  "status": "active",
+  "status": "done",
   "opened_by": "open-run.sh",
   "started_at": "2026-09-18T22:56:20.678Z",
   "base_commit": "732796468edd3f99b577795c4d94cd3592a860d0",
@@ -20,5 +20,6 @@
     "docs/design/klaxon/findings/heading-demotion.json",
     "docs/design/klaxon/findings/heading-demotion.md"
   ],
-  "type": "feature"
+  "type": "feature",
+  "head_commit": "11aea06083b2958c3ea8422c10e588002b8a109f"
 }
