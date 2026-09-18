@@ -69,3 +69,13 @@ record and the write-up snapshot were added, and `docs/design/klaxon/README.md`
 was updated to list it. `docs/**` and `.ai/decisions/**` are both outside
 `GATE_SCOPE`, so this is a doors-free, docs-only commit — no `verify.sh` tier
 applies.
+
+## Correction — see 0008 (2026-09-18)
+The direction stands, but the build order doesn't. The generator now comes after
+milestone 1, the scripted-fake scenarios, and the real BFF. It is built when it
+answers a question scripted scenarios can't reach, and it needs a seed, a
+controllable clock, deterministic ordering, cancellation, and replay, so that
+concurrency produces evidence rather than flakiness. "Awkward in single-threaded
+Node" was not treated as a sufficient reason to build it first. This record's
+body is left as written.
+[`0008-klaxon-claims-to-hypotheses.md`](0008-klaxon-claims-to-hypotheses.md).

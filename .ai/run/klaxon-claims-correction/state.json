@@ -1,0 +1,26 @@
+{
+  "status": "active",
+  "opened_by": "open-run.sh",
+  "started_at": "2026-09-18T15:28:38.843Z",
+  "base_commit": "cb11246e66268f8a09116f9a806b6b05526a98b7",
+  "dirty_at_start": [],
+  "allowed_paths": [
+    "docs/design/klaxon/**",
+    ".ai/decisions/**",
+    "src/app/app.component.html",
+    "src/app/app.component.scss",
+    ".ai/run/klaxon-claims-correction/**"
+  ],
+  "max_files": 12,
+  "max_minutes": 60,
+  "files_touched": [
+    ".ai/decisions/0006-klaxon-concept-and-views.md",
+    ".ai/decisions/0007-go-event-generator.md",
+    ".ai/decisions/0008-klaxon-claims-to-hypotheses.md",
+    "docs/design/klaxon/README.md",
+    "docs/design/klaxon/klaxon-testing-lab.html",
+    "docs/design/klaxon/wireframes/board.html",
+    "docs/design/klaxon/wireframes/findings.html"
+  ],
+  "type": "feature"
+}
