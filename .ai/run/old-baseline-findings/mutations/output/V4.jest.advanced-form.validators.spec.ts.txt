@@ -1,0 +1,16 @@
+PASS src/app/advanced-form/advanced-form.validators.spec.ts
+  passwordMatchValidator
+    ✓ returns null when confirmPassword is empty (1 ms)
+    ✓ returns null when passwords match
+    ✓ returns passwordMismatch when passwords differ (1 ms)
+  usernameTakenValidator
+    ✓ emits null immediately for an empty value
+    ✓ emits usernameTaken for a taken name (1 ms)
+    ✓ emits null for an available name
+    ✓ matches taken names case-insensitively
+
+Test Suites: 1 passed, 1 total
+Tests:       7 passed, 7 total
+Snapshots:   0 total
+Time:        0.747 s, estimated 1 s
+Ran all test suites matching /src\/app\/advanced-form\/advanced-form.validators.spec.ts/i.

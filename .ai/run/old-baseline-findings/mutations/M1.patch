@@ -1,0 +1,11 @@
+diff --git a/src/app/app.component.html b/src/app/app.component.html
+index 9f98af8..bf7c822 100644
+--- a/src/app/app.component.html
++++ b/src/app/app.component.html
+@@ -1,5 +1,5 @@
+ <header class="app-header">
+-  <h1>{{ title }}</h1>
++  <div class="title">{{ title }}</div>
+ </header>
+ 
+ <main>

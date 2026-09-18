@@ -1,0 +1,24 @@
+{
+  "skill": "test",
+  "status": "ok",
+  "at": "2026-09-18T21:32:57.495Z",
+  "base_commit": "32e5dc6a7378ec35ba3a3649839f64ab7dfa70b3",
+  "artifacts": [
+    "HANDOFF.md",
+    "brief.md",
+    "evidence.md",
+    "implement.json",
+    "input.md",
+    "journal.md",
+    "predictions.md",
+    "understand.json"
+  ],
+  "files_changed": [],
+  "spent": {
+    "min": 14,
+    "files": 0
+  },
+  "specs_added": 0,
+  "vacuous": null,
+  "note": "No spec written by design: brief Out of scope forbids new or edited tests (door 4 untouched). The assertion this run adds is mutations/replay.sh vs results.tsv. Audit found it exited 0 on a falsified row (vacuous); fixed to exit 1, negative control re-run (tampered exit=1, clean exit=0)."
+}

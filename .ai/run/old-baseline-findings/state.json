@@ -1,0 +1,18 @@
+{
+  "status": "done",
+  "opened_by": "open-run.sh",
+  "started_at": "2026-09-18T21:19:03.831Z",
+  "base_commit": "32e5dc6a7378ec35ba3a3649839f64ab7dfa70b3",
+  "dirty_at_start": [],
+  "allowed_paths": [
+    "src/app/app.component.html",
+    "src/app/app.component.scss",
+    "src/app/advanced-form/advanced-form.validators.ts",
+    ".ai/run/old-baseline-findings/**"
+  ],
+  "max_files": 8,
+  "max_minutes": 30,
+  "files_touched": [],
+  "type": "feature",
+  "head_commit": "d8bb92e790f4bef9ef3cd20d36a4f0f4f4dae8c8"
+}

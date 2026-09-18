@@ -1,0 +1,13 @@
+diff --git a/src/app/advanced-form/advanced-form.validators.ts b/src/app/advanced-form/advanced-form.validators.ts
+index eb57b23..1c4d0be 100644
+--- a/src/app/advanced-form/advanced-form.validators.ts
++++ b/src/app/advanced-form/advanced-form.validators.ts
+@@ -11,7 +11,7 @@ export function passwordMatchValidator(group: AbstractControl): ValidationErrors
+   if (!password || !confirmPassword || !confirmPassword.value) {
+     return null;
+   }
+-  return password.value === confirmPassword.value ? null : { passwordMismatch: true };
++  return String(password.value).toLowerCase() === String(confirmPassword.value).toLowerCase() ? null : { passwordMismatch: true };
+ }
+ 
+ export function usernameTakenValidator(delayMs: number = USERNAME_CHECK_DELAY_MS): AsyncValidatorFn {

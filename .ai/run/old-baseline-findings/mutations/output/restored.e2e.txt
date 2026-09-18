@@ -1,0 +1,13 @@
+
+Running 6 tests using 5 workers
+
+  ✓  4 [chromium] › smoke.spec.ts:30:7 › / mounts with no uncaught error and a non-empty root (302ms)
+  ✓  2 [chromium] › app.spec.ts:3:5 › should display the app shell and land on the advanced form (317ms)
+  ✓  3 [chromium] › smoke.spec.ts:30:7 › /advanced-form mounts with no uncaught error and a non-empty root (330ms)
+  ✓  5 [chromium] › app.spec.ts:10:5 › shows a validation error for an invalid username (344ms)
+  ✓  6 [chromium] › smoke.spec.ts:50:5 › a plain (non-forced, non-evaluate) click reaches the submit button (151ms)
+  ✓  1 [chromium] › app.spec.ts:19:5 › fills out and submits the form successfully (1.3s)
+
+
+  6 passed (1.8s)
+exit=0

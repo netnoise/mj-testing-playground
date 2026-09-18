@@ -1,0 +1,13 @@
+diff --git a/src/app/advanced-form/advanced-form.validators.ts b/src/app/advanced-form/advanced-form.validators.ts
+index eb57b23..5a41b4a 100644
+--- a/src/app/advanced-form/advanced-form.validators.ts
++++ b/src/app/advanced-form/advanced-form.validators.ts
+@@ -19,7 +19,7 @@ export function usernameTakenValidator(delayMs: number = USERNAME_CHECK_DELAY_MS
+     if (!control.value) {
+       return of(null);
+     }
+-    return timer(delayMs).pipe(
++    return timer(0).pipe(
+       switchMap(() => of(TAKEN_USERNAMES.includes(String(control.value).toLowerCase()))),
+       map((taken: boolean) => (taken ? { usernameTaken: true } : null))
+     );
