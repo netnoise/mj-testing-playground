@@ -52,6 +52,25 @@ These come from `.eslintrc.json` / `angular.json` and will fail lint/build if vi
 - `.storybook/` — Storybook configuration; stories live alongside components as `*.stories.ts`.
 - `tsconfig.app.json` (app build) and `tsconfig.spec.json` (Jest) both extend the root `tsconfig.json`.
 
+## Code quality bar
+
+The maintainer reads every line this repo produces, across every stack it grows to
+(Angular now; a Node BFF and a Go service are planned — see
+`.ai/decisions/0006-klaxon-concept-and-views.md`). "It passes the gate" is necessary,
+not sufficient. For any language in this repo:
+
+- Idiomatic in that language, not transliterated from another one (no
+  Angular-service-shaped classes in Go; no Java-style getters in TypeScript).
+- Comments explain a non-obvious *why* (a workaround, an invariant, a constraint from
+  elsewhere in the system) — never restate what well-named code already shows.
+- No dead code, no speculative abstraction for a second case that doesn't exist yet,
+  no TODO without an owner or a tracked follow-up.
+- Errors handled at the boundary they can actually occur at, not swallowed and not
+  passed up wrapped in a vaguer type.
+- A reviewer unfamiliar with the feature can follow the change from the diff alone;
+  if it needs narration, that narration belongs in the PR description or a decision
+  record, not skipped.
+
 ## The .ai harness
 
 This repo uses the `.ai` harness. Read `.ai/HARNESS.md` before any non-trivial

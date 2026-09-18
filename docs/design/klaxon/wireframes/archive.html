@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klaxon — Incident Archive</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  body { margin: 0; background: #0c0d10; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #e8e6e1; }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+  button { font-family: inherit; cursor: pointer; }
+</style>
+</head>
+<body style="margin:0;">
+<div style="width:1440px; height:900px; box-sizing:border-box; display:flex; background:#0c0d10; overflow:hidden;">
+
+  <!-- rail -->
+  <div style="width:64px; flex:none; display:flex; flex-direction:column; align-items:center; padding:16px 0; gap:28px; background:#101216; border-right:1px solid #21242b;">
+    <div style="width:34px; height:34px; border-radius:8px; background:#5b8def; display:flex; align-items:center; justify-content:center;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0c0d10" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:6px; align-items:center;">
+      <div style="width:40px; height:40px; border-radius:9px; display:flex; align-items:center; justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg>
+      </div>
+      <div style="width:40px; height:40px; border-radius:9px; background:rgba(91,141,239,0.16); border:1px solid rgba(91,141,239,0.4); display:flex; align-items:center; justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5b8def" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <div style="width:40px; height:40px; border-radius:9px; display:flex; align-items:center; justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </div>
+      <div style="width:40px; height:40px; border-radius:9px; display:flex; align-items:center; justify-content:center; opacity:0.35; position:relative;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <div style="position:absolute; top:2px; right:2px; width:6px; height:6px; border-radius:50%; background:#f59e0b;"></div>
+      </div>
+    </div>
+    <div style="flex:1;"></div>
+    <div style="width:32px; height:32px; border-radius:50%; background:#3a3f4b; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:#c7cad1;">MJ</div>
+  </div>
+
+  <!-- main -->
+  <div style="flex:1; display:flex; flex-direction:column; min-width:0;">
+
+    <div style="height:56px; flex:none; display:flex; align-items:center; gap:16px; padding:0 24px; border-bottom:1px solid #21242b; background:#0e0f13;">
+      <div style="font-size:15px; font-weight:600;">Incident Archive</div>
+      <div style="width:1px; height:20px; background:#262a33;"></div>
+      <div class="mono" style="font-size:11px; padding:6px 10px; border-radius:6px; background:#16181d; border:1px solid #262a33; color:#9ba0ab;">Last 90 days</div>
+      <div class="mono" style="font-size:11px; padding:6px 10px; border-radius:6px; background:#16181d; border:1px solid #262a33; color:#9ba0ab;">All services</div>
+      <div class="mono" style="font-size:11px; padding:6px 10px; border-radius:6px; background:#16181d; border:1px solid #262a33; color:#9ba0ab;">All severities</div>
+      <div style="flex:1;"></div>
+      <button style="padding:7px 13px; border-radius:6px; border:1px solid #262a33; background:transparent; color:#9ba0ab; font-size:11.5px;">Export CSV</button>
+    </div>
+
+    <div style="flex:1; display:flex; flex-direction:column; padding:20px 24px; min-height:0;">
+      <div style="font-size:12.5px; color:#7c8797; margin-bottom:12px;">1,842 resolved incidents &middot; closed date descending</div>
+
+      <div style="border:1px solid #21242b; border-radius:10px; overflow:hidden; flex:1; display:flex; flex-direction:column; min-height:0;">
+        <div style="display:grid; grid-template-columns:76px 92px 1fr 130px 140px 96px 108px 108px; gap:14px; padding:9px 16px; background:#14161b; border-bottom:1px solid #21242b;">
+          <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase;">SEV</div>
+          <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase;">ID</div>
+          <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase;">TITLE</div>
+          <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase;">SERVICE</div>
+          <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase;">RESOLVED BY</div>
+          <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase;">OPENED</div>
+          <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase;">DURATION</div>
+          <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase;">CLOSED</div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; overflow-y:auto;">
+          <div style="display:grid; grid-template-columns:76px 92px 1fr 130px 140px 96px 108px 108px; gap:14px; padding:9px 16px; align-items:center; border-bottom:1px solid #1c1f27;"><div style="display:inline-flex; padding:2px 8px; border-radius:4px; font-size:9.5px; font-weight:600; background:rgba(239,68,68,0.14); color:#f87171; width:fit-content;">CRIT</div><div class="mono" style="font-size:11.5px; color:#9ba0ab;">INC-2811</div><div style="font-size:12.5px; color:#c7cad1;">Payments gateway TLS cert expiry</div><div style="font-size:11.5px; color:#767a84;">payments-gw</div><div style="font-size:11.5px; color:#767a84;">T. Kaur</div><div class="mono" style="font-size:11.5px; color:#565a63;">Mar 4</div><div class="mono" style="font-size:11.5px; color:#565a63;">41m</div><div class="mono" style="font-size:11.5px; color:#565a63;">Mar 4</div></div>
+          <div style="display:grid; grid-template-columns:76px 92px 1fr 130px 140px 96px 108px 108px; gap:14px; padding:9px 16px; align-items:center; border-bottom:1px solid #1c1f27;"><div style="display:inline-flex; padding:2px 8px; border-radius:4px; font-size:9.5px; font-weight:600; background:rgba(245,158,11,0.13); color:#fbbf24; width:fit-content;">MAJ</div><div class="mono" style="font-size:11.5px; color:#9ba0ab;">INC-2803</div><div style="font-size:12.5px; color:#c7cad1;">Image pipeline OOM on batch resize</div><div style="font-size:11.5px; color:#767a84;">image-pipeline</div><div style="font-size:11.5px; color:#767a84;">S. Osei</div><div class="mono" style="font-size:11.5px; color:#565a63;">Mar 2</div><div class="mono" style="font-size:11.5px; color:#565a63;">1h 8m</div><div class="mono" style="font-size:11.5px; color:#565a63;">Mar 2</div></div>
+          <div style="display:grid; grid-template-columns:76px 92px 1fr 130px 140px 96px 108px 108px; gap:14px; padding:9px 16px; align-items:center; border-bottom:1px solid #1c1f27;"><div style="display:inline-flex; padding:2px 8px; border-radius:4px; font-size:9.5px; font-weight:600; background:rgba(100,116,139,0.15); color:#94a3b8; width:fit-content;">MIN</div><div class="mono" style="font-size:11.5px; color:#9ba0ab;">INC-2798</div><div style="font-size:12.5px; color:#c7cad1;">CDN edge 502s during cert rotation</div><div style="font-size:11.5px; color:#767a84;">cdn-edge</div><div style="font-size:11.5px; color:#767a84;">R. Byrne</div><div class="mono" style="font-size:11.5px; color:#565a63;">Feb 27</div><div class="mono" style="font-size:11.5px; color:#565a63;">14m</div><div class="mono" style="font-size:11.5px; color:#565a63;">Feb 27</div></div>
+          <div style="display:grid; grid-template-columns:76px 92px 1fr 130px 140px 96px 108px 108px; gap:14px; padding:9px 16px; align-items:center; border-bottom:1px solid #1c1f27;"><div style="display:inline-flex; padding:2px 8px; border-radius:4px; font-size:9.5px; font-weight:600; background:rgba(245,158,11,0.13); color:#fbbf24; width:fit-content;">MAJ</div><div class="mono" style="font-size:11.5px; color:#9ba0ab;">INC-2791</div><div style="font-size:12.5px; color:#c7cad1;">Billing worker duplicate invoice charge</div><div style="font-size:11.5px; color:#767a84;">billing-worker</div><div style="font-size:11.5px; color:#767a84;">T. Kaur</div><div class="mono" style="font-size:11.5px; color:#565a63;">Feb 25</div><div class="mono" style="font-size:11.5px; color:#565a63;">2h 20m</div><div class="mono" style="font-size:11.5px; color:#565a63;">Feb 25</div></div>
+          <div style="display:grid; grid-template-columns:76px 92px 1fr 130px 140px 96px 108px 108px; gap:14px; padding:9px 16px; align-items:center; border-bottom:1px solid #1c1f27;"><div style="display:inline-flex; padding:2px 8px; border-radius:4px; font-size:9.5px; font-weight:600; background:rgba(100,116,139,0.15); color:#94a3b8; width:fit-content;">MIN</div><div class="mono" style="font-size:11.5px; color:#9ba0ab;">INC-2788</div><div style="font-size:12.5px; color:#c7cad1;">Notification digest sent twice to subset of users</div><div style="font-size:11.5px; color:#767a84;">notifications</div><div style="font-size:11.5px; color:#767a84;">S. Osei</div><div class="mono" style="font-size:11.5px; color:#565a63;">Feb 22</div><div class="mono" style="font-size:11.5px; color:#565a63;">28m</div><div class="mono" style="font-size:11.5px; color:#565a63;">Feb 22</div></div>
+          <div style="display:grid; grid-template-columns:76px 92px 1fr 130px 140px 96px 108px 108px; gap:14px; padding:9px 16px; align-items:center; border-bottom:1px solid #1c1f27;"><div style="display:inline-flex; padding:2px 8px; border-radius:4px; font-size:9.5px; font-weight:600; background:rgba(239,68,68,0.14); color:#f87171; width:fit-content;">CRIT</div><div class="mono" style="font-size:11.5px; color:#9ba0ab;">INC-2779</div><div style="font-size:12.5px; color:#c7cad1;">Auth service outage &mdash; regional DNS failure</div><div style="font-size:11.5px; color:#767a84;">auth-svc</div><div style="font-size:11.5px; color:#767a84;">R. Byrne</div><div class="mono" style="font-size:11.5px; color:#565a63;">Feb 19</div><div class="mono" style="font-size:11.5px; color:#565a63;">52m</div><div class="mono" style="font-size:11.5px; color:#565a63;">Feb 19</div></div>
+          <div style="display:grid; grid-template-columns:76px 92px 1fr 130px 140px 96px 108px 108px; gap:14px; padding:9px 16px; align-items:center; border-bottom:1px solid #1c1f27;"><div style="display:inline-flex; padding:2px 8px; border-radius:4px; font-size:9.5px; font-weight:600; background:rgba(100,116,139,0.15); color:#94a3b8; width:fit-content;">MIN</div><div class="mono" style="font-size:11.5px; color:#9ba0ab;">INC-2774</div><div style="font-size:12.5px; color:#c7cad1;">Search index lag during catalog import</div><div style="font-size:11.5px; color:#767a84;">search-index</div><div style="font-size:11.5px; color:#767a84;">T. Kaur</div><div class="mono" style="font-size:11.5px; color:#565a63;">Feb 16</div><div class="mono" style="font-size:11.5px; color:#565a63;">33m</div><div class="mono" style="font-size:11.5px; color:#565a63;">Feb 16</div></div>
+          <div style="display:grid; grid-template-columns:76px 92px 1fr 130px 140px 96px 108px 108px; gap:14px; padding:9px 16px; align-items:center;"><div style="display:inline-flex; padding:2px 8px; border-radius:4px; font-size:9.5px; font-weight:600; background:rgba(245,158,11,0.13); color:#fbbf24; width:fit-content;">MAJ</div><div class="mono" style="font-size:11.5px; color:#9ba0ab;">INC-2765</div><div style="font-size:12.5px; color:#c7cad1;">Checkout API elevated 5xx on flash sale traffic</div><div style="font-size:11.5px; color:#767a84;">checkout-api</div><div style="font-size:11.5px; color:#767a84;">S. Osei</div><div class="mono" style="font-size:11.5px; color:#565a63;">Feb 12</div><div class="mono" style="font-size:11.5px; color:#565a63;">1h 46m</div><div class="mono" style="font-size:11.5px; color:#565a63;">Feb 12</div></div>
+        </div>
+      </div>
+
+      <!-- pagination -->
+      <div style="display:flex; align-items:center; gap:16px; padding-top:14px;">
+        <div class="mono" style="font-size:11.5px; color:#7c8797;">Showing 41&ndash;55 of 1,842</div>
+        <div style="flex:1;"></div>
+        <div style="display:flex; align-items:center; gap:4px;">
+          <button style="width:28px; height:28px; border-radius:6px; border:1px solid #262a33; background:transparent; color:#9ba0ab; display:flex; align-items:center; justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button style="min-width:28px; height:28px; padding:0 8px; border-radius:6px; border:1px solid #262a33; background:transparent; color:#767a84; font-size:12px;">1</button>
+          <div class="mono" style="color:#4c5058; font-size:12px;">&hellip;</div>
+          <button style="min-width:28px; height:28px; padding:0 8px; border-radius:6px; border:1px solid #262a33; background:transparent; color:#767a84; font-size:12px;">3</button>
+          <button style="min-width:28px; height:28px; padding:0 8px; border-radius:6px; border:1px solid #262a33; background:transparent; color:#767a84; font-size:12px;">4</button>
+          <button style="min-width:28px; height:28px; padding:0 8px; border-radius:6px; border:1px solid #5b8def; background:rgba(91,141,239,0.16); color:#8fb4f6; font-size:12px; font-weight:600;">5</button>
+          <button style="min-width:28px; height:28px; padding:0 8px; border-radius:6px; border:1px solid #262a33; background:transparent; color:#767a84; font-size:12px;">6</button>
+          <button style="min-width:28px; height:28px; padding:0 8px; border-radius:6px; border:1px solid #262a33; background:transparent; color:#767a84; font-size:12px;">7</button>
+          <div class="mono" style="color:#4c5058; font-size:12px;">&hellip;</div>
+          <button style="min-width:28px; height:28px; padding:0 8px; border-radius:6px; border:1px solid #262a33; background:transparent; color:#767a84; font-size:12px;">128</button>
+          <button style="width:28px; height:28px; border-radius:6px; border:1px solid #262a33; background:transparent; color:#9ba0ab; display:flex; align-items:center; justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <div style="flex:1;"></div>
+        <div class="mono" style="font-size:11px; padding:5px 9px; border-radius:6px; background:#16181d; border:1px solid #262a33; color:#9ba0ab;">15 / page</div>
+      </div>
+
+      <!-- design annotation -->
+      <div style="margin-top:12px; display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:7px; border:1px dashed #3a3f4b; width:fit-content;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5b8def" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+        <span class="mono" style="font-size:10.5px; color:#6f8fc4;">aria-live="polite" announces this line on every page change &mdash; not just the row count</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klaxon — Findings</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  body { margin: 0; background: #0c0d10; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #e8e6e1; }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+</style>
+</head>
+<body style="margin:0;">
+<div style="width:1440px; height:900px; box-sizing:border-box; display:flex; background:#0c0d10; overflow:hidden;">
+
+  <!-- rail -->
+  <div style="width:64px; flex:none; display:flex; flex-direction:column; align-items:center; padding:16px 0; gap:28px; background:#101216; border-right:1px solid #21242b;">
+    <div style="width:34px; height:34px; border-radius:8px; background:#5b8def; display:flex; align-items:center; justify-content:center;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0c0d10" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:6px; align-items:center;">
+      <div style="width:40px; height:40px; border-radius:9px; display:flex; align-items:center; justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg>
+      </div>
+      <div style="width:40px; height:40px; border-radius:9px; display:flex; align-items:center; justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <div style="width:40px; height:40px; border-radius:9px; background:rgba(91,141,239,0.16); border:1px solid rgba(91,141,239,0.4); display:flex; align-items:center; justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5b8def" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </div>
+      <div style="width:40px; height:40px; border-radius:9px; display:flex; align-items:center; justify-content:center; opacity:0.35; position:relative;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <div style="position:absolute; top:2px; right:2px; width:6px; height:6px; border-radius:50%; background:#f59e0b;"></div>
+      </div>
+    </div>
+    <div style="flex:1;"></div>
+    <div style="width:32px; height:32px; border-radius:50%; background:#3a3f4b; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:#c7cad1;">MJ</div>
+  </div>
+
+  <!-- main -->
+  <div style="flex:1; display:flex; flex-direction:column; min-width:0; overflow-y:auto;">
+
+    <div style="height:56px; flex:none; display:flex; align-items:center; gap:12px; padding:0 24px; border-bottom:1px solid #21242b; background:#0e0f13;">
+      <div style="font-size:15px; font-weight:600;">Findings</div>
+      <div class="mono" style="font-size:11px; color:#7c8797;">planted defects &times; test layers</div>
+    </div>
+
+    <div style="padding:24px; display:flex; flex-direction:column; gap:22px;">
+
+      <!-- stat tiles -->
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px;">
+        <div style="padding:16px 18px; background:#14161b; border:1px solid #21242b; border-radius:10px;">
+          <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase; margin-bottom:8px;">Defects planted</div>
+          <div style="font-size:26px; font-weight:700;">7</div>
+        </div>
+        <div style="padding:16px 18px; background:#14161b; border:1px solid #21242b; border-radius:10px;">
+          <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase; margin-bottom:8px;">Test layers</div>
+          <div style="font-size:26px; font-weight:700;">5</div>
+        </div>
+        <div style="padding:16px 18px; background:#14161b; border:1px solid #21242b; border-radius:10px;">
+          <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase; margin-bottom:8px;">Caught by &ge;1 layer</div>
+          <div style="font-size:26px; font-weight:700; color:#4ade80;">6 / 7</div>
+        </div>
+        <div style="padding:16px 18px; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.3); border-radius:10px;">
+          <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#f2a3a0; text-transform:uppercase; margin-bottom:8px;">Never caught</div>
+          <div style="font-size:26px; font-weight:700; color:#f87171;">1</div>
+        </div>
+      </div>
+
+      <!-- featured finding -->
+      <div style="display:flex; gap:20px; padding:22px; background:#14161b; border:1px solid #21242b; border-left:3px solid #ef4444; border-radius:10px;">
+        <div style="flex:1;">
+          <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#f87171; text-transform:uppercase; margin-bottom:8px;">Featured finding &middot; caught by 0 of 5 layers</div>
+          <div style="font-size:19px; font-weight:600; margin-bottom:8px;">Severity conveyed by colour only</div>
+          <div style="font-size:13px; color:#9ba0ab; line-height:1.6; max-width:56ch;">
+            The SEV badge on the incident board (see <span class="mono">board.html</span>) carries no text
+            equivalent when colour is stripped &mdash; the exact defect currently live in the inspector panel's
+            own callout. No automated layer in this suite catches it: not axe, not the component tests, not
+            the visual diff. It reads as a defect only to a human reviewer, or a contrast/colour-blindness
+            simulation nobody has wired in yet.
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px; justify-content:center; flex:none;">
+          <div style="display:flex; align-items:center; gap:8px; font-size:11.5px; color:#f87171;"><div class="mono" style="width:70px; color:#7c8797;">unit</div><span style="padding:2px 8px; border-radius:4px; background:rgba(239,68,68,0.14); border:1px solid rgba(239,68,68,0.35);">miss</span></div>
+          <div style="display:flex; align-items:center; gap:8px; font-size:11.5px; color:#f87171;"><div class="mono" style="width:70px; color:#7c8797;">component</div><span style="padding:2px 8px; border-radius:4px; background:rgba(239,68,68,0.14); border:1px solid rgba(239,68,68,0.35);">miss</span></div>
+          <div style="display:flex; align-items:center; gap:8px; font-size:11.5px; color:#f87171;"><div class="mono" style="width:70px; color:#7c8797;">e2e</div><span style="padding:2px 8px; border-radius:4px; background:rgba(239,68,68,0.14); border:1px solid rgba(239,68,68,0.35);">miss</span></div>
+          <div style="display:flex; align-items:center; gap:8px; font-size:11.5px; color:#f87171;"><div class="mono" style="width:70px; color:#7c8797;">axe</div><span style="padding:2px 8px; border-radius:4px; background:rgba(239,68,68,0.14); border:1px solid rgba(239,68,68,0.35);">miss</span></div>
+          <div style="display:flex; align-items:center; gap:8px; font-size:11.5px; color:#f87171;"><div class="mono" style="width:70px; color:#7c8797;">visual</div><span style="padding:2px 8px; border-radius:4px; background:rgba(239,68,68,0.14); border:1px solid rgba(239,68,68,0.35);">miss</span></div>
+        </div>
+      </div>
+
+      <!-- matrix -->
+      <div>
+        <div style="font-size:12px; font-weight:600; color:#c7cad1; margin-bottom:10px;">All findings</div>
+        <div style="border:1px solid #21242b; border-radius:10px; overflow:hidden;">
+          <div style="display:grid; grid-template-columns:1fr 64px 64px 64px 64px 64px 1.1fr; gap:10px; padding:9px 16px; background:#14161b; border-bottom:1px solid #21242b;">
+            <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase;">Planted defect</div>
+            <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase; text-align:center;">unit</div>
+            <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase; text-align:center;">cmp</div>
+            <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase; text-align:center;">e2e</div>
+            <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase; text-align:center;">axe</div>
+            <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase; text-align:center;">vis</div>
+            <div class="mono" style="font-size:10px; letter-spacing:0.06em; color:#7c8797; text-transform:uppercase;">What it teaches</div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 64px 64px 64px 64px 64px 1.1fr; gap:10px; padding:11px 16px; align-items:center; border-bottom:1px solid #1c1f27; background:rgba(239,68,68,0.04);">
+            <div style="font-size:12.5px;">Heading demoted to styled div</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="text-align:center; color:#4ade80; font-weight:700;">&check;</div>
+            <div style="text-align:center; color:#4ade80; font-weight:700;">&check;</div>
+            <div style="text-align:center; color:#4ade80; font-weight:700;">&check;</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="font-size:11.5px; color:#7c8797;">Pixels can't see semantics</div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 64px 64px 64px 64px 64px 1.1fr; gap:10px; padding:11px 16px; align-items:center; border-bottom:1px solid #1c1f27; background:rgba(239,68,68,0.09);">
+            <div style="font-size:12.5px; font-weight:600;">Severity conveyed by colour only</div>
+            <div style="text-align:center; color:#f87171; font-weight:700;">&times;</div>
+            <div style="text-align:center; color:#f87171; font-weight:700;">&times;</div>
+            <div style="text-align:center; color:#f87171; font-weight:700;">&times;</div>
+            <div style="text-align:center; color:#f87171; font-weight:700;">&times;</div>
+            <div style="text-align:center; color:#f87171; font-weight:700;">&times;</div>
+            <div style="font-size:11.5px; color:#f2a3a0;">No automated layer catches this</div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 64px 64px 64px 64px 64px 1.1fr; gap:10px; padding:11px 16px; align-items:center; border-bottom:1px solid #1c1f27;">
+            <div style="font-size:12.5px;">Sort loses stability on equal keys</div>
+            <div style="text-align:center; color:#4ade80; font-weight:700;">&check;</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="text-align:center; color:#3a3f4b;">&ndash;</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="font-size:11.5px; color:#7c8797;">Only if the comparator is tested directly</div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 64px 64px 64px 64px 64px 1.1fr; gap:10px; padding:11px 16px; align-items:center; border-bottom:1px solid #1c1f27;">
+            <div style="font-size:12.5px;">Debounce removed on archive filter</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="text-align:center; color:#4ade80; font-weight:700;">&check;</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="text-align:center; color:#3a3f4b;">&ndash;</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="font-size:11.5px; color:#7c8797;">E2E is too slow to notice extra requests</div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 64px 64px 64px 64px 64px 1.1fr; gap:10px; padding:11px 16px; align-items:center; border-bottom:1px solid #1c1f27;">
+            <div style="font-size:12.5px;">Optimistic ack not rolled back on 500</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="text-align:center; color:#4ade80; font-weight:700;">&check;</div>
+            <div style="text-align:center; color:#4ade80; font-weight:700;">&check;</div>
+            <div style="text-align:center; color:#3a3f4b;">&ndash;</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="font-size:11.5px; color:#7c8797;">Needs a fault-injecting fake, not a happy path</div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 64px 64px 64px 64px 64px 1.1fr; gap:10px; padding:11px 16px; align-items:center; border-bottom:1px solid #1c1f27;">
+            <div style="font-size:12.5px;">Timestamps in browser tz, not incident tz</div>
+            <div style="text-align:center; color:#4ade80; font-weight:700;">&check;</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="text-align:center; color:#3a3f4b;">&ndash;</div>
+            <div style="text-align:center; color:#4ade80; font-weight:700;">&check;</div>
+            <div style="font-size:11.5px; color:#7c8797;">Only caught because CI runs in UTC</div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 64px 64px 64px 64px 64px 1.1fr; gap:10px; padding:11px 16px; align-items:center;">
+            <div style="font-size:12.5px;">Focus lost after closing triage dialog</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="text-align:center; color:#4ade80; font-weight:700;">&check;</div>
+            <div style="text-align:center; color:#4ade80; font-weight:700;">&check;</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="text-align:center; color:#565a63;">&middot;</div>
+            <div style="font-size:11.5px; color:#7c8797;">axe audits a snapshot, not a transition</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:18px; font-size:11px; color:#7c8797;">
+        <div style="display:flex; align-items:center; gap:5px;"><span style="color:#4ade80; font-weight:700;">&check;</span> caught</div>
+        <div style="display:flex; align-items:center; gap:5px;"><span style="color:#f87171; font-weight:700;">&times;</span> missed by every layer that could run</div>
+        <div style="display:flex; align-items:center; gap:5px;"><span style="color:#565a63;">&middot;</span> not caught by this layer</div>
+        <div style="display:flex; align-items:center; gap:5px;"><span style="color:#3a3f4b;">&ndash;</span> not applicable to this layer</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
