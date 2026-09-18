@@ -108,6 +108,14 @@ session that created it. Cite the documented floor and where to look instead.
   door 7. Limit: the file is gitignored (user's global ignore), so `gateDiff`'s git-based
   sweep can't see a Bash write to it — only the direct Edit/Write block would apply.
 
+- **`.claude/hooks/budget.mjs:173-177`: the Bash `state.json` guard matches the whole command line,
+  not the write's target.** A command containing any write verb (a heredoc `>`, `cp`, `sed -i`) *and*
+  merely naming a run's `state.json` (for example a `grep started_at` read) is blocked, although the
+  write goes elsewhere. Found in `.ai/run/2026-09-19-klaxon-milestone-1/retro.md`. Fix sketch: match the
+  write verb's own target, not the command text. **Hold both directions:** the entry above this one
+  records the opposite failure (a write the regex misses), whose fix was to drop the write-verb
+  prefilter, which would make this false positive worse. Needs a design that reads the target.
+
 ## Checks retros found missing
 
 - **Nothing looks across runs, or at the trunk.** Every digest checks its own run
@@ -143,6 +151,34 @@ session that created it. Cite the documented floor and where to look instead.
   and refuse a `done` close on any BAD line, with an escape flag shaped like `--no-disclosure-check`.
   Not proposed: gating `evidence.md` or the journal, which cite trees that legitimately change
   (`.ai/harness/verify.sh:166` scopes the gate to digest and retro for that reason).
+
+- **No step in the flow publishes a branch.** `fix` ends at `digest, record?, retro?`
+  (`.ai/harness/config.yml:45`) and `close-run.sh` is the last mechanical step, so an agent
+  finishes a run with nothing telling it to push or open a PR, and reaches for a local merge
+  (`.ai/run/2026-09-19-klaxon-milestone-1/retro.md`). Fix sketch (not gate scope): a `/publish` step
+  or a closing line in `.ai/prompts/digest.md` that offers push and PR as the recommended next step
+  and never a local merge; stack the next run on the branch. Related to, and needing the same anchor
+  as, the "merged versus on the trunk" item above.
+
+- **A pre-registered file can't be edited, but must pass the citation gate.** `predictions.md` is
+  committed before a run and never edited afterwards, and `.ai/harness/check-citations.sh:83` rejects
+  run-relative bare paths in it at digest time. The run either edits the frozen file or fails the
+  gate (`.ai/run/klaxon-heading-finding/digest.md:28`). Fix sketch (not gate scope): exempt
+  `predictions.md` from the bare-path rule, or have `/implement` write full repo paths from the start,
+  which costs nothing.
+
+- **`verify.sh deep` needs port 4200 free and no doc says so.** Under `HARNESS_DEEP`,
+  `playwright.config.ts` refuses to reuse a server, so a normal `ng serve` fails the gate with
+  Playwright's own message. Fix sketch: one line in `.ai/HARNESS.md`'s tier table (`deep` and `smoke`
+  need port 4200; use `ng serve --port 4300` alongside), and ideally a preflight message from
+  `verify.sh` (gate scope, so a door-7 patch).
+
+- **A door-7 stop has no required hand-back shape.** `.ai/prompts/implement.md:41` says to write down
+  the door and continue, but not to put the apply commands and a direct question in the final message.
+  The klaxon-regen-shell hand-back pointed at a notes file and cost two round trips
+  (`.ai/run/klaxon-regen-shell/digest.md:34`). Fix sketch (not gate scope): one sentence in
+  `implement.md`: at a door-7 stop, the message contains the apply and verify commands, one per code
+  block, and ends with a question.
 
 ## Bank cards with an unbuilt mechanism
 
