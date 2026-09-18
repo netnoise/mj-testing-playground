@@ -20,7 +20,7 @@ wrote to prove reproducibility exited 0 on a falsified result.
   by design (`e2e/smoke.spec.ts:13-14`), so the cheap tier doesn't guard content or semantics.
 - **Three of four validator mutations are missed at every layer**, because the specs feed too few
   inputs: only `admin` as a taken name (`src/app/advanced-form/advanced-form.validators.spec.ts:42-47`),
-  no case-only password pair, and `advanced-form.validators.spec.ts:19` alone pins the
+  no case-only password pair, and `src/app/advanced-form/advanced-form.validators.spec.ts:19` alone pins the
   empty-confirm guard.
 
 ### Concept: a comparison that can't fail
@@ -33,7 +33,7 @@ shown able to go red.
 ### What I did — and what is NOT verified
 - Opened the run on a branch, committed `predictions.md` first (`eaed381`), then ran 8 tree
   states (baseline, M1–M3, V1–V4) through jest and/or e2e: 24 cells in
-  `mutations/results.tsv`, raw output beside them, tree restored after each.
+  `.ai/run/old-baseline-findings/mutations/results.tsv`, raw output beside them, tree restored after each.
 - `replay.sh` reproduced all 24 outcomes on a second run, and now exits 1 on a mismatch.
 - `src/` and `e2e/` have no diff against `32e5dc6`. `verify full` and `verify deep` are green.
 - **Not verified:** stability (each cell ran once). Whether V4 is an equivalent mutant at these
@@ -45,5 +45,8 @@ shown able to go red.
 `replay.sh` shipped in the first commit exiting 0 when an outcome differed, and `evidence.md` said
 it "reproduced all 24 outcomes" without ever having seen it fail. `/test` found it with a
 negative control and fixed it; the claim was true but unproven when written. Also, the brief's
-line citations weren't scanned by `check-citations.sh` (it covered five other documents), so I
-verified them by hand. Not enough for a `/retro`.
+line citations weren't scanned by `check-citations.sh` until a digest existed, so I verified them
+by hand and got the form wrong (short names, bare paths): the check failed 16 times once the
+digest landed. I also chained `close-run.sh` after that check with `;`, so the run was closed
+while the check was still red. Citations are fixed in a follow-up commit and `deep` is green
+again. Not enough for a `/retro`.

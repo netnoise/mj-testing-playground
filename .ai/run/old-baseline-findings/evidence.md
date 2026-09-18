@@ -13,11 +13,11 @@
   (chromium).
 - **Scenario/seed:** n/a (no data, no randomness; each cell ran once).
 - **Raw output:** `mutations/output/<cell>.<layer>.<spec>.txt`. Patches: `mutations/*.patch`.
-  Outcomes: `mutations/results.tsv`. Replay: `sh mutations/replay.sh` (reproduced all 24
+  Outcomes: `.ai/run/old-baseline-findings/mutations/results.tsv`. Replay: `sh mutations/replay.sh` (reproduced all 24
   outcomes a second time).
 - **Restored:** `git diff --stat -- src e2e` is empty after every revert
-  (`mutations/restored-diffstat.txt`), and the full e2e suite is green on the clean tree
-  (`mutations/output/restored.e2e.txt`, 6 passed, exit=0).
+  (`.ai/run/old-baseline-findings/mutations/restored-diffstat.txt`), and the full e2e suite is green on the clean tree
+  (`.ai/run/old-baseline-findings/mutations/output/restored.e2e.txt`, 6 passed, exit=0).
 
 ## Results
 
@@ -29,7 +29,7 @@
 | M1 | `<h1>` → `<div class="title">` | not run | not run | **caught** | missed |
 | M2 | `.app-header` renamed in scss only | not run | not run | **missed** | missed |
 | M3 | `.app-header` renamed in template + scss | not run | not run | **caught** | missed |
-| V1 | delete `\|\| !confirmPassword.value` (`validators.ts:11`) | **caught** | **missed** | missed | missed |
+| V1 | delete `\|\| !confirmPassword.value` (`src/app/advanced-form/advanced-form.validators.ts:11`) | **caught** | **missed** | missed | missed |
 | V2 | case-insensitive password compare (`:14`) | missed | missed | missed | missed |
 | V3 | drop `'angular'` from the taken list (`:6`) | missed | missed | missed | missed |
 | V4 | `timer(delayMs)` → `timer(0)` (`:22`) | missed | missed | missed | missed |
@@ -48,7 +48,7 @@ the validator specs never render `AppComponent`.)
   test with the same message (`toHaveText`, expected `"mj-testing-playground"`, received
   `undefined`, after a 5s timeout), so the e2e failure cannot tell the heading demotion from a
   harmless class rename either. M2 is missed, as at the jest layer. The "same locator, same
-  outcome" guess written in `klaxon-claims-correction/evidence.md` ("Not run") is now measured:
+  outcome" guess written in `.ai/run/klaxon-claims-correction/evidence.md` ("Not run") is now measured:
   it holds. Note the e2e failure costs a 5s timeout where jest crashes instantly.
 - **`smoke.spec.ts` missed every mutation**, including the demoted heading. That is by design
   (it asserts nothing about content), and is worth stating because it means the cheap `smoke` tier
@@ -57,7 +57,7 @@ the validator specs never render `AppComponent`.)
   - V3: the specs only ever try `admin` as a taken name, so the other three list entries are
     unobserved.
   - V2: no spec feeds two passwords that differ only in case.
-  - V1: the empty-confirm behaviour is pinned by exactly one spec, `validators.spec.ts:19`, and
+  - V1: the empty-confirm behaviour is pinned by exactly one spec, `src/app/advanced-form/advanced-form.validators.spec.ts:19`, and
     the component spec never reaches it.
   - V4: no spec asserts that the check waits for its configured delay, so nothing distinguishes
     `timer(0)`.

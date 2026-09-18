@@ -21,7 +21,7 @@
 
 | # | Mutation | validators.spec | component.spec | e2e |
 |---|---|---|---|---|
-| V1 | delete `|| !confirmPassword.value` from the guard (`advanced-form.validators.ts:11`) | **caught** (`:19` "returns null when confirmPassword is empty") | **missed** (no test feeds a password with an empty confirm) | **missed** |
+| V1 | delete `|| !confirmPassword.value` from the guard (`src/app/advanced-form/advanced-form.validators.ts:11`) | **caught** (`:19` "returns null when confirmPassword is empty") | **missed** (no test feeds a password with an empty confirm) | **missed** |
 | V2 | compare passwords case-insensitively (`:14`) | **missed** | **missed** | **missed** |
 | V3 | drop `'angular'` from `TAKEN_USERNAMES` (`:6`) | **missed** (only `admin` is tried) | **missed** | **missed** |
 | V4 | `timer(delayMs)` → `timer(0)` (`:22`) | **missed** (`tick(delayMs)` still satisfies it) | **missed** | **missed** |

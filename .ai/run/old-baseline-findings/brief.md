@@ -75,11 +75,11 @@ Assumptions, defaults chosen, cheap to reverse:
   e2e counterpart is new work.
 - **Where the validators are tested.** `passwordMatchValidator` is covered by the validators
   spec (`src/app/advanced-form/advanced-form.validators.spec.ts:19-29`) and by the component spec
-  (`advanced-form.component.spec.ts:214-221`). `usernameTakenValidator` is covered by
-  `validators.spec.ts:42-47`, `:56-61` (case-insensitivity) and `component.spec.ts:83-89`, all
+  (`src/app/advanced-form/advanced-form.component.spec.ts:214-221`). `usernameTakenValidator` is covered by
+  `src/app/advanced-form/advanced-form.validators.spec.ts:42-47`, `:56-61` (case-insensitivity) and `src/app/advanced-form/advanced-form.component.spec.ts:83-89`, all
   using `admin`. The e2e spec never types a taken name (`e2e/app.spec.ts:22` uses `e2euser1`)
   and never types mismatching passwords (`:25-26` both `Password1`).
-- **The validators are small enough to mutate by hand.** `advanced-form.validators.ts:5-27`.
+- **The validators are small enough to mutate by hand.** `src/app/advanced-form/advanced-form.validators.ts:5-27`.
   The taken list is `:6`, the empty-confirm guard `:11`, the comparison `:14`, the delay `:22`.
 - **`e2e/app.spec.ts:39` still clicks via `evaluate` "under the dev server"** (comment `:35-38`),
   although `deep` now serves the production build. Not this run's job (brief, Out of scope); it
@@ -102,10 +102,10 @@ Serves every Done-when box. The predictions to pre-register (final wording goes 
 
 | # | Mutation | Layer | Predicted |
 |---|---|---|---|
-| M1 | `<h1>` → `<div class="title">` | e2e | **caught** (`.app-header h1` at `app.spec.ts:5` finds nothing) |
+| M1 | `<h1>` → `<div class="title">` | e2e | **caught** (`.app-header h1` at `e2e/app.spec.ts:5` finds nothing) |
 | M2 | scss-only `.app-header` rename | e2e | **missed** (DOM unchanged; nothing asserts styling) |
 | M3 | coordinated template+scss rename | e2e | **caught**, same failure as M1 (the locator is a class selector) |
-| V1 | delete the `!confirmPassword.value` guard (`validators.ts:11`) | jest | **caught** by `validators.spec.ts:19` |
+| V1 | delete the `!confirmPassword.value` guard (`src/app/advanced-form/advanced-form.validators.ts:11`) | jest | **caught** by `src/app/advanced-form/advanced-form.validators.spec.ts:19` |
 | V2 | compare passwords case-insensitively (`:14`) | jest + e2e | **missed** by every spec (no case-only pair is ever fed) |
 | V3 | drop `'angular'` from `TAKEN_USERNAMES` (`:6`) | jest + e2e | **missed** by every spec (only `admin` is tried) |
 | V4 | `timer(delayMs)` → `timer(0)` (`:22`) | jest + e2e | **missed** at e2e (a real wait isn't asserted), and unclear in jest (predict **missed**: `tick(delay)` still passes) |
