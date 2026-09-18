@@ -298,13 +298,16 @@
       </table>
     </div>
     <p>
-      The demotion is caught, but only by accident: the selector finds nothing and the test crashes.
-      Nothing in the test asserts that a heading exists. It fails in exactly the same way on the
-      refactor, so a red run can't tell you which of the two happened. It gives you an alarm with no
-      diagnosis. A role-based query such as <code>getByRole('heading', {&nbsp;level: 1&nbsp;})</code>
-      should fail on the demotion for the right reason and pass the refactor. That is still a
-      <strong>hypothesis</strong>: it hasn't been run yet, and running it is the first experiment on
-      the build list.
+      The demotion is caught: <code>querySelector('.app-header h1')</code> needs an <code>h1</code>,
+      so removing it fails the test. That is one property of three worth measuring separately. The
+      same test also fails on the harmless class rename, because it is coupled to <code>.app-header</code>.
+      And both failures read as the same null <code>TypeError</code>, which never says a heading was
+      expected. Two changes sharing one failure doesn't invalidate a test by itself. What is weak here
+      is the message, and that the <code>h1</code> requirement is a side effect of the selector, not a
+      stated expectation. A role-based query such as
+      <code>getByRole('heading', {&nbsp;level: 1&nbsp;})</code> should fail on the demotion with a
+      meaningful message and pass the rename. That is still a <strong>hypothesis</strong>: it hasn't
+      been run, and running it is the first experiment on the build list.
     </p>
     <p>
       That is the standard state of frontend test suites, generated or hand-written. A repo of
@@ -324,7 +327,7 @@
       component choices &mdash; exists to make this loop produce interesting results.
     </p>
     <figure>
-      <svg viewBox="0 0 880 250" role="img" aria-label="A Klaxon feature has one defect planted in it, producing a mutant build. Every test layer runs against it. Recorded: the current unit Jest test fails, but by crashing on a null selector, not by asserting semantics. Predicted, not yet run: component Testing Library catches, end-to-end Playwright catches, accessibility axe catches, visual screenshot misses. The result is recorded as one finding.">
+      <svg viewBox="0 0 880 250" role="img" aria-label="A Klaxon feature has one defect planted in it, producing a mutant build. Every test layer runs against it. Recorded: the current unit Jest test fails on the demotion, and fails the same way on a harmless class rename. Predicted, not yet run: component Testing Library catches, end-to-end Playwright catches, accessibility axe catches, visual screenshot misses. The result is recorded as one finding.">
         <defs>
           <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
             <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
@@ -346,7 +349,7 @@
           <g font-size="11" font-family="IBM Plex Mono, monospace">
             <rect x="448" y="16" width="166" height="30" fill="none" stroke="currentColor" stroke-opacity="0.45"/>
             <text x="462" y="35" fill="currentColor" opacity="0.8">unit · jest</text>
-            <text x="600" y="35" text-anchor="end" fill="var(--sev2)" font-weight="600">crash</text>
+            <text x="600" y="35" text-anchor="end" fill="var(--sev2)" font-weight="600">fail</text>
 
             <rect x="448" y="58" width="166" height="30" fill="none" stroke="currentColor" stroke-opacity="0.45"/>
             <text x="462" y="77" fill="currentColor" opacity="0.8">component · TL</text>
@@ -402,7 +405,7 @@
       </svg>
       <figcaption>
         Illustrative. Only the top row has been run, and it didn't match the original prediction of
-        &ldquo;miss&rdquo;: the existing unit test crashes on the demotion instead of passing (see &sect;01). The
+        &ldquo;miss&rdquo;: the existing unit test fails on the demotion instead of passing (see &sect;01). The
         other four rows are hypotheses. One example is that a demoted heading renders pixel-identical,
         so a visual diff misses it while role-based queries catch it. A layer's result depends on the
         assertions a particular suite makes, not on the layer's name, so each &ldquo;?&rdquo; stays a question
@@ -455,12 +458,12 @@
         <tbody>
           <tr>
             <td class="defect">Heading demoted to styled div</td>
-            <td><span class="mark r" title="Recorded 2026-09-18: fails, but by crashing on a null selector">!</span></td>
+            <td><span class="mark r" title="Recorded 2026-09-18: fails, with the same null-selector TypeError a harmless class rename produces">!</span></td>
             <td><span class="mark h">&check;?</span></td>
             <td><span class="mark h">&check;?</span></td>
             <td><span class="mark h">&check;?</span></td>
             <td><span class="mark h">&middot;?</span></td>
-            <td class="verdict">Existing unit test crashes on it, and crashes the same way on a harmless refactor (&sect;01). Does a role query fail for the right reason? Does a pixel diff see a semantic change at all?</td>
+            <td class="verdict">Existing unit test fails on it, and fails the same way on a harmless refactor (&sect;01). Does a role query fail for the right reason? Does a pixel diff see a semantic change at all?</td>
           </tr>
           <tr>
             <td class="defect">Severity text removed, colour left as the only cue <em>(isolated mutation; the default build keeps text labels)</em></td>

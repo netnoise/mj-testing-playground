@@ -1,0 +1,7 @@
+head: 12d07328282f23edf0942f1f12642727a28c6390
+recorded-baseline: cb11246e66268f8a09116f9a806b6b05526a98b7
+node: v24.11.1
+jest: 28.1.3
+os: Darwin 25.5.0 arm64
+command: npx jest src/app/app.component.spec.ts --ci
+captured: 2026-09-18T20:46Z

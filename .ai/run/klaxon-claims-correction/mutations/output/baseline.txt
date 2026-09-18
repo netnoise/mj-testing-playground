@@ -1,0 +1,12 @@
+PASS src/app/app.component.spec.ts
+  AppComponent
+    ✓ should create the app (14 ms)
+    ✓ should have as title mj-testing-playground (3 ms)
+    ✓ should render the title in the header (3 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        0.64 s, estimated 1 s
+Ran all test suites matching /src\/app\/app.component.spec.ts/i.
+exit=0

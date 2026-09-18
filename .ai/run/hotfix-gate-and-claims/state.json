@@ -1,0 +1,26 @@
+{
+  "status": "done",
+  "opened_by": "open-run.sh",
+  "started_at": "2026-09-18T20:46:35.366Z",
+  "base_commit": "12d07328282f23edf0942f1f12642727a28c6390",
+  "dirty_at_start": [],
+  "allowed_paths": [
+    "CLAUDE.md",
+    "docs/design/klaxon/**",
+    ".ai/decisions/**",
+    ".ai/run/klaxon-claims-correction/**",
+    "src/app/app.component.html",
+    "src/app/app.component.scss",
+    ".ai/run/hotfix-gate-and-claims/**"
+  ],
+  "max_files": 12,
+  "max_minutes": 60,
+  "files_touched": [
+    ".ai/decisions/0008-klaxon-claims-to-hypotheses.md",
+    "CLAUDE.md",
+    "docs/design/klaxon/klaxon-testing-lab.html",
+    "docs/design/klaxon/wireframes/findings.html"
+  ],
+  "type": "feature",
+  "head_commit": "c1522866be46d798a033c7f72f87d518cbe026c3"
+}

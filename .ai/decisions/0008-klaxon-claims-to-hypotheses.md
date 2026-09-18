@@ -92,3 +92,26 @@ Deferred:
 - Replacing `e2e/app.spec.ts`'s `evaluate(el => el.click())` with a real pointer click against
   the production build.
 - A structural accessibility pass on the wireframes.
+
+## Amendment — 2026-09-18 (`hotfix-gate-and-claims`)
+The body above is left as written. Three things in it were wrong or incomplete.
+
+1. **Item 1's reading overstated the finding.** It says the spec catches the regression "only by
+   crashing". That reading is too strong: `querySelector('.app-header h1')` requires an `h1`, and
+   the test fails without one. The result is three separate properties. The test *detects* the
+   demotion. It *fails on a harmless class rename* because it is coupled to `.app-header`. And it
+   *reports the failure poorly*: the same null `TypeError` for both, with nothing saying an `h1`
+   was expected. Two changes sharing one failure doesn't by itself invalidate a test. Measure
+   detection, refactor resilience and diagnostic quality separately. The write-up, the findings
+   wireframe and both claude.ai artifacts now say this.
+2. **The evidence wasn't replayable.** M1–M3 now exist as patches with full captured Jest output,
+   a passing post-restore run, and `replay.sh`, all under
+   `.ai/run/klaxon-claims-correction/mutations/`. The replay at `12d0732` reproduced the recorded
+   outcomes. The role-based-query comparison is still a hypothesis, not run.
+3. **`deep` was left red on `master`.** The run's `digest.md` and `evidence.md` cited
+   `src/app/app.component.spec.ts:33` as a bare `app.component.spec.ts:33`, which `check-citations` rejects. The run only
+   passed `full`, which doesn't include that check. `.ai/HARNESS.md` asks for `deep` once before
+   hand-back, and that was skipped.
+
+The Trade-off bullet about the claude.ai artifacts is now stale: both were republished with the
+corrected content.

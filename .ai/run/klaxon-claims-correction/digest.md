@@ -1,11 +1,13 @@
 ## Klaxon claims → hypotheses and evidence   claude/klaxon-claims-correction · verify full ✓ · ~25m · 7 files
 
 ### What surprised me
-The founding example wasn't just inverted. It was **undiagnosable**. The h1→div demotion makes
-`app.component.spec.ts:33` fail, and the harmless template+scss class rename makes it fail with a
-byte-identical `TypeError: Cannot read properties of null`. A stylesheet-only rename passes while
-the header visibly loses its styling. The review predicted the first result, and running it
-exposed the second.
+The founding example was wrong, and the way it was wrong matters. The h1→div demotion makes
+`src/app/app.component.spec.ts:33` fail, so the test does detect it. But the harmless template+scss
+class rename makes it fail with the same `TypeError: Cannot read properties of null`, so the failure
+doesn't say which happened. A stylesheet-only rename passes while the header visibly loses its
+styling. The review predicted the first result, and running it exposed the other two. (Amended by
+`hotfix-gate-and-claims`: the first wording called this "undiagnosable" and "by accident", which
+overstated it. See `evidence.md`, "Revised reading".)
 
 ### What I learned about your system
 - The only claim in the Klaxon docs that could be run today had never been run. It took three
@@ -40,3 +42,8 @@ the docs weren't applying to themselves. Recorded in `.ai/decisions/0008`.
 ### What I got wrong
 My first SVG relabel ("catch?") overlapped the "e2e · playwright" label. I only caught it by
 measuring in the browser, not by reading the source.
+
+Amended by `hotfix-gate-and-claims`: I also skipped the `deep` gate before hand-back, which
+`.ai/HARNESS.md` asks for. `full` doesn't run the citation check, so this run's own digest and
+`evidence.md` shipped with bare-path citations and left `deep` red on `master`. The citations are
+fixed, and the wording in the first section is corrected.
