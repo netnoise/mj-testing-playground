@@ -1,5 +1,5 @@
 {
-  "status": "active",
+  "status": "done",
   "opened_by": "open-run.sh",
   "started_at": "2026-09-18T22:40:24.624Z",
   "base_commit": "cb8d0d51d13d0a7f6d3eac6bc1e73a02244c6bd7",
@@ -40,5 +40,6 @@
     "src/app/incidents/incident.ts",
     "src/styles.scss"
   ],
-  "type": "feature"
+  "type": "feature",
+  "head_commit": "1d3b2e8e18d564062e6813d278a5de62e79bf101"
 }
