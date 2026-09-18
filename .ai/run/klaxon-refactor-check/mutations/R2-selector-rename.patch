@@ -1,0 +1,13 @@
+diff --git a/src/app/board/board.ts b/src/app/board/board.ts
+index d373549..fc4183f 100644
+--- a/src/app/board/board.ts
++++ b/src/app/board/board.ts
+@@ -14,7 +14,7 @@ const FILTERS: readonly { value: SeverityFilter; label: string }[] = [
+ ];
+ 
+ @Component({
+-  selector: 'app-board',
++  selector: 'app-incident-board',
+   templateUrl: './board.html',
+   styleUrl: './board.scss',
+ })

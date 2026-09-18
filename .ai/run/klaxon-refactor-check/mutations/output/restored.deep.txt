@@ -1,0 +1,89 @@
+verify: tier=deep
+
+> mj-testing-playground@0.0.0 lint
+> ng lint
+
+
+Linting "mj-testing-playground"...
+
+All files pass linting.
+
+
+Test Suites: 5 passed, 5 total
+Tests:       24 passed, 24 total
+Snapshots:   0 total
+Time:        0.797 s, estimated 1 s
+Ran all test suites.
+ok   gate-scope Edit blocked (door 7) (exit 2)
+ok   gate-scope Edit + HARNESS_DOOR_OPEN passes (exit 0)
+ok   ordinary src file, no run, passes (exit 0)
+ok   Bash sed -i on jest.config.js NOT blocked by the Bash branch itself (exit 0)
+ok   Bash cat (read) on jest.config.js passes (exit 0)
+ok   Bash rm of a state.json blocked (exit 2)
+ok   Bash npm test passes (no blast-radius on Bash by design) (exit 0)
+ok   [KNOWN GAP] Bash writing state.json via a non-listed verb (node -e) is not blocked - documented, not fixed by this patch:
+ok     node -e writeFileSync on a run's state.json (exit 0)
+ok   [FIXED] previously-allowed Bash bypasses of gate-scope files (delta table, §1.1):
+ok     bash bypass no longer matters at the Bash-check stage (still passes there; caught below by the sweep instead) (exit 0)
+ok     bash bypass no longer matters at the Bash-check stage (still passes there; caught below by the sweep instead) (exit 0)
+ok     bash bypass no longer matters at the Bash-check stage (still passes there; caught below by the sweep instead) (exit 0)
+ok   out-of-radius path blocked (exit 2)
+ok   in-radius path passes (exit 0)
+ok   active run's own directory always passes (not in allowed_paths) (exit 0)
+ok   editing an existing state.json directly is blocked (exit 2)
+ok   budget_spent still fires after a WIP commit (base_commit ruler) (exit 2)
+ok   sweep blocks an unrelated Edit once an undisclosed gate-scope diff exists (exit 2)
+ok   sweep does NOT block edits inside the active run's own directory (exit 0)
+ok   disclosing in door-crossings.md un-blocks the sweep (exit 0)
+ok   reverting the file (git checkout) also un-blocks the sweep (exit 0)
+ok   [KNOWN GAP, by design] no active run: an undisclosed gate-scope diff does not block other edits (exit 0)
+ok   negative control: breaking dir/** in lib.mjs makes an in-radius edit wrongly block (suite can go red)
+ok   negative control: gutting the sweep's crossed-list (always empty) makes an undisclosed crossing wrongly pass (suite can go red)
+
+hook-test: all 23 cases pass
+
+> mj-testing-playground@0.0.0 build
+> ng build
+
+❯ Building...
+One or more browsers which are configured in the project's Browserslist configuration will be ignored as ES5 output is not supported by the Angular CLI.
+Ignored browsers:
+kaios 2.5, op_mini all
+One or more browsers which are configured in the project's Browserslist configuration fall outside Angular's browser support for this version.
+Unsupported browsers:
+and_qq 14.9, and_uc 15.5, android 151, chrome 109, kaios 3.0-3.1, op_mob 80, opera 131, opera 127, samsung 30, samsung 29
+✔ Building...
+Initial chunk files | Names         |  Raw size | Estimated transfer size
+main-LBTSK36V.js    | main          | 215.88 kB |                59.32 kB
+styles-ZA2B3OPY.css | styles        | 577 bytes |               577 bytes
+
+                    | Initial total | 216.46 kB |                59.90 kB
+
+Application bundle generation complete. [0.903 seconds] - 2026-09-18T23:04:54.812Z
+
+Output location: /Users/emjot/dev/projects/mj-testing-playground/dist/mj-testing-playground
+
+
+Running 2 tests using 2 workers
+
+[1A[2K[1/2] [chromium] › smoke.spec.ts:30:7 › / mounts with no uncaught error and a non-empty root
+[1A[2K[2/2] [chromium] › smoke.spec.ts:30:7 › /board mounts with no uncaught error and a non-empty root
+[1A[2K
+  2 passed (585ms)
+
+Running 8 tests using 5 workers
+
+[1A[2K[1/8] [chromium] › board.spec.ts:9:5 › filters by severity and shows the details of a clicked incident
+[1A[2K[2/8] [chromium] › board.spec.ts:52:7 › non-happy states are reachable by URL and raise no errors › loading
+[1A[2K[3/8] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[4/8] [chromium] › board.spec.ts:68:7 › non-happy states are reachable by URL and raise no errors › failed
+[1A[2K[5/8] [chromium] › board.spec.ts:60:7 › non-happy states are reachable by URL and raise no errors › empty
+[1A[2K[6/8] [chromium] › board.spec.ts:76:7 › non-happy states are reachable by URL and raise no errors › stale keeps the table and says how old it is
+[1A[2K[7/8] [chromium] › smoke.spec.ts:30:7 › / mounts with no uncaught error and a non-empty root
+[1A[2K[8/8] [chromium] › smoke.spec.ts:30:7 › /board mounts with no uncaught error and a non-empty root
+[1A[2K
+  8 passed (895ms)
+verify: WARN - harness-v14-retool has door-crossings.md but no digest.md (active, or predates this check)
+verify: newest run (klaxon-refactor-check) has no digest.md or retro.md - nothing checked, not a pass
+verify: OK (deep, build + full e2e suite driven end to end against the production build)
+exit=0

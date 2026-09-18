@@ -1,0 +1,7 @@
+{
+  "skill": "understand",
+  "status": "ok",
+  "artifacts": ["brief.md", "input.md"],
+  "files_changed": [],
+  "spent": {"min": 10, "files": 14}
+}
