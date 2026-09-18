@@ -18,7 +18,10 @@
   "max_files": 10,
   "max_minutes": 45,
   "files_touched": [
-    "docs/design/klaxon/findings/harmless-refactors.json"
+    "docs/design/klaxon/README.md",
+    "docs/design/klaxon/findings/harmless-refactors.json",
+    "docs/design/klaxon/findings/harmless-refactors.md",
+    "docs/design/klaxon/findings/heading-demotion.md"
   ],
   "type": "feature"
 }
