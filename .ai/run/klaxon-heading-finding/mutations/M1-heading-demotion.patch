@@ -1,0 +1,24 @@
+diff --git a/src/app/board/board.html b/src/app/board/board.html
+index c34b036..f850e55 100644
+--- a/src/app/board/board.html
++++ b/src/app/board/board.html
+@@ -1,5 +1,5 @@
+ <header class="board-header">
+-  <h1>Incident Board</h1>
++  <div class="page-title">Incident Board</div>
+   <p class="env">env: fixtures</p>
+ </header>
+ 
+diff --git a/src/app/board/board.scss b/src/app/board/board.scss
+index bdaa087..c74e9f1 100644
+--- a/src/app/board/board.scss
++++ b/src/app/board/board.scss
+@@ -3,7 +3,7 @@
+   align-items: baseline;
+   gap: 16px;
+ 
+-  h1 {
++  .page-title {
+     margin: 0;
+     font-size: 20px;
+     font-weight: 600;
