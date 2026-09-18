@@ -58,7 +58,13 @@ if [ "$MODE" = "--record" ]; then
   npm run build >/dev/null 2>&1 && npx playwright test --reporter=list >"$DIR/output/restored.e2e.txt" 2>&1; echo "exit=$?" >>"$DIR/output/restored.e2e.txt"
   git diff --stat -- src e2e >"$DIR/restored-diffstat.txt"
   echo "recorded $(wc -l <"$RESULTS") cells to $RESULTS"
+  STATUS=0
+elif diff "$RESULTS" "$OUT"; then
+  echo "replay: every outcome matches results.tsv"
+  STATUS=0
 else
-  diff "$RESULTS" "$OUT" && echo "replay: every outcome matches results.tsv"
+  echo "replay: outcomes differ from results.tsv (diff above)" >&2
+  STATUS=1
 fi
 rm -f "$OUT" "$OUT.log" "$OUT.build"
+exit $STATUS
