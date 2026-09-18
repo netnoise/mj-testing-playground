@@ -1,5 +1,5 @@
 {
-  "status": "active",
+  "status": "done",
   "opened_by": "open-run.sh",
   "started_at": "2026-09-18T15:28:38.843Z",
   "base_commit": "cb11246e66268f8a09116f9a806b6b05526a98b7",
@@ -22,5 +22,6 @@
     "docs/design/klaxon/wireframes/board.html",
     "docs/design/klaxon/wireframes/findings.html"
   ],
-  "type": "feature"
+  "type": "feature",
+  "head_commit": "278d3527ec1256a207c08d50c8e36aa9c16684e3"
 }
