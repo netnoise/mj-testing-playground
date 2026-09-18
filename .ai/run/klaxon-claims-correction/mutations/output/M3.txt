@@ -1,0 +1,31 @@
+FAIL src/app/app.component.spec.ts
+  AppComponent
+    ✓ should create the app (13 ms)
+    ✓ should have as title mj-testing-playground (3 ms)
+    ✕ should render the title in the header (3 ms)
+
+  ● AppComponent › should render the title in the header
+
+    TypeError: Cannot read properties of null (reading 'textContent')
+
+      31 |     fixture.detectChanges();
+      32 |     const compiled = fixture.nativeElement;
+    > 33 |     expect(compiled.querySelector('.app-header h1').textContent).toContain('mj-testing-playground');
+         |                                                    ^
+      34 |   });
+      35 | });
+      36 |
+
+      at src/app/app.component.spec.ts:33:52
+      at _ZoneDelegate.Object.<anonymous>._ZoneDelegate.invoke (node_modules/zone.js/bundles/zone-testing-bundle.umd.js:409:30)
+      at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (node_modules/zone.js/bundles/zone-testing-bundle.umd.js:3830:43)
+      at _ZoneDelegate.Object.<anonymous>._ZoneDelegate.invoke (node_modules/zone.js/bundles/zone-testing-bundle.umd.js:408:56)
+      at Zone.Object.<anonymous>.Zone.run (node_modules/zone.js/bundles/zone-testing-bundle.umd.js:169:47)
+      at Object.wrappedFunc (node_modules/zone.js/bundles/zone-testing-bundle.umd.js:4330:34)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 2 passed, 3 total
+Snapshots:   0 total
+Time:        0.419 s, estimated 1 s
+Ran all test suites matching /src\/app\/app.component.spec.ts/i.
+exit=1

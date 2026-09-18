@@ -1,0 +1,13 @@
+diff --git a/src/app/app.component.scss b/src/app/app.component.scss
+index 7a5dec3..99cd732 100644
+--- a/src/app/app.component.scss
++++ b/src/app/app.component.scss
+@@ -4,7 +4,7 @@
+   color: #222;
+ }
+ 
+-.app-header {
++.site-header {
+   padding: 16px 24px;
+   background-color: #1976d2;
+   color: white;
