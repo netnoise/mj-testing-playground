@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Angular testing playground (`mj-testing-playground`): Angular 21.2 LTS, standalone components, zoneless, on Node 24 (Angular 22 needs Node ≥24.15). Current code is a root `App` (header plus `<router-outlet>`), one route (`board` → a `Board` stub that holds only a heading, and `''` redirects to it), and `advanced-form.validators.ts` with its spec, carried over from the old app because they are the only real logic. Generated names follow Angular 21 (`app.ts`, class `App`, no `.component` suffix).
+Angular testing playground (`mj-testing-playground`): Angular 21.2 LTS, standalone components, zoneless, on Node 24 (Angular 22 needs Node ≥24.15). Current code is a root `App` (header plus `<router-outlet>`), one route (`board` → the incident board, and `''` redirects to it), and `advanced-form.validators.ts` with its spec, carried over from the old app because they are the only real logic. Generated names follow Angular 21 (`app.ts`, class `App`, no `.component` suffix).
 
 The old Angular 14 NgModule app, its specs and its Storybook are at the git tag `scaffold-ng14`. Storybook and Compodoc were dropped in the regen and are not installed.
 
-**Klaxon** (an on-call incident board that hosts planted defects for testing experiments) is the direction: see `docs/design/klaxon/` and decisions `.ai/decisions/0006`–`0008`. The regen step of its milestone 1 is done; the board itself (`Board` is a stub) is the next run. Generate via `ng generate` rather than building parallel structures.
+**Klaxon** (an on-call incident board that hosts planted defects for testing experiments) is the direction: see `docs/design/klaxon/` and decisions `.ai/decisions/0006`–`0008`. The regen and the board (fixture-backed, with its baseline tests) are done; planting and recording the heading-demotion defect is the next run. Generate via `ng generate` rather than building parallel structures.
 
 ## Commands
 
@@ -46,6 +46,7 @@ These come from `eslint.config.js` / `angular.json` and will fail lint/build if 
 ## Layout notes
 
 - `src/app/` — root component (`App`), `app.config.ts`, `app.routes.ts` (exported so `smoke-routes.spec.ts` can check it against `e2e/smoke-routes.ts`). New features are standalone components generated here.
+- `src/app/board/` — the Klaxon incident board (`Board`, route `/board`); `src/app/incidents/` — the `Incident` model, a fixed-clock fixture and `IncidentSource`. `?scenario=loading|empty|failed|stale` drives the board into each non-happy state on any build; it is a fixtures-only test seam.
 - `public/` — static assets served as-is (Angular 21 replaces `src/assets/`). There is no `src/environments/` and no `fileReplacements`.
 - `e2e/` — Playwright specs (`*.spec.ts`).
 - `tsconfig.app.json` (app build) and `tsconfig.spec.json` (Jest) both extend the root `tsconfig.json`.
