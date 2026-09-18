@@ -58,6 +58,8 @@ Two proofs, both run in this iteration:
   DOM structure, roles and text unchanged. A refactor that adds a wrapper element, changes an
   element type or reorders content is a different experiment, and one of those (a `<header>` swapped
   for a `<div>`, losing the banner landmark) would be a defect, not a harmless change.
+- The layout snapshot normalises host `app-*` tags, so a change to that one tag name alone would
+  not show in it; R2 needed that, and the cost is a blind spot on the component host element.
 - Each cell ran once; `replay.sh` reproduced every outcome a second time.
 
 ## Evidence and replay
