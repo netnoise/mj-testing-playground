@@ -1,0 +1,22 @@
+{
+  "status": "active",
+  "opened_by": "open-run.sh",
+  "started_at": "2026-09-18T21:57:18.644Z",
+  "base_commit": "3932df75c94b3049cf18e8382f0bf7caea29f27a",
+  "dirty_at_start": [],
+  "allowed_paths": [
+    "src/**",
+    "e2e/app.spec.ts",
+    "e2e/smoke.spec.ts",
+    "e2e/smoke-routes.ts",
+    "package.json",
+    "package-lock.json",
+    ".storybook/**",
+    "CLAUDE.md",
+    ".ai/run/klaxon-regen-shell/**"
+  ],
+  "max_files": 40,
+  "max_minutes": 90,
+  "files_touched": [],
+  "type": "redesign"
+}
