@@ -10,7 +10,14 @@
     "test:coverage": "jest --coverage",
     "lint": "ng lint",
     "e2e": "playwright test",
-    "e2e:ui": "playwright test --ui"
+    "e2e:ui": "playwright test --ui",
+    "serve:dist": "node e2e/serve-dist.mjs",
+    "verify:fast": "bash .ai/harness/verify.sh fast",
+    "verify": "bash .ai/harness/verify.sh full",
+    "verify:smoke": "bash .ai/harness/verify.sh smoke",
+    "verify:deep": "bash .ai/harness/verify.sh deep",
+    "check-citations": "sh .ai/harness/check-citations.sh",
+    "hook-test": "sh .ai/harness/hook-test.sh"
   },
   "private": true,
   "dependencies": {

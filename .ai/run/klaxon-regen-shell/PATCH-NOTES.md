@@ -1,6 +1,6 @@
 # Patch notes — klaxon-regen-shell (door 7, human-applied)
 
-`patch/gate-scope.patch` is a unified diff of the 8 gate-scope files the regen changes. An agent
+`.ai/run/klaxon-regen-shell/patch/gate-scope.patch` is a unified diff of the 8 gate-scope files the regen changes. An agent
 can't edit them (`.ai/HARNESS.md`, door 7). The rest of the regen is already committed on this
 branch, which means **the branch is red until you apply this**: `angular.json` still describes
 Angular 14 while `src/` and `package.json` describe Angular 21.

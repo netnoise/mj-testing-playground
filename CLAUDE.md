@@ -20,6 +20,7 @@ All commands run via the local Angular CLI (`npx ng …` or the npm scripts belo
 - Run a single test file: `npx jest src/app/advanced-form/advanced-form.validators.spec.ts`. To focus a single spec, use Jest's `fdescribe` / `fit` (or `describe.only` / `it.only`).
 - `npm run lint` — ESLint over `src/**/*.ts` and `src/**/*.html`.
 - `npm run e2e` — Playwright against a freshly-served app (dev server starts automatically). Use `npm run e2e:ui` for Playwright's interactive UI mode.
+- `npm run verify:fast | verify | verify:smoke | verify:deep` — the gate tiers (`bash .ai/harness/verify.sh <tier>`, the only gate contract; tier contents are in `.ai/HARNESS.md`). `npm run check-citations` and `npm run hook-test` run those two harness checks alone. `npm run serve:dist` serves the production build the way `smoke`/`deep` do (`e2e/serve-dist.mjs`, port 4200).
 - Scaffolding: `npx ng generate component <name>` (and `directive|pipe|service|class|guard|interface|enum|module`).
 
 ## Conventions enforced by tooling

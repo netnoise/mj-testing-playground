@@ -1,5 +1,6 @@
 # The scaffold is Angular 14 and the Klaxon milestone can't start until a modern, green shell exists
 run: klaxon-regen-shell · intake 2026-09-18
+<!-- cite-base: 3932df7 -->
 
 ## Intent
 Replace the Angular 14.3 scaffold with an Angular 21.2 LTS shell that passes `verify.sh deep`,
@@ -17,7 +18,7 @@ The old app stays reachable at the local tag `scaffold-ng14` (`3932df7`).
       `.ai/run/old-baseline-findings/mutations/V{1,2,3,4}.patch` against it (V1 caught by the
       validators spec; V2, V3, V4 missed). A different pattern means the port changed what the
       tests can see: stop and report.
-- [ ] `dist/mj-testing-playground/index.html` exists after `npm run build`
+- [ ] the build output directory `dist/mj-testing-playground` has its `index.html` at the top level after `npm run build`
       (`outputPath` `{ base, browser: "" }`), so `e2e/serve-dist.mjs`, `verify.sh` and
       `playwright.config.ts`'s `webServer` need no edit.
 - [ ] `src/app/smoke-routes.spec.ts` and `e2e/smoke-routes.ts` are ported and `smoke` is green.
@@ -88,7 +89,7 @@ Read in `/understand`:
   so this test goes or is repointed; `/understand` defaults to deleting it (see Open decisions).
 - **The routing pair ports mechanically if a route with a path stays.**
   `src/app/smoke-routes.spec.ts:25` asserts at least one declared path and imports `routes` from
-  `./app-routing.module` (`:1`); `e2e/smoke-routes.ts:14` lists `['/', '/advanced-form']`. The old
+  the routing module, `src/app/app-routing.module.ts` (`:1`); `e2e/smoke-routes.ts:14` lists `['/', '/advanced-form']`. The old
   routes are `advanced-form` plus a `''` redirect (`src/app/app-routing.module.ts:13-14`).
 - **Only four tests need their timing harness converted.** `fakeAsync`/`tick` appear in
   `src/app/advanced-form/advanced-form.validators.spec.ts:35-61`, four tests, each one
