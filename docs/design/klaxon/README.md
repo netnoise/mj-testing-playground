@@ -12,6 +12,27 @@ This directory holds the visual reference; that decision record holds the why.
 Angular code, no BFF, no Go service exists. The regeneration onto a modern
 Angular baseline (decision 0006, item 2) is a separate, not-yet-started run.
 
+## Write-up
+
+[`klaxon-testing-lab.html`](klaxon-testing-lab.html) is the repo-durable copy
+of the full write-up — the same content as the
+[Klaxon Testing Lab](https://claude.ai/artifact/XPYjDfxYcYV1UCbpDioq9r)
+artifact, open directly in a browser, no account required. It covers the
+plant/run/record mechanism, the feature table, the backend-as-control-variable
+diagram (now including the Go event generator — see below), the settled
+decisions, the build sequence, and the doors an agent can't cross alone.
+
+## Go event generator
+
+Decision [`0007-go-event-generator.md`](../../../.ai/decisions/0007-go-event-generator.md)
+adds a Go service behind the Node BFF: one goroutine per simulated incident
+monitor, each misbehaving on its own schedule, fanning concurrently into the
+event stream that makes the board's "live" data actually live. Angular never
+calls it, and neither does MSW — the fake keeps faking the BFF's contract
+directly, so the real path (Go &rarr; BFF) and the fake path (MSW) stay
+independent of each other. Not yet built; see §05 and §06 of the write-up for
+the reasoning and the diagram.
+
 ## Wireframes
 
 Four linked, static HTML snapshots — open any of them directly in a browser,
@@ -25,11 +46,10 @@ no build step or server required:
 | Findings | [`wireframes/findings.html`](wireframes/findings.html) | The in-app defect × test-layer matrix. Featured finding: severity-by-colour-only, caught by 0 of 5 layers. |
 
 These are static snapshots of an interactive prototype built as a Claude
-Artifact ([Klaxon Views](https://claude.ai/artifact/T8CfBzMBVpac9BCtDNfvPh));
-the write-up artifact is
-[Klaxon Testing Lab](https://claude.ai/artifact/XPYjDfxYcYV1UCbpDioq9r). Both
-links require the account that created them — the files here are the
-repo-durable copy and take precedence if the two ever disagree.
+Artifact ([Klaxon Views](https://claude.ai/artifact/T8CfBzMBVpac9BCtDNfvPh)).
+Both artifact links require the account that created them — the files in this
+directory are the repo-durable copy and take precedence if the two ever
+disagree.
 
 ## Visual language
 
