@@ -1,1 +1,90 @@
-<h2>Incident Board</h2>
+<header class="board-header">
+  <h1>Incident Board</h1>
+  <p class="env">env: fixtures</p>
+</header>
+
+@switch (status()) {
+  @case ('loading') {
+    <p class="notice" role="status">Loading incidents…</p>
+  }
+  @case ('failed') {
+    <p class="notice notice-failed" role="alert">Could not load incidents.</p>
+  }
+  @case ('empty') {
+    <p class="notice" role="status">No incidents right now.</p>
+  }
+  @default {
+    @if (staleAge(); as age) {
+      <p class="notice notice-stale" role="status">Showing incidents last updated {{ age }} ago. The refresh failed.</p>
+    }
+
+    <div class="filters" role="group" aria-label="Filter by severity">
+      @for (option of filters; track option.value) {
+        <button type="button" [attr.aria-pressed]="filter() === option.value" (click)="setFilter(option.value)">
+          {{ option.label }} <span class="count">{{ counts()[option.value] }}</span>
+        </button>
+      }
+    </div>
+
+    <div class="layout">
+      <div class="table-wrap">
+        <table>
+          <caption class="visually-hidden">Incidents</caption>
+          <thead>
+            <tr>
+              <th scope="col">Sev</th>
+              <th scope="col">ID</th>
+              <th scope="col">Title</th>
+              <th scope="col">Service</th>
+              <th scope="col">Owner</th>
+              <th scope="col">Opened</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (incident of rows(); track incident.id) {
+              <tr [class.selected]="incident.id === selected()?.id">
+                <td><span class="sev sev-{{ incident.severity }}">{{ severityLabel[incident.severity].short }}</span></td>
+                <td>
+                  <button type="button" class="row-button" [attr.aria-pressed]="incident.id === selected()?.id" (click)="select(incident.id)">
+                    {{ incident.id }}
+                  </button>
+                </td>
+                <td>{{ incident.title }}</td>
+                <td class="mono">{{ incident.service }}</td>
+                <td>{{ incident.owner }}</td>
+                <td class="mono">{{ age(incident) }}</td>
+                <td class="mono">{{ statusLabel[incident.status] }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7">No incidents match this filter.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <aside class="details" aria-label="Incident details">
+        @if (selected(); as incident) {
+          <h2>{{ incident.id }}</h2>
+          <p>{{ incident.title }}</p>
+          <dl>
+            <dt>Severity</dt>
+            <dd>{{ severityLabel[incident.severity].long }}</dd>
+            <dt>Status</dt>
+            <dd>{{ statusLabel[incident.status] }}</dd>
+            <dt>Service</dt>
+            <dd class="mono">{{ incident.service }}</dd>
+            <dt>Owner</dt>
+            <dd>{{ incident.owner }}</dd>
+            <dt>Opened</dt>
+            <dd class="mono">{{ age(incident) }} ago</dd>
+          </dl>
+        } @else {
+          <p>Select an incident to see its details.</p>
+        }
+      </aside>
+    </div>
+  }
+}

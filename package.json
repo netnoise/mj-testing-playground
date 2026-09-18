@@ -36,6 +36,7 @@
     "@angular/compiler-cli": "~21.2.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "~1.30.0",
+    "@testing-library/dom": "^10.4.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.13.5",
     "angular-eslint": "21.4.0",

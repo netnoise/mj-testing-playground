@@ -1,0 +1,43 @@
+{
+  "status": "active",
+  "opened_by": "open-run.sh",
+  "started_at": "2026-09-18T22:40:24.624Z",
+  "base_commit": "cb8d0d51d13d0a7f6d3eac6bc1e73a02244c6bd7",
+  "dirty_at_start": [],
+  "allowed_paths": [
+    "src/app/board/**",
+    "src/app/incidents/**",
+    "src/app/app.ts",
+    "src/app/app.html",
+    "src/app/app.scss",
+    "src/app/app.config.ts",
+    "src/styles.scss",
+    "e2e/board*.ts",
+    "package.json",
+    "package-lock.json",
+    "CLAUDE.md",
+    ".ai/run/klaxon-board/**"
+  ],
+  "max_files": 25,
+  "max_minutes": 90,
+  "files_touched": [
+    "e2e/board.spec.ts",
+    "package-lock.json",
+    "package.json",
+    "src/app/app.config.ts",
+    "src/app/app.html",
+    "src/app/app.scss",
+    "src/app/board/board.html",
+    "src/app/board/board.scss",
+    "src/app/board/board.spec.ts",
+    "src/app/board/board.ts",
+    "src/app/incidents/format-age.spec.ts",
+    "src/app/incidents/format-age.ts",
+    "src/app/incidents/incident-fixture.ts",
+    "src/app/incidents/incident-source.spec.ts",
+    "src/app/incidents/incident-source.ts",
+    "src/app/incidents/incident.ts",
+    "src/styles.scss"
+  ],
+  "type": "feature"
+}
