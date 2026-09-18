@@ -21,6 +21,7 @@
   "max_files": 25,
   "max_minutes": 90,
   "files_touched": [
+    "CLAUDE.md",
     "e2e/board.spec.ts",
     "package-lock.json",
     "package.json",
