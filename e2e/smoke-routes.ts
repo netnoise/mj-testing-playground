@@ -11,4 +11,4 @@
 // route list (e2e/smoke.spec.ts) was a second, unchecked copy of the
 // routing config, so "an empty list" (HARNESS.md's own warning) could
 // happen to a *new* route rather than an existing check.
-export const SMOKE_ROUTES = ['/', '/advanced-form'];
+export const SMOKE_ROUTES = ['/', '/board'];

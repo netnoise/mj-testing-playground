@@ -1,7 +1,6 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 
-import { AdvancedFormComponent } from './advanced-form/advanced-form.component';
+import { Board } from './board/board';
 
 // Exported so src/app/smoke-routes.spec.ts can check it against
 // e2e/smoke-routes.ts's hand-kept list - the pair that let a route ship
@@ -10,12 +9,6 @@ import { AdvancedFormComponent } from './advanced-form/advanced-form.component';
 // here without also touching e2e/smoke.spec.ts's ROUTES const got a green
 // smoke/deep over a page that never mounted).
 export const routes: Routes = [
-  { path: 'advanced-form', component: AdvancedFormComponent },
-  { path: '', redirectTo: 'advanced-form', pathMatch: 'full' }
+  { path: 'board', component: Board },
+  { path: '', redirectTo: 'board', pathMatch: 'full' }
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
