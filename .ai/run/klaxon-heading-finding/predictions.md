@@ -3,7 +3,7 @@
 - **Baseline commit:** `7327964` (master, 2026-09-19); the run's `base_commit`. `verify.sh deep` was
   green on it before this file was written.
 - **Test revision:** every spec under `src/` and `e2e/` as of `7327964`, frozen, not edited.
-- **Mutation:** `mutations/M1-heading-demotion.patch`: board `<h1>Incident Board</h1>` becomes
+- **Mutation:** `.ai/run/klaxon-heading-finding/mutations/M1-heading-demotion.patch`: board `<h1>Incident Board</h1>` becomes
   `<div class="page-title">Incident Board</div>`, and the scss `h1` rule becomes `.page-title`.
 - **Rule (0008 §2):** these are hypotheses. A cell that comes out differently is recorded as a
   difference; this file is never edited afterwards, and corrections go in the finding record.
@@ -40,4 +40,4 @@ Both are findings about the suite, not about Jest, Playwright or lint.
 
 ## Visual identity
 Predicted: the demoted element's computed `font-size`, `font-weight`, margins, `display`, width and
-height are equal to the `h1`'s in the production build (baseline in `mutations/metrics.baseline.json`).
+height are equal to the `h1`'s in the production build (baseline in `.ai/run/klaxon-heading-finding/mutations/metrics.baseline.json`).

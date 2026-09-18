@@ -16,7 +16,9 @@
   "max_files": 10,
   "max_minutes": 60,
   "files_touched": [
-    "docs/design/klaxon/findings/heading-demotion.json"
+    "docs/design/klaxon/README.md",
+    "docs/design/klaxon/findings/heading-demotion.json",
+    "docs/design/klaxon/findings/heading-demotion.md"
   ],
   "type": "feature"
 }
