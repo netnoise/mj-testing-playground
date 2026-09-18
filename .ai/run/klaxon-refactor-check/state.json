@@ -1,5 +1,5 @@
 {
-  "status": "active",
+  "status": "done",
   "opened_by": "open-run.sh",
   "started_at": "2026-09-18T23:03:45.737Z",
   "base_commit": "c44571d08a6b3cedb399c1372d1c7940850a9794",
@@ -23,5 +23,6 @@
     "docs/design/klaxon/findings/harmless-refactors.md",
     "docs/design/klaxon/findings/heading-demotion.md"
   ],
-  "type": "feature"
+  "type": "feature",
+  "head_commit": "3895f0cc39dbaba740e3ec7e54bbbfef245c31be"
 }
