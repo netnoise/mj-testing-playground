@@ -133,6 +133,17 @@ session that created it. Cite the documented floor and where to look instead.
   `GATE_SCOPE`): skip the `## Done when` section for bare-path existence, or accept a
   `(new)` suffix as a declared forward reference that must resolve by `digest.md` time.
 
+- **Nothing checks a digest's citations before its run closes.** The documented loop runs `verify`
+  before `digest` (`.ai/harness/config.yml:45`), deliberately (`.ai/harness/verify.sh:155`), so a
+  digest is checked only if someone runs `deep` afterwards, and `.ai/harness/close-run.sh:32` lists no
+  citation check. A run can close `done` and leave `deep` red on the trunk: the
+  `klaxon-claims-correction` digest did exactly that, and the fix needed its own run
+  (`.ai/run/hotfix-gate-and-claims/retro.md`). Fix sketch (not gate scope — `close-run.sh` isn't in
+  `GATE_SCOPE`): have `close-run.sh` run `check-citations.sh` on the run's `digest.md` and `retro.md`
+  and refuse a `done` close on any BAD line, with an escape flag shaped like `--no-disclosure-check`.
+  Not proposed: gating `evidence.md` or the journal, which cite trees that legitimately change
+  (`.ai/harness/verify.sh:166` scopes the gate to digest and retro for that reason).
+
 ## Bank cards with an unbuilt mechanism
 
 - **`.ai/bank/2026-09-04-citation-drift.md`** names its own fix in its
