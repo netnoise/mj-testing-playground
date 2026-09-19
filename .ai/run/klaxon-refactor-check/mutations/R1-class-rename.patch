@@ -1,0 +1,20 @@
+diff --git a/src/app/board/board.html b/src/app/board/board.html
+index c34b036..ea63628 100644
+--- a/src/app/board/board.html
++++ b/src/app/board/board.html
+@@ -1,4 +1,4 @@
+-<header class="board-header">
++<header class="page-header">
+   <h1>Incident Board</h1>
+   <p class="env">env: fixtures</p>
+ </header>
+diff --git a/src/app/board/board.scss b/src/app/board/board.scss
+index bdaa087..1f2705b 100644
+--- a/src/app/board/board.scss
++++ b/src/app/board/board.scss
+@@ -1,4 +1,4 @@
+-.board-header {
++.page-header {
+   display: flex;
+   align-items: baseline;
+   gap: 16px;

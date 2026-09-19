@@ -1,0 +1,14 @@
+
+Running 8 tests using 5 workers
+
+  ✓  4 [chromium] › board.spec.ts:68:7 › non-happy states are reachable by URL and raise no errors › failed (266ms)
+  ✓  3 [chromium] › board.spec.ts:52:7 › non-happy states are reachable by URL and raise no errors › loading (273ms)
+  ✓  5 [chromium] › board.spec.ts:60:7 › non-happy states are reachable by URL and raise no errors › empty (281ms)
+  ✓  2 [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator (313ms)
+  ✓  1 [chromium] › board.spec.ts:9:5 › filters by severity and shows the details of a clicked incident (379ms)
+  ✓  6 [chromium] › board.spec.ts:76:7 › non-happy states are reachable by URL and raise no errors › stale keeps the table and says how old it is (119ms)
+  ✓  8 [chromium] › smoke.spec.ts:30:7 › /board mounts with no uncaught error and a non-empty root (107ms)
+  ✓  7 [chromium] › smoke.spec.ts:30:7 › / mounts with no uncaught error and a non-empty root (122ms)
+
+
+  8 passed (874ms)

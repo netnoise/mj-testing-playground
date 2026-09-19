@@ -1,0 +1,1215 @@
+FAIL src/app/board/board.spec.ts
+  ● Board › lists every incident in a table with column headers, and shows severity as visible text
+
+    TestingLibraryElementError: Unable to find an accessible element with the role "heading"
+
+    Here are the accessible roles:
+
+      banner:
+
+      Name "":
+      [36m<header[39m
+        [33mclass[39m=[32m"board-header"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      paragraph:
+
+      Name "":
+      [36m<p[39m
+        [33mclass[39m=[32m"env"[39m
+      [36m/>[39m
+
+      --------------------------------------------------group:
+
+      Name "Filter by severity":
+      [36m<div[39m
+        [33maria-label[39m=[32m"Filter by severity"[39m
+        [33mclass[39m=[32m"filters"[39m
+        [33mrole[39m=[32m"group"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      button:
+
+      Name "All 12":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"true"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "Critical 3":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "Major 4":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "Minor 5":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      --------------------------------------------------table:
+
+      Name "Incidents":
+      [36m<table />[39m
+
+      --------------------------------------------------
+      caption:
+
+      Name "Incidents":
+      [36m<caption[39m
+        [33mclass[39m=[32m"visually-hidden"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      rowgroup:
+
+      Name "":
+      [36m<thead />[39m
+
+      Name "":
+      [36m<tbody />[39m
+
+      --------------------------------------------------
+      row:
+
+      Name "Sev ID Title Service Owner Opened Status":
+      [36m<tr />[39m
+
+      Name "CRIT INC-2891 Checkout API returning 5xx on payment capture checkout-api R. Byrne 3m LIVE":
+      [36m<tr />[39m
+
+      Name "MAJ INC-2890 Auth token refresh latency above SLO auth-svc T. Kaur 18m ACKED":
+      [36m<tr />[39m
+
+      Name "MIN INC-2889 Search index lag on catalog re-embed job search-index S. Osei 42m MITIGATING":
+      [36m<tr />[39m
+
+      Name "CRIT INC-2888 Primary database failover taking longer than 5 minutes orders-db M. Rossi 55m ACKED":
+      [36m<tr />[39m
+
+      Name "MIN INC-2887 Notification worker retry storm on webhook 429 notifications R. Byrne 1h 12m MITIGATING":
+      [36m<tr />[39m
+
+      Name "MAJ INC-2886 Mobile API p99 latency doubled after deploy mobile-api T. Kaur 1h 48m LIVE":
+      [36m<tr />[39m
+
+      Name "MIN INC-2885 Cron drift on nightly export scheduler scheduler S. Osei 2h 20m LIVE":
+      [36m<tr />[39m
+
+      Name "MAJ INC-2884 Billing worker double-charged retried invoices billing-worker T. Kaur 3h 5m RESOLVED":
+      [36m<tr />[39m
+
+      Name "CRIT INC-2883 Login page returning 502 for EU users edge-gateway M. Rossi 5h RESOLVED":
+      [36m<tr />[39m
+
+      Name "MIN INC-2882 Stale product images after CDN purge cdn-edge S. Osei 7h 30m RESOLVED":
+      [36m<tr />[39m
+
+      Name "MAJ INC-2881 Email delivery delayed by provider throttling notifications R. Byrne 11h MITIGATING":
+      [36m<tr />[39m
+
+      Name "MIN INC-2879 CDN edge cache purge delayed on image bundle cdn-edge S. Osei 1d RESOLVED":
+      [36m<tr />[39m
+
+      --------------------------------------------------
+      columnheader:
+
+      Name "Sev":
+      [36m<th[39m
+        [33mscope[39m=[32m"col"[39m
+      [36m/>[39m
+
+      Name "ID":
+      [36m<th[39m
+        [33mscope[39m=[32m"col"[39m
+      [36m/>[39m
+
+      Name "Title":
+      [36m<th[39m
+        [33mscope[39m=[32m"col"[39m
+      [36m/>[39m
+
+      Name "Service":
+      [36m<th[39m
+        [33mscope[39m=[32m"col"[39m
+      [36m/>[39m
+
+      Name "Owner":
+      [36m<th[39m
+        [33mscope[39m=[32m"col"[39m
+      [36m/>[39m
+
+      Name "Opened":
+      [36m<th[39m
+        [33mscope[39m=[32m"col"[39m
+      [36m/>[39m
+
+      Name "Status":
+      [36m<th[39m
+        [33mscope[39m=[32m"col"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      cell:
+
+      Name "CRIT":
+      [36m<td />[39m
+
+      Name "INC-2891":
+      [36m<td />[39m
+
+      Name "Checkout API returning 5xx on payment capture":
+      [36m<td />[39m
+
+      Name "checkout-api":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "R. Byrne":
+      [36m<td />[39m
+
+      Name "3m":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "LIVE":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "MAJ":
+      [36m<td />[39m
+
+      Name "INC-2890":
+      [36m<td />[39m
+
+      Name "Auth token refresh latency above SLO":
+      [36m<td />[39m
+
+      Name "auth-svc":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "T. Kaur":
+      [36m<td />[39m
+
+      Name "18m":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "ACKED":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "MIN":
+      [36m<td />[39m
+
+      Name "INC-2889":
+      [36m<td />[39m
+
+      Name "Search index lag on catalog re-embed job":
+      [36m<td />[39m
+
+      Name "search-index":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "S. Osei":
+      [36m<td />[39m
+
+      Name "42m":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "MITIGATING":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "CRIT":
+      [36m<td />[39m
+
+      Name "INC-2888":
+      [36m<td />[39m
+
+      Name "Primary database failover taking longer than 5 minutes":
+      [36m<td />[39m
+
+      Name "orders-db":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "M. Rossi":
+      [36m<td />[39m
+
+      Name "55m":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "ACKED":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "MIN":
+      [36m<td />[39m
+
+      Name "INC-2887":
+      [36m<td />[39m
+
+      Name "Notification worker retry storm on webhook 429":
+      [36m<td />[39m
+
+      Name "notifications":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "R. Byrne":
+      [36m<td />[39m
+
+      Name "1h 12m":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "MITIGATING":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "MAJ":
+      [36m<td />[39m
+
+      Name "INC-2886":
+      [36m<td />[39m
+
+      Name "Mobile API p99 latency doubled after deploy":
+      [36m<td />[39m
+
+      Name "mobile-api":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "T. Kaur":
+      [36m<td />[39m
+
+      Name "1h 48m":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "LIVE":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "MIN":
+      [36m<td />[39m
+
+      Name "INC-2885":
+      [36m<td />[39m
+
+      Name "Cron drift on nightly export scheduler":
+      [36m<td />[39m
+
+      Name "scheduler":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "S. Osei":
+      [36m<td />[39m
+
+      Name "2h 20m":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "LIVE":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "MAJ":
+      [36m<td />[39m
+
+      Name "INC-2884":
+      [36m<td />[39m
+
+      Name "Billing worker double-charged retried invoices":
+      [36m<td />[39m
+
+      Name "billing-worker":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "T. Kaur":
+      [36m<td />[39m
+
+      Name "3h 5m":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "RESOLVED":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "CRIT":
+      [36m<td />[39m
+
+      Name "INC-2883":
+      [36m<td />[39m
+
+      Name "Login page returning 502 for EU users":
+      [36m<td />[39m
+
+      Name "edge-gateway":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "M. Rossi":
+      [36m<td />[39m
+
+      Name "5h":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "RESOLVED":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "MIN":
+      [36m<td />[39m
+
+      Name "INC-2882":
+      [36m<td />[39m
+
+      Name "Stale product images after CDN purge":
+      [36m<td />[39m
+
+      Name "cdn-edge":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "S. Osei":
+      [36m<td />[39m
+
+      Name "7h 30m":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "RESOLVED":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "MAJ":
+      [36m<td />[39m
+
+      Name "INC-2881":
+      [36m<td />[39m
+
+      Name "Email delivery delayed by provider throttling":
+      [36m<td />[39m
+
+      Name "notifications":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "R. Byrne":
+      [36m<td />[39m
+
+      Name "11h":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "MITIGATING":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "MIN":
+      [36m<td />[39m
+
+      Name "INC-2879":
+      [36m<td />[39m
+
+      Name "CDN edge cache purge delayed on image bundle":
+      [36m<td />[39m
+
+      Name "cdn-edge":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "S. Osei":
+      [36m<td />[39m
+
+      Name "1d":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      Name "RESOLVED":
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      button:
+
+      Name "INC-2891":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mclass[39m=[32m"row-button"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "INC-2890":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mclass[39m=[32m"row-button"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "INC-2889":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mclass[39m=[32m"row-button"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "INC-2888":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mclass[39m=[32m"row-button"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "INC-2887":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mclass[39m=[32m"row-button"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "INC-2886":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mclass[39m=[32m"row-button"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "INC-2885":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mclass[39m=[32m"row-button"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "INC-2884":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mclass[39m=[32m"row-button"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "INC-2883":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mclass[39m=[32m"row-button"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "INC-2882":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mclass[39m=[32m"row-button"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "INC-2881":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mclass[39m=[32m"row-button"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      Name "INC-2879":
+      [36m<button[39m
+        [33maria-pressed[39m=[32m"false"[39m
+        [33mclass[39m=[32m"row-button"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      complementary:
+
+      Name "Incident details":
+      [36m<aside[39m
+        [33maria-label[39m=[32m"Incident details"[39m
+        [33mclass[39m=[32m"details"[39m
+      [36m/>[39m
+
+      --------------------------------------------------
+      paragraph:
+
+      Name "":
+      [36m<p />[39m
+
+      --------------------------------------------------
+
+    Ignored nodes: comments, script, style
+    [36m<div[39m
+      [33mid[39m=[32m"root0"[39m
+      [33mng-version[39m=[32m"21.2.23"[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"board-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"page-title"[39m
+        [36m>[39m
+          [0mIncident Board[0m
+        [36m</div>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"env"[39m
+        [36m>[39m
+          [0menv: fixtures[0m
+        [36m</p>[39m
+      [36m</header>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Filter by severity"[39m
+        [33mclass[39m=[32m"filters"[39m
+        [33mrole[39m=[32m"group"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33maria-pressed[39m=[32m"true"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m All [0m
+          [36m<span[39m
+            [33mclass[39m=[32m"count"[39m
+          [36m>[39m
+            [0m12[0m
+          [36m</span>[39m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-pressed[39m=[32m"false"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m Critical [0m
+          [36m<span[39m
+            [33mclass[39m=[32m"count"[39m
+          [36m>[39m
+            [0m3[0m
+          [36m</span>[39m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-pressed[39m=[32m"false"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m Major [0m
+          [36m<span[39m
+            [33mclass[39m=[32m"count"[39m
+          [36m>[39m
+            [0m4[0m
+          [36m</span>[39m
+        [36m</button>[39m
+        [36m<button[39m
+          [33maria-pressed[39m=[32m"false"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m Minor [0m
+          [36m<span[39m
+            [33mclass[39m=[32m"count"[39m
+          [36m>[39m
+            [0m5[0m
+          [36m</span>[39m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"layout"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"table-wrap"[39m
+        [36m>[39m
+          [36m<table>[39m
+            [36m<caption[39m
+              [33mclass[39m=[32m"visually-hidden"[39m
+            [36m>[39m
+              [0mIncidents[0m
+            [36m</caption>[39m
+            [36m<thead>[39m
+              [36m<tr>[39m
+                [36m<th[39m
+                  [33mscope[39m=[32m"col"[39m
+                [36m>[39m
+                  [0mSev[0m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mscope[39m=[32m"col"[39m
+                [36m>[39m
+                  [0mID[0m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mscope[39m=[32m"col"[39m
+                [36m>[39m
+                  [0mTitle[0m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mscope[39m=[32m"col"[39m
+                [36m>[39m
+                  [0mService[0m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mscope[39m=[32m"col"[39m
+                [36m>[39m
+                  [0mOwner[0m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mscope[39m=[32m"col"[39m
+                [36m>[39m
+                  [0mOpened[0m
+                [36m</th>[39m
+                [36m<th[39m
+                  [33mscope[39m=[32m"col"[39m
+                [36m>[39m
+                  [0mStatus[0m
+                [36m</th>[39m
+              [36m</tr>[39m
+            [36m</thead>[39m
+            [36m<tbody>[39m
+              [36m<tr>[39m
+                [36m<td>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"sev sev-critical"[39m
+                  [36m>[39m
+                    [0mCRIT[0m
+                  [36m</span>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [36m<button[39m
+                    [33maria-pressed[39m=[32m"false"[39m
+                    [33mclass[39m=[32m"row-button"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0m INC-2891 [0m
+                  [36m</button>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mCheckout API returning 5xx on payment capture[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mcheckout-api[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mR. Byrne[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0m3m[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mLIVE[0m
+                [36m</td>[39m
+              [36m</tr>[39m
+              [36m<tr>[39m
+                [36m<td>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"sev sev-major"[39m
+                  [36m>[39m
+                    [0mMAJ[0m
+                  [36m</span>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [36m<button[39m
+                    [33maria-pressed[39m=[32m"false"[39m
+                    [33mclass[39m=[32m"row-button"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0m INC-2890 [0m
+                  [36m</button>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mAuth token refresh latency above SLO[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mauth-svc[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mT. Kaur[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0m18m[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mACKED[0m
+                [36m</td>[39m
+              [36m</tr>[39m
+              [36m<tr>[39m
+                [36m<td>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"sev sev-minor"[39m
+                  [36m>[39m
+                    [0mMIN[0m
+                  [36m</span>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [36m<button[39m
+                    [33maria-pressed[39m=[32m"false"[39m
+                    [33mclass[39m=[32m"row-button"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0m INC-2889 [0m
+                  [36m</button>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mSearch index lag on catalog re-embed job[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0msearch-index[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mS. Osei[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0m42m[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mMITIGATING[0m
+                [36m</td>[39m
+              [36m</tr>[39m
+              [36m<tr>[39m
+                [36m<td>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"sev sev-critical"[39m
+                  [36m>[39m
+                    [0mCRIT[0m
+                  [36m</span>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [36m<button[39m
+                    [33maria-pressed[39m=[32m"false"[39m
+                    [33mclass[39m=[32m"row-button"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0m INC-2888 [0m
+                  [36m</button>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mPrimary database failover taking longer than 5 minutes[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0morders-db[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mM. Rossi[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0m55m[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mACKED[0m
+                [36m</td>[39m
+              [36m</tr>[39m
+              [36m<tr>[39m
+                [36m<td>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"sev sev-minor"[39m
+                  [36m>[39m
+                    [0mMIN[0m
+                  [36m</span>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [36m<button[39m
+                    [33maria-pressed[39m=[32m"false"[39m
+                    [33mclass[39m=[32m"row-button"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0m INC-2887 [0m
+                  [36m</button>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mNotification worker retry storm on webhook 429[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mnotifications[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mR. Byrne[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0m1h 12m[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mMITIGATING[0m
+                [36m</td>[39m
+              [36m</tr>[39m
+              [36m<tr>[39m
+                [36m<td>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"sev sev-major"[39m
+                  [36m>[39m
+                    [0mMAJ[0m
+                  [36m</span>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [36m<button[39m
+                    [33maria-pressed[39m=[32m"false"[39m
+                    [33mclass[39m=[32m"row-button"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0m INC-2886 [0m
+                  [36m</button>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mMobile API p99 latency doubled after deploy[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mmobile-api[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mT. Kaur[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0m1h 48m[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mLIVE[0m
+                [36m</td>[39m
+              [36m</tr>[39m
+              [36m<tr>[39m
+                [36m<td>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"sev sev-minor"[39m
+                  [36m>[39m
+                    [0mMIN[0m
+                  [36m</span>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [36m<button[39m
+                    [33maria-pressed[39m=[32m"false"[39m
+                    [33mclass[39m=[32m"row-button"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0m INC-2885 [0m
+                  [36m</button>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mCron drift on nightly export scheduler[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mscheduler[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mS. Osei[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0m2h 20m[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mLIVE[0m
+                [36m</td>[39m
+              [36m</tr>[39m
+              [36m<tr>[39m
+                [36m<td>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"sev sev-major"[39m
+                  [36m>[39m
+                    [0mMAJ[0m
+                  [36m</span>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [36m<button[39m
+                    [33maria-pressed[39m=[32m"false"[39m
+                    [33mclass[39m=[32m"row-button"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0m INC-2884 [0m
+                  [36m</button>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mBilling worker double-charged retried invoices[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mbilling-worker[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mT. Kaur[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0m3h 5m[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mRESOLVED[0m
+                [36m</td>[39m
+              [36m</tr>[39m
+              [36m<tr>[39m
+                [36m<td>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"sev sev-critical"[39m
+                  [36m>[39m
+                    [0mCRIT[0m
+                  [36m</span>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [36m<button[39m
+                    [33maria-pressed[39m=[32m"false"[39m
+                    [33mclass[39m=[32m"row-button"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0m INC-2883 [0m
+                  [36m</button>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mLogin page returning 502 for EU users[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0medge-gateway[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mM. Rossi[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0m5h[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mRESOLVED[0m
+                [36m</td>[39m
+              [36m</tr>[39m
+              [36m<tr>[39m
+                [36m<td>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"sev sev-minor"[39m
+                  [36m>[39m
+                    [0mMIN[0m
+                  [36m</span>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [36m<button[39m
+                    [33maria-pressed[39m=[32m"false"[39m
+                    [33mclass[39m=[32m"row-button"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0m INC-2882 [0m
+                  [36m</button>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mStale product images after CDN purge[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mcdn-edge[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mS. Osei[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0m7h 30m[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mRESOLVED[0m
+                [36m</td>[39m
+              [36m</tr>[39m
+              [36m<tr>[39m
+                [36m<td>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"sev sev-major"[39m
+                  [36m>[39m
+                    [0mMAJ[0m
+                  [36m</span>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [36m<button[39m
+                    [33maria-pressed[39m=[32m"false"[39m
+                    [33mclass[39m=[32m"row-button"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0m INC-2881 [0m
+                  [36m</button>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mEmail delivery delayed by provider throttling[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mnotifications[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mR. Byrne[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0m11h[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mMITIGATING[0m
+                [36m</td>[39m
+              [36m</tr>[39m
+              [36m<tr>[39m
+                [36m<td>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"sev sev-minor"[39m
+                  [36m>[39m
+                    [0mMIN[0m
+                  [36m</span>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [36m<button[39m
+                    [33maria-pressed[39m=[32m"false"[39m
+                    [33mclass[39m=[32m"row-button"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [0m INC-2879 [0m
+                  [36m</button>[39m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mCDN edge cache purge delayed on image bundle[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mcdn-edge[0m
+                [36m</td>[39m
+                [36m<td>[39m
+                  [0mS. Osei[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0m1d[0m
+                [36m</td>[39m
+                [36m<td[39m
+                  [33mclass[39m=[32m"mono"[39m
+                [36m>[39m
+                  [0mRESOLVED[0m
+                [36m</td>[39m
+              [36m</tr>[39m
+            [36m</tbody>[39m
+          [36m</table>[39m
+        [36m</div>[39m
+        [36m<aside[39m
+          [33maria-label[39m=[32m"Incident details"[39m
+          [33mclass[39m=[32m"details"[39m
+        [36m>[39m
+          [36m<p>[39m
+            [0mSelect an incident to see its details.[0m
+          [36m</p>[39m
+        [36m</aside>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+
+      24 |     const { el } = await render();
+      25 |
+    > 26 |     expect(getByRole(el, 'heading', { level: 1 }).textContent).toBe('Incident Board');
+         |                     ^
+      27 |     expect(getAllByRole(el, 'columnheader').map((header) => header.textContent)).toEqual([
+      28 |       'Sev', 'ID', 'Title', 'Service', 'Owner', 'Opened', 'Status',
+      29 |     ]);
+
+      at Object.getElementError (node_modules/@testing-library/dom/dist/config.js:37:19)
+      at node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+      at node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+      at node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+      at Object.<anonymous> (src/app/board/board.spec.ts:26:21)
+
+
+Test Suites: 1 failed, 4 passed, 5 total
+Tests:       1 failed, 23 passed, 24 total
+Snapshots:   0 total
+Time:        0.837 s, estimated 1 s
+Ran all test suites.
+Test results written to: ../../../../../var/folders/8_/bxmfjzlx1px1g47d4p6vnyxh0000gn/T/tmp.7GoeOPVaQ3/jest.json

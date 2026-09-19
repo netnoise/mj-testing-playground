@@ -1,0 +1,377 @@
+{
+  "id": "heading-demotion",
+  "question": "Does any layer of the frozen suite notice the board heading demoted from an h1 to a visually identical div?",
+  "iteration": 1,
+  "baseline_commit": "7327964",
+  "run_commit": "13820cc",
+  "test_revision": "every spec under src/ and e2e/ at 7327964, unedited",
+  "mutation": {
+    "patch": ".ai/run/klaxon-heading-finding/mutations/M1-heading-demotion.patch",
+    "files": [
+      "src/app/board/board.html",
+      "src/app/board/board.scss"
+    ],
+    "visually_identical": {
+      "evidence": [
+        ".ai/run/klaxon-heading-finding/mutations/metrics.baseline.json",
+        ".ai/run/klaxon-heading-finding/mutations/metrics.mutated.json"
+      ],
+      "differs_only_in": "tag (h1 -> div)"
+    }
+  },
+  "commands": {
+    "lint": "npm run lint",
+    "build": "npm run build",
+    "jest": "npx jest --ci --json",
+    "e2e": "HARNESS_DEEP=1 npx playwright test --reporter=list,json",
+    "replay": "sh .ai/run/klaxon-heading-finding/mutations/replay.sh"
+  },
+  "environment": {
+    "os": "Darwin 25.5.0 arm64",
+    "node": "v24.11.1",
+    "jest": "30.5.2",
+    "playwright": "1.30.0 (chromium)"
+  },
+  "scenario": "none (fixed fixture and clock; each cell ran once)",
+  "summary": {
+    "caught": 2,
+    "missed": 15,
+    "not_applicable": 17,
+    "not_run": 2,
+    "predictions_matched": 36,
+    "cells": 36
+  },
+  "evidence": {
+    "results": ".ai/run/klaxon-heading-finding/mutations/results.tsv",
+    "output_dir": ".ai/run/klaxon-heading-finding/mutations/output/",
+    "restored": ".ai/run/klaxon-heading-finding/mutations/output/restored.deep.txt"
+  },
+  "cells": [
+    {
+      "layer": "build",
+      "file": "ng",
+      "test": null,
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "e2e",
+      "file": "board.spec.ts",
+      "test": "filters by severity and shows the details of a clicked incident",
+      "status": "caught",
+      "predicted": "caught",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "e2e",
+      "file": "board.spec.ts",
+      "test": "is operable by keyboard alone, with a visible focus indicator",
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "e2e",
+      "file": "board.spec.ts",
+      "test": "non-happy states are reachable by URL and raise no errors > empty",
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "e2e",
+      "file": "board.spec.ts",
+      "test": "non-happy states are reachable by URL and raise no errors > failed",
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "e2e",
+      "file": "board.spec.ts",
+      "test": "non-happy states are reachable by URL and raise no errors > loading",
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "e2e",
+      "file": "board.spec.ts",
+      "test": "non-happy states are reachable by URL and raise no errors > stale keeps the table and says how old it is",
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "e2e",
+      "file": "smoke.spec.ts",
+      "test": "/ mounts with no uncaught error and a non-empty root",
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "e2e",
+      "file": "smoke.spec.ts",
+      "test": "/board mounts with no uncaught error and a non-empty root",
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "advanced-form.validators.spec.ts",
+      "test": "passwordMatchValidator returns null when confirmPassword is empty",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "advanced-form.validators.spec.ts",
+      "test": "passwordMatchValidator returns null when passwords match",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "advanced-form.validators.spec.ts",
+      "test": "passwordMatchValidator returns passwordMismatch when passwords differ",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "advanced-form.validators.spec.ts",
+      "test": "usernameTakenValidator emits null for an available name",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "advanced-form.validators.spec.ts",
+      "test": "usernameTakenValidator emits null immediately for an empty value",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "advanced-form.validators.spec.ts",
+      "test": "usernameTakenValidator emits usernameTaken for a taken name",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "advanced-form.validators.spec.ts",
+      "test": "usernameTakenValidator matches taken names case-insensitively",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "board.spec.ts",
+      "test": "Board announces a failed load as an alert and renders no table",
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "board.spec.ts",
+      "test": "Board keeps the table and says how old stale data is",
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "board.spec.ts",
+      "test": "Board lists every incident in a table with column headers, and shows severity as visible text",
+      "status": "caught",
+      "predicted": "caught",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "board.spec.ts",
+      "test": "Board narrows the rows to the chosen severity and marks that filter as pressed",
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "board.spec.ts",
+      "test": "Board says so for loading and empty, without a table",
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "board.spec.ts",
+      "test": "Board shows the selected incident's details with its severity spelled out",
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "board.spec.ts",
+      "test": "Board stops showing details for an incident the active filter hides",
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "format-age.spec.ts",
+      "test": "formatAge never goes negative when the instant is in the future",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "format-age.spec.ts",
+      "test": "formatAge shows hours and remaining minutes under a day, and drops a zero remainder",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "format-age.spec.ts",
+      "test": "formatAge shows minutes under an hour",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "format-age.spec.ts",
+      "test": "formatAge shows whole days from 24 hours",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "incident-source.spec.ts",
+      "test": "IncidentSource reports each non-data scenario as its own status",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "incident-source.spec.ts",
+      "test": "IncidentSource serves the same incidents for the stale scenario, marked with when they were last refreshed",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "incident-source.spec.ts",
+      "test": "IncidentSource serves the whole fixture, fresh, with no scenario or an unknown one",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "smoke-routes.spec.ts",
+      "test": "smoke route coverage /board is covered by e2e/smoke-routes.ts",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "smoke-routes.spec.ts",
+      "test": "smoke route coverage every routed path has a route with a component (sanity on the fixture itself)",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "jest",
+      "file": "smoke-routes.spec.ts",
+      "test": "smoke route coverage root (\"/\") is covered even though the router only declares a redirect",
+      "status": "not applicable",
+      "predicted": "not applicable",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "lint",
+      "file": "eslint",
+      "test": null,
+      "status": "missed",
+      "predicted": "missed",
+      "matches_prediction": true,
+      "healthy_baseline": true
+    },
+    {
+      "layer": "axe",
+      "file": null,
+      "test": null,
+      "status": "not run",
+      "predicted": "not run",
+      "matches_prediction": true,
+      "healthy_baseline": null,
+      "reason": "not installed"
+    },
+    {
+      "layer": "visual regression",
+      "file": null,
+      "test": null,
+      "status": "not run",
+      "predicted": "not run",
+      "matches_prediction": true,
+      "healthy_baseline": null,
+      "reason": "not installed"
+    }
+  ]
+}

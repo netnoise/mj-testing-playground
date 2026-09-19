@@ -1,10 +1,10 @@
-import { routes } from './app-routing.module';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+import { routes } from './app.routes';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { SMOKE_ROUTES } = require('../../e2e/smoke-routes');
 
 // New finding, not in docs/reviews/vibe-harness-v4.3-delta-2026-09-10.md's
 // own list: e2e/smoke.spec.ts kept its own hand-typed copy of the route
-// list, so a route added to app-routing.module.ts without also touching
+// list, so a route added to app.routes.ts without also touching
 // the e2e spec got a green `smoke`/`deep` over a page that never mounted -
 // HARNESS.md's "an empty list. 'Nothing failed' over zero checks is a
 // vacuous pass" applied to a *new* route, not an existing check. Angular's
@@ -30,7 +30,7 @@ describe('smoke route coverage', () => {
   });
 
   it('root ("/") is covered even though the router only declares a redirect', () => {
-    // app-routing.module.ts's '' entry is redirectTo-only (no component of
+    // app.routes.ts's '' entry is redirectTo-only (no component of
     // its own), so it's filtered out of declaredPaths above - but '/' is a
     // real, separately-reachable URL and belongs in the smoke list too.
     expect(SMOKE_ROUTES).toContain('/');

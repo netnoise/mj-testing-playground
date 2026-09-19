@@ -1,0 +1,26 @@
+{
+  "skill": "test",
+  "status": "ok",
+  "at": "2026-09-18T23:07:03.400Z",
+  "base_commit": "c44571d08a6b3cedb399c1372d1c7940850a9794",
+  "artifacts": [
+    "brief.md",
+    "implement.json",
+    "input.md",
+    "journal.md",
+    "predictions.md"
+  ],
+  "files_changed": [
+    "docs/design/klaxon/README.md",
+    "docs/design/klaxon/findings/harmless-refactors.json",
+    "docs/design/klaxon/findings/harmless-refactors.md",
+    "docs/design/klaxon/findings/heading-demotion.md"
+  ],
+  "spent": {
+    "min": 3,
+    "files": 4
+  },
+  "specs_added": 0,
+  "vacuous": null,
+  "note": "No spec written by design: the suite is frozen. The assertion this run adds is replay.sh vs results.tsv, audited with a negative control (falsified row -> exit 1) and a no-op-patch guard; the layout snapshot was shown able to fail on the heading-demotion patch."
+}

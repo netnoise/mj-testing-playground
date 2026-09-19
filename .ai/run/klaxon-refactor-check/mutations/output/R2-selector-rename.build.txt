@@ -1,0 +1,22 @@
+
+> mj-testing-playground@0.0.0 build
+> ng build
+
+❯ Building...
+One or more browsers which are configured in the project's Browserslist configuration will be ignored as ES5 output is not supported by the Angular CLI.
+Ignored browsers:
+kaios 2.5, op_mini all
+One or more browsers which are configured in the project's Browserslist configuration fall outside Angular's browser support for this version.
+Unsupported browsers:
+and_qq 14.9, and_uc 15.5, android 151, chrome 109, kaios 3.0-3.1, op_mob 80, opera 131, opera 127, samsung 30, samsung 29
+✔ Building...
+Initial chunk files | Names         |  Raw size | Estimated transfer size
+main-7JDQCM6V.js    | main          | 215.89 kB |                59.32 kB
+styles-ZA2B3OPY.css | styles        | 577 bytes |               577 bytes
+
+                    | Initial total | 216.47 kB |                59.90 kB
+
+Application bundle generation complete. [0.922 seconds] - 2026-09-18T23:04:39.764Z
+
+Output location: /Users/emjot/dev/projects/mj-testing-playground/dist/mj-testing-playground
+

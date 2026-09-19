@@ -84,7 +84,7 @@ const input = parsed.tool_input ?? {};
 // else (docs, HARNESS.md, the design page) reads .ai/harness/gate-scope.json,
 // emitted below, rather than hand-keeping its own copy.
 const GATE_SCOPE = ['jest.config.js', 'setup-jest.ts', 'playwright.config.ts',
-                    '.eslintrc.json', 'angular.json', 'tsconfig*.json',
+                    'eslint.config.js', 'angular.json', 'tsconfig*.json',
                     '.ai/harness/verify.sh', '.claude/hooks/budget.mjs',
                     '.claude/settings.json', '.ai/harness/lib.mjs'];
 

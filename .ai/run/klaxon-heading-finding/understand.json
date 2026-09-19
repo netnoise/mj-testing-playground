@@ -1,0 +1,7 @@
+{
+  "skill": "understand",
+  "status": "ok",
+  "artifacts": ["brief.md", "input.md", "mutations/M1-heading-demotion.patch"],
+  "files_changed": [],
+  "spent": {"min": 8, "files": 12}
+}

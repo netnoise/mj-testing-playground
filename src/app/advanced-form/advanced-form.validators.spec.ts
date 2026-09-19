@@ -1,4 +1,3 @@
-import { fakeAsync, tick } from '@angular/core/testing';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -32,31 +31,34 @@ describe('passwordMatchValidator', () => {
 describe('usernameTakenValidator', () => {
   const delayMs = 10;
 
-  it('emits null immediately for an empty value', fakeAsync(() => {
+  beforeEach(() => jest.useFakeTimers());
+  afterEach(() => jest.useRealTimers());
+
+  it('emits null immediately for an empty value', () => {
     let result: ValidationErrors | null | undefined;
     runUsernameCheck(new FormControl(''), delayMs, (value) => (result = value));
-    tick(delayMs);
+    jest.advanceTimersByTime(delayMs);
     expect(result).toBeNull();
-  }));
+  });
 
-  it('emits usernameTaken for a taken name', fakeAsync(() => {
+  it('emits usernameTaken for a taken name', () => {
     let result: ValidationErrors | null | undefined;
     runUsernameCheck(new FormControl('admin'), delayMs, (value) => (result = value));
-    tick(delayMs);
+    jest.advanceTimersByTime(delayMs);
     expect(result).toEqual({ usernameTaken: true });
-  }));
+  });
 
-  it('emits null for an available name', fakeAsync(() => {
+  it('emits null for an available name', () => {
     let result: ValidationErrors | null | undefined;
     runUsernameCheck(new FormControl('newuser123'), delayMs, (value) => (result = value));
-    tick(delayMs);
+    jest.advanceTimersByTime(delayMs);
     expect(result).toBeNull();
-  }));
+  });
 
-  it('matches taken names case-insensitively', fakeAsync(() => {
+  it('matches taken names case-insensitively', () => {
     let result: ValidationErrors | null | undefined;
     runUsernameCheck(new FormControl('Admin'), delayMs, (value) => (result = value));
-    tick(delayMs);
+    jest.advanceTimersByTime(delayMs);
     expect(result).toEqual({ usernameTaken: true });
-  }));
+  });
 });

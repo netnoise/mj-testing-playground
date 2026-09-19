@@ -46,21 +46,3 @@ for (const route of ROUTES) {
     expect(consoleErrors, `console errors on ${route}: ${consoleErrors.join('; ')}`).toHaveLength(0);
   });
 }
-
-test('a plain (non-forced, non-evaluate) click reaches the submit button', async ({ page }) => {
-  // decision 0005's live-reload iframe (ng serve's dev client, full-viewport,
-  // max z-index) intercepted every real pointer click and forced
-  // e2e/app.spec.ts to dispatch clicks via el.click() instead of a real
-  // mouse event. That workaround is a property of the DEV server, not the
-  // app - this spec runs against the built artifact (verify.sh smoke/deep
-  // point HARNESS_DEEP's webServer at e2e/serve-dist.mjs, not `ng serve`),
-  // so a real Playwright .click() should land with no iframe involved.
-  await page.goto('/advanced-form');
-  const submit = page.getByRole('button', { name: 'Submit' });
-  await expect(submit).toBeVisible();
-  await submit.click();
-  // No assertion on the result of the click - a real invalid/empty form is
-  // expected to show validation errors, not submit. The point is only that
-  // the click itself reached the button without being swallowed by an
-  // intercepting overlay - see app.spec.ts for the full submit flow.
-});

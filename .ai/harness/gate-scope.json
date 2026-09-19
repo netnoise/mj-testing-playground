@@ -3,7 +3,7 @@
     "jest.config.js",
     "setup-jest.ts",
     "playwright.config.ts",
-    ".eslintrc.json",
+    "eslint.config.js",
     "angular.json",
     "tsconfig*.json",
     ".ai/harness/verify.sh",

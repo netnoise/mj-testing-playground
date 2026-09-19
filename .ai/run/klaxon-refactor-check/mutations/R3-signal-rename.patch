@@ -1,0 +1,43 @@
+diff --git a/src/app/board/board.html b/src/app/board/board.html
+index c34b036..1135996 100644
+--- a/src/app/board/board.html
++++ b/src/app/board/board.html
+@@ -20,7 +20,7 @@
+ 
+     <div class="filters" role="group" aria-label="Filter by severity">
+       @for (option of filters; track option.value) {
+-        <button type="button" [attr.aria-pressed]="filter() === option.value" (click)="setFilter(option.value)">
++        <button type="button" [attr.aria-pressed]="severityFilter() === option.value" (click)="setFilter(option.value)">
+           {{ option.label }} <span class="count">{{ counts()[option.value] }}</span>
+         </button>
+       }
+diff --git a/src/app/board/board.ts b/src/app/board/board.ts
+index d373549..14ad980 100644
+--- a/src/app/board/board.ts
++++ b/src/app/board/board.ts
+@@ -26,7 +26,7 @@ export class Board {
+   protected readonly severityLabel = SEVERITY_LABEL;
+   protected readonly statusLabel = STATUS_LABEL;
+ 
+-  protected readonly filter = signal<SeverityFilter>('all');
++  protected readonly severityFilter = signal<SeverityFilter>('all');
+   private readonly selectedId = signal<string | null>(null);
+ 
+   private readonly source = inject(IncidentSource);
+@@ -56,7 +56,7 @@ export class Board {
+   });
+ 
+   protected readonly rows = computed(() => {
+-    const filter = this.filter();
++    const filter = this.severityFilter();
+     return filter === 'all' ? this.incidents() : this.incidents().filter((incident) => incident.severity === filter);
+   });
+ 
+@@ -72,6 +72,6 @@ export class Board {
+   }
+ 
+   protected setFilter(filter: SeverityFilter): void {
+-    this.filter.set(filter);
++    this.severityFilter.set(filter);
+   }
+ }

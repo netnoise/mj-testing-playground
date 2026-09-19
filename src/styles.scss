@@ -1,1 +1,39 @@
-/* You can add global styles to this file, and also import other style files */
+// Palette and type from docs/design/klaxon/README.md ("Visual language"). Severity hues stay separate
+// from the accent so "this is Klaxon chrome" never reads as "this is urgent". IBM Plex is named
+// first but not downloaded: the build has no network dependency.
+:root {
+  --ground: #0c0d10;
+  --panel: #14161b;
+  --panel-raised: #1b1e25;
+  --line: #2a2e37;
+  --text: #e8e6e1;
+  --muted: #9aa0aa;
+  --accent: #5b8def;
+  --critical: #ef4444;
+  --major: #f59e0b;
+  --minor: #94a3b8;
+  --resolved: #22c55e;
+  --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
