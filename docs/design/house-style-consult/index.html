@@ -1,0 +1,409 @@
+<title>House Style Consult</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #f4f5f6;
+    --paper: #fbfbfc;
+    --ink: #171a1f;
+    --ink-2: #4f5762;
+    --ink-3: #7a828d;
+    --rule: #d8dce1;
+    --accent: #36557f;
+    --accent-soft: #e3e9f2;
+    --mark: #9a5b12;
+    --display: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+    --body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #101317;
+      --paper: #161a1f;
+      --ink: #e6e9ed;
+      --ink-2: #a9b1bb;
+      --ink-3: #7f8893;
+      --rule: #2a3038;
+      --accent: #93b1dc;
+      --accent-soft: #1d2633;
+      --mark: #e0a45a;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #101317;
+    --paper: #161a1f;
+    --ink: #e6e9ed;
+    --ink-2: #a9b1bb;
+    --ink-3: #7f8893;
+    --rule: #2a3038;
+    --accent: #93b1dc;
+    --accent-soft: #1d2633;
+    --mark: #e0a45a;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 400 1.0625rem/1.65 var(--body);
+    padding-inline: 20px;
+  }
+  .page {
+    max-width: 50rem;
+    margin: 0 auto;
+    padding-block: 56px 96px;
+    display: grid;
+    gap: 64px;
+  }
+  h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+  h1 { font-size: clamp(2rem, 5vw, 2.75rem); line-height: 1.08; font-weight: 700; letter-spacing: -0.01em; }
+  h2 { font-size: 1.5rem; line-height: 1.2; font-weight: 700; }
+  h3 { font-size: 1.0625rem; line-height: 1.3; font-weight: 700; }
+  p { margin: 0; max-width: 65ch; }
+  a { color: var(--accent); }
+  code, .mono { font-family: var(--mono); font-size: 0.86em; }
+  .label {
+    font: 500 0.75rem/1.2 var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  section { display: grid; gap: 20px; }
+  .prose { display: grid; gap: 14px; }
+  .muted { color: var(--ink-2); }
+
+  /* Header */
+  header { display: grid; gap: 18px; padding-bottom: 32px; border-bottom: 1px solid var(--rule); }
+  .from { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  .from div { display: grid; gap: 2px; }
+  .from .v { font: 500 0.9375rem/1.3 var(--display); }
+  .lede { font-size: 1.1875rem; line-height: 1.55; color: var(--ink-2); }
+
+  /* The ask */
+  .ask {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 24px;
+    display: grid;
+    gap: 16px;
+  }
+  .ask-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 20px; }
+  .ask-grid div { display: grid; gap: 4px; align-content: start; }
+  .ask-grid .v { font: 500 1rem/1.35 var(--display); }
+
+  /* Palettes */
+  .palettes { display: grid; gap: 14px; }
+  .pal {
+    display: grid;
+    grid-template-columns: 9.5rem 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+  .pal-name { display: grid; gap: 2px; }
+  .pal-name strong { font: 500 0.9375rem/1.25 var(--display); }
+  .pal-name span { font: 400 0.75rem/1.3 var(--mono); color: var(--ink-3); }
+  .chips { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border-radius: 5px; overflow: hidden; border: 1px solid var(--rule); }
+  .chip { height: 64px; padding: 8px; display: flex; flex-direction: column; justify-content: flex-end; font: 400 0.6875rem/1.25 var(--mono); }
+  .chip b { font-weight: 500; display: block; opacity: 0.75; }
+  .chip.gap { border-left: 3px solid var(--paper); }
+  @media (max-width: 560px) {
+    .pal { grid-template-columns: 1fr; gap: 6px; }
+    .chip { height: 56px; font-size: 0.625rem; padding: 6px; }
+    .chip b { display: none; }
+  }
+
+  /* Shell schematic */
+  .shells { display: grid; grid-template-columns: 1.6fr 1.6fr 0.8fr; gap: 16px; align-items: end; }
+  @media (max-width: 640px) { .shells { grid-template-columns: 1fr 1fr; } .shells figure:last-child { grid-column: span 2; max-width: 9rem; } }
+  figure { margin: 0; display: grid; gap: 8px; }
+  figcaption { font: 400 0.75rem/1.35 var(--mono); color: var(--ink-3); }
+  .scr {
+    background: #10141b;
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    display: grid;
+    gap: 3px;
+    padding: 3px;
+    aspect-ratio: 16 / 10.75;
+  }
+  .scr.m { aspect-ratio: 9 / 19.5; grid-template-rows: 14px 1fr 18px; }
+  .scr.d { grid-template-columns: 22% 1fr; }
+  .scr.r { grid-template-columns: 7% 1fr; }
+  .sb { background: #14181f; border-radius: 3px; display: grid; align-content: start; gap: 4px; padding: 6px 5px; }
+  .sb i { display: block; height: 5px; border-radius: 2px; background: #2a333f; }
+  .sb i.on { background: #eef1f6; }
+  .main { background: #1a2029; border-radius: 3px; display: grid; grid-template-rows: 10px 1fr 1fr; gap: 4px; padding: 6px; }
+  .main i { display: block; background: #212a35; border-radius: 2px; }
+  .main i:first-child { width: 40%; background: #3a4552; }
+  .bar { background: #14181f; border-radius: 2px; }
+  .tabs { background: #14181f; border-radius: 2px; display: flex; justify-content: space-around; align-items: center; }
+  .tabs i { width: 6px; height: 6px; border-radius: 2px; background: #2a333f; }
+  .tabs i.on { background: #eef1f6; }
+
+  /* Questions */
+  ol.q { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; counter-reset: q; }
+  ol.q li {
+    counter-increment: q;
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 4px 12px;
+    padding-block: 16px;
+    border-top: 1px solid var(--rule);
+  }
+  ol.q li:last-child { border-bottom: 1px solid var(--rule); }
+  ol.q li::before {
+    content: counter(q, decimal-leading-zero);
+    font: 500 0.8125rem/1.6 var(--mono);
+    color: var(--accent);
+    grid-row: span 2;
+  }
+  ol.q strong { font: 700 1rem/1.4 var(--display); }
+  ol.q p { color: var(--ink-2); font-size: 0.975rem; }
+  ol.q.p li::before { content: counter(q, upper-alpha); }
+
+  /* Project sheets */
+  .sheets { display: grid; gap: 20px; }
+  .sheet {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 24px;
+    display: grid;
+    gap: 16px;
+  }
+  .sheet-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; }
+  .sheet-head h3 { font-size: 1.375rem; }
+  .status { font: 500 0.6875rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 8px; border-radius: 3px; border: 1px solid var(--rule); color: var(--ink-2); }
+  .status.live { color: var(--accent); border-color: var(--accent); }
+  dl.facts { margin: 0; display: grid; grid-template-columns: 9rem 1fr; gap: 10px 16px; font-size: 0.975rem; }
+  dl.facts dt { font: 500 0.75rem/1.65rem var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
+  dl.facts dd { margin: 0; }
+  @media (max-width: 560px) { dl.facts { grid-template-columns: 1fr; gap: 2px; } dl.facts dd { margin-bottom: 10px; } }
+  .domain { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+  .domain span { display: inline-flex; align-items: center; gap: 6px; font: 400 0.8125rem/1.4 var(--mono); }
+  .domain span::before { content: ""; width: 11px; height: 11px; border-radius: 2px; background: var(--c); }
+  .sheet ol.q li { padding-block: 12px; }
+  .sheet.template { background: transparent; border-style: dashed; }
+
+  /* Checklist */
+  ul.check { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  ul.check li { display: grid; grid-template-columns: 1.25rem 1fr; gap: 10px; }
+  ul.check li::before { content: ""; width: 14px; height: 14px; margin-top: 6px; border: 1.5px solid var(--ink-3); border-radius: 3px; }
+
+  .shots { display: grid; grid-template-columns: 3fr 1fr; gap: 12px; align-items: start; }
+  .shots.one { grid-template-columns: 1fr; }
+  .shots img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 4px; background: #10141b; }
+  .shots figcaption { grid-column: 1 / -1; }
+  @media (max-width: 560px) { .shots { grid-template-columns: 1fr; } .shots figure.phone { max-width: 14rem; } }
+  .note { border-left: 2px solid var(--mark); padding-left: 16px; color: var(--ink-2); }
+  footer { color: var(--ink-3); font-size: 0.9rem; border-top: 1px solid var(--rule); padding-top: 20px; }
+</style>
+
+<div class="page">
+
+<header>
+  <span class="label">Design consult brief</span>
+  <h1>One visual base for all my apps, checked by someone with a trained eye</h1>
+  <p class="lede">I'm a frontend developer, not a designer. I keep building dark, data-heavy web apps, and each one gets a slightly different palette and a hand-rolled app shell. I'd like your help settling the base once, so every future project starts from something a designer has looked at.</p>
+  <div class="from">
+    <div><span class="label">Covers</span><span class="v">Klaxon · TriTrack · the next project</span></div>
+    <div><span class="label">Time asked</span><span class="v">About 60 minutes</span></div>
+    <div><span class="label">Output</span><span class="v">Opinions, not files</span></div>
+  </div>
+</header>
+
+<section>
+  <span class="label">What I'm asking for</span>
+  <div class="ask">
+    <p>One working session, on a call or in comments on screenshots, whichever suits you. You don't need to produce Figma files, mockups or a style guide. Short, direct opinions are the most useful thing you can give me, including "remove this".</p>
+    <div class="ask-grid">
+      <div><span class="label">Part 1 · ~35 min</span><span class="v">The shared base</span><span class="muted">Eight questions that apply to every app. I only want to ask these once.</span></div>
+      <div><span class="label">Part 2 · ~25 min</span><span class="v">One screen per project</span><span class="muted">The densest screen of each app, with three questions each.</span></div>
+      <div><span class="label">Afterwards</span><span class="v">I do the encoding</span><span class="muted">Your answers become shared tokens, a shared shell and automated checks.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="label">The problem</span>
+  <h2>Three apps, three almost identical palettes</h2>
+  <div class="prose">
+    <p>Each project ended up with a near-black ground, two or three surface steps, one border, three text levels and a single accent. Only the names and hex values differ. I invent this layer again every time, and I can't judge whether any version is better than the others.</p>
+  </div>
+  <div class="palettes">
+    <div class="pal">
+      <div class="pal-name"><strong>Angular seed</strong><span>JetBrains Mono + Syne</span></div>
+      <div class="chips">
+        <div class="chip" style="background:#0a0e1a;color:#9ca3af"><b>ground</b>#0a0e1a</div>
+        <div class="chip" style="background:#151b2e;color:#9ca3af"><b>surface</b>#151b2e</div>
+        <div class="chip" style="background:#1f2937;color:#9ca3af"><b>raised</b>#1f2937</div>
+        <div class="chip" style="background:#e5e7eb;color:#0a0e1a"><b>text</b>#e5e7eb</div>
+        <div class="chip" style="background:#9ca3af;color:#0a0e1a"><b>muted</b>#9ca3af</div>
+        <div class="chip gap" style="background:#00ff9f;color:#0a0e1a"><b>accent</b>#00ff9f</div>
+      </div>
+    </div>
+    <div class="pal">
+      <div class="pal-name"><strong>TriTrack</strong><span>Inter + system mono</span></div>
+      <div class="chips">
+        <div class="chip" style="background:#10141b;color:#97a2b0"><b>ground</b>#10141b</div>
+        <div class="chip" style="background:#1a2029;color:#97a2b0"><b>surface</b>#1a2029</div>
+        <div class="chip" style="background:#212a35;color:#97a2b0"><b>raised</b>#212a35</div>
+        <div class="chip" style="background:#eef1f6;color:#10141b"><b>text</b>#eef1f6</div>
+        <div class="chip" style="background:#97a2b0;color:#10141b"><b>muted</b>#97a2b0</div>
+        <div class="chip gap" style="background:#eef1f6;color:#10141b"><b>accent</b>#eef1f6</div>
+      </div>
+    </div>
+    <div class="pal">
+      <div class="pal-name"><strong>Klaxon</strong><span>IBM Plex Sans + Mono</span></div>
+      <div class="chips">
+        <div class="chip" style="background:#0c0d10;color:#9aa0aa"><b>ground</b>#0c0d10</div>
+        <div class="chip" style="background:#14161b;color:#9aa0aa"><b>surface</b>#14161b</div>
+        <div class="chip" style="background:#1b1e25;color:#9aa0aa"><b>raised</b>#1b1e25</div>
+        <div class="chip" style="background:#e8e6e1;color:#0c0d10"><b>text</b>#e8e6e1</div>
+        <div class="chip" style="background:#9aa0aa;color:#0c0d10"><b>muted</b>#9aa0aa</div>
+        <div class="chip gap" style="background:#5b8def;color:#0c0d10"><b>accent</b>#5b8def</div>
+      </div>
+    </div>
+  </div>
+  <p class="note">A real bug this caused: in TriTrack, the sidebar and the active nav item were both <code>#212a35</code>, so you couldn't see which page you were on. I only noticed after building it. That kind of miss is why I want a designer to look at the base.</p>
+</section>
+
+<section>
+  <span class="label">The shell I keep rebuilding</span>
+  <h2>Sidebar, collapsible rail, tab bar on phones</h2>
+  <p>Every app has the same frame. This is TriTrack's version, which is the most complete one. Klaxon and the next project will use the same structure.</p>
+  <div class="shells">
+    <figure>
+      <div class="scr d" aria-hidden="true">
+        <div class="sb"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+        <div class="main"><i></i><i></i><i></i></div>
+      </div>
+      <figcaption>≥ 1024px · sidebar 220px</figcaption>
+    </figure>
+    <figure>
+      <div class="scr r" aria-hidden="true">
+        <div class="sb"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+        <div class="main"><i></i><i></i><i></i></div>
+      </div>
+      <figcaption>≥ 1024px · rail 64px</figcaption>
+    </figure>
+    <figure>
+      <div class="scr m" aria-hidden="true">
+        <div class="bar"></div>
+        <div class="main"><i></i><i></i><i></i></div>
+        <div class="tabs"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <figcaption>&lt; 1024px · top bar + 56px tab bar</figcaption>
+    </figure>
+  </div>
+  <p class="muted">Body text is 13px, labels 11px, uppercase section eyebrows 10px. Spacing is on a 4px grid. Everything is dark only.</p>
+</section>
+
+<section>
+  <span class="label">Part 1 · The shared base</span>
+  <h2>Questions I want to answer once</h2>
+  <ol class="q">
+    <li><strong>Surface steps.</strong><p>Are ground, surface and raised far enough apart to read as layers? How many steps does a dense data app really need, and what's the minimum difference between them?</p></li>
+    <li><strong>What the accent is for.</strong><p>TriTrack uses near-white as its accent, Klaxon uses a blue. For a dark data app, should the accent mark actions, the current location, or both? One accent for every app, or one per app?</p></li>
+    <li><strong>Type size and density.</strong><p>Is 13px body with 10–11px labels too small for screens people read for a long time? Where would you set the floor?</p></li>
+    <li><strong>Typefaces.</strong><p>Should I pick one family and stop switching, or does each app deserve its own? Numbers matter everywhere: finish times, timestamps, IDs. Should they use a monospace face or a sans with tabular figures?</p></li>
+    <li><strong>The shell.</strong><p>Is sidebar, rail and phone tab bar a sound pattern? What's missing or unnecessary: a top bar on desktop, a command palette, breadcrumbs?</p></li>
+    <li><strong>Colours with meaning.</strong><p>Each app adds its own meaning colours: swim, bike and run legs in TriTrack, incident severity in Klaxon. What rules should they follow so they never compete with the accent and still work for colour-blind users?</p></li>
+    <li><strong>Empty, loading and error states.</strong><p>I want one pattern for these that every app shares. What should it look like?</p></li>
+    <li><strong>Dark only?</strong><p>My apps are personal tools and have no light mode. Is that a reasonable choice, or will it cost me later, for example in a public-facing project?</p></li>
+  </ol>
+</section>
+
+<section>
+  <span class="label">Part 2 · Project sheets</span>
+  <h2>One screen per app</h2>
+  <p>Each sheet follows the same structure, so a new project only needs a new sheet. The screenshots show each app's densest screen.</p>
+
+  <div class="sheets">
+    <article class="sheet">
+      <div class="sheet-head"><h3>Klaxon</h3><span class="status">Being rebuilt</span></div>
+      <dl class="facts">
+        <dt>What it is</dt><dd>An on-call incident board. It's also my lab for testing frontend code, so every screen is designed to be hard to test well.</dd>
+        <dt>Who, and when</dt><dd>An engineer woken up at 3am, scanning a live table under pressure.</dd>
+        <dt>Densest screen</dt><dd>The incident board: a live table plus an inspector panel for the selected incident.</dd>
+        <dt>Meaning colours</dt><dd class="domain">
+          <span style="--c:#ef4444">critical</span><span style="--c:#f59e0b">major</span><span style="--c:#64748b">minor</span><span style="--c:#22c55e">resolved</span>
+        </dd>
+      </dl>
+      <figure class="shots one">
+        <img src="screens/klaxon-board-1440.png" width="1440" height="900" alt="Klaxon incident board: a dark table of incidents with severity badges, owners and statuses, and an inspector panel on the right showing the selected critical incident.">
+        <figcaption>Board wireframe at 1440px. It's a prototype, so judge its hierarchy and type rather than its column widths. There's no phone layout yet.</figcaption>
+      </figure>
+      <ol class="q p">
+        <li><strong>Can you find the critical incident in two seconds?</strong><p>Severity must never be shown by colour alone. Is the badge carrying enough?</p></li>
+        <li><strong>Is the table too dense or not dense enough?</strong><p>Row height, how many columns are visible, what to cut first.</p></li>
+        <li><strong>Inspector hierarchy.</strong><p>What should the eye land on first when an incident is selected?</p></li>
+      </ol>
+    </article>
+
+    <article class="sheet">
+      <div class="sheet-head"><h3>TriTrack</h3><span class="status live">Live</span></div>
+      <dl class="facts">
+        <dt>What it is</dt><dd>Personal triathlon analytics: how did I race, how am I changing, and what would this look like at another distance. My own data only, no rankings.</dd>
+        <dt>Who, and when</dt><dd>Me, after a race or while planning one, taking my time.</dd>
+        <dt>Densest screen</dt><dd>Race detail: splits, charts, and a "how was this calculated?" popover on every estimate.</dd>
+        <dt>Meaning colours</dt><dd class="domain">
+          <span style="--c:#4e9bff">swim</span><span style="--c:#ffa53e">bike</span><span style="--c:#34c98d">run</span><span style="--c:#9c8cff">transition</span>
+        </dd>
+      </dl>
+      <div class="shots">
+        <figure><img src="screens/tritrack-race-detail-1280.png" width="1280" height="1000" alt="TriTrack race detail on desktop: sidebar navigation, finish time 2:32:55, split cards per discipline, a time distribution bar, a run pacing chart, a transitions donut and a balance radar."></figure>
+        <figure class="phone"><img src="screens/tritrack-race-detail-390.png" width="435" height="900" alt="TriTrack race detail on a phone: large finish time, split cards, time distribution bar, three small pacing charts and a bottom tab bar."></figure>
+        <figcaption>Race detail from the design canvas, desktop and phone. The figures are sample data and don't match between the two.</figcaption>
+      </div>
+      <ol class="q p">
+        <li><strong>Uncertainty.</strong><p>Predicted finish times are shown as a range, not a single number. Does the range read as honest or as vague?</p></li>
+        <li><strong>Charts next to text.</strong><p>Do the discipline colours carry across charts, legends and tables without turning the page into a rainbow?</p></li>
+        <li><strong>Where to trim.</strong><p>This screen has grown one phase at a time. What would you remove?</p></li>
+      </ol>
+    </article>
+
+    <article class="sheet template">
+      <div class="sheet-head"><h3>Next project: Steph Curry's career</h3><span class="status">Not started</span></div>
+      <dl class="facts">
+        <dt>What it is</dt><dd>A story-driven site about one player's career, built from a fixed dataset rather than a live API.</dd>
+        <dt>Who, and when</dt><dd>Basketball fans reading through it once, like an article.</dd>
+        <dt>Densest screen</dt><dd>A shot chart on a half court that changes season by season.</dd>
+        <dt>Meaning colours</dt><dd>Made and missed shots, and 3-point versus 2-point.</dd>
+      </dl>
+      <ol class="q p">
+        <li><strong>Same base or a break from it?</strong><p>This is a story people read, not a tool they use. Should it reuse the shared base or deliberately depart from it?</p></li>
+        <li><strong>Light or dark.</strong><p>Is this the project where a light theme earns its place?</p></li>
+        <li><strong>Shot chart on the page.</strong><p>How to show 17 seasons without making the reader scroll through 17 charts.</p></li>
+      </ol>
+    </article>
+  </div>
+</section>
+
+<section>
+  <span class="label">What happens with your answers</span>
+  <h2>They become rules the code enforces</h2>
+  <div class="prose">
+    <p>I'll turn Part 1 into one shared set of design tokens and one shell that every app starts from. Wherever an answer can be measured, such as a contrast ratio between surfaces or a minimum text size, it becomes an automated check that runs in each project. The invisible nav item bug would then fail a test instead of reaching the screen.</p>
+    <p>Part 2 answers go into each project's own notes. If you're happy to, I'll send you the results afterwards so you can see what changed.</p>
+  </div>
+</section>
+
+<section>
+  <span class="label">What I'll send you</span>
+  <ul class="check">
+    <li>This brief.</li>
+    <li>A link to a component catalogue (Storybook) with every state of the shared parts, once it's built.</li>
+    <li>Any times that work for a call, or a shared file for comments if you'd rather work on your own schedule.</li>
+  </ul>
+</section>
+
+<footer>
+  To reuse this for a new project, copy the "Next project" sheet and fill in the same four facts and three questions. Part 1 stays unchanged.
+</footer>
+
+</div>
