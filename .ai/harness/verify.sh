@@ -84,6 +84,14 @@ npx jest --ci
 sh .ai/harness/hook-test.sh
 [ "$TIER" = "full" ] && { echo "verify: OK (full)"; exit 0; }
 
+# smoke and deep serve the production build on 4200 and refuse to reuse a server
+# (playwright.config.ts, under HARNESS_DEEP): a dev server already there fails the
+# gate with Playwright's own message, so say what is wrong before spending a build.
+if command -v lsof >/dev/null 2>&1 && lsof -iTCP:4200 -sTCP:LISTEN >/dev/null 2>&1; then
+  echo "verify: PREFLIGHT FAIL - port 4200 is in use; smoke and deep need it free (run ng serve --port 4300 instead)" >&2
+  exit 1
+fi
+
 npm run build
 # smoke/deep both drive the PRODUCTION build (dist/), not `ng serve` -
 # HARNESS_DEEP points playwright.config.ts's webServer at e2e/serve-dist.mjs
@@ -104,7 +112,13 @@ npx playwright test e2e/smoke.spec.ts --reporter=line
 # deep adds the feature-driving spec (app.spec.ts): a real acceptance test,
 # and a much narrower regression net than smoke - see HARNESS.md's tier
 # table for why the two are kept separate.
-npx playwright test --reporter=line
+# smoke.spec.ts already ran above; run everything else. Listed by glob so a new
+# spec is picked up without editing this file.
+DEEP_SPECS=$(ls e2e/*.spec.ts | grep -v '/smoke\.spec\.ts$' || true)
+if [ -n "$DEEP_SPECS" ]; then
+  # deliberate word-splitting: spec paths contain no spaces
+  npx playwright test $DEEP_SPECS --reporter=line
+fi
 
 # --- door-7 disclosure check (workstream R3) ------------------------------
 # A crossing an agent logged to a run's door-crossings.md but whose digest
@@ -156,12 +170,17 @@ fi
 # BEFORE digest, so at deep time a digest legitimately may not exist yet. It
 # reports that nothing was checked rather than letting silence read as green.
 #
-# LATEST_RUN (v4.3): picked via lib.mjs's currentRun() - status-based, with a
-# fallback to the greatest started_at - not "most recently modified" (ls
-# -1t), which is the mechanism that pulled a two-day-old run into this gate
-# when only its digest had been edited in place (docs/reviews/vibe-harness-
-# v4.3-delta-2026-09-10.md §1.5).
-LATEST_RUN=$(node .ai/harness/lib.mjs current-run 2>/dev/null || true)
+# LATEST_RUN is the ACTIVE run only. lib.mjs's currentRun() falls back to the run with the
+# greatest started_at when nothing is active, which is right for a human-facing picker but here
+# re-checked an old closed run's digest and printed a pass that said nothing about the current
+# work. close-run.sh checks a run's digest and retro at close, so a closed run needs no re-check.
+LATEST_RUN=""
+for s in .ai/run/*/state.json; do
+  if [ -f "$s" ] && grep -q '"status": *"active"' "$s"; then
+    LATEST_RUN=$(basename "$(dirname "$s")")
+    break
+  fi
+done
 CITE_DOCS=""
 for f in digest.md retro.md; do
   # explicit if, not `[ -f x ] && VAR=y`: under set -e a false test as the last
@@ -174,7 +193,7 @@ if [ -n "$CITE_DOCS" ]; then
   # deliberate word-splitting: run-directory paths contain no spaces
   sh .ai/harness/check-citations.sh $CITE_DOCS
 else
-  echo "verify: newest run (${LATEST_RUN:-none}) has no digest.md or retro.md - nothing checked, not a pass"
+  echo "verify: no active run with a digest.md or retro.md (${LATEST_RUN:-no active run}) - nothing checked, not a pass"
 fi
 
 echo "verify: OK (deep, build + full e2e suite driven end to end against the production build)"

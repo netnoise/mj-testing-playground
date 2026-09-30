@@ -92,15 +92,14 @@ case_ "Bash sed -i on jest.config.js NOT blocked by the Bash branch itself" 0 \
 case_ "Bash cat (read) on jest.config.js passes" 0 \
   "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"cat jest.config.js\"}}"
 
-case_ "Bash rm of a state.json blocked" 2 \
+case_ "Bash rm of a run's state file is not inspected (the Bash branch was removed)" 0 \
   "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"rm .ai/run/some-slug/state.json\"}}"
+
+case_ "Bash read of a run's state file next to a write elsewhere passes (the old regex's false positive)" 0 \
+  "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"grep started_at .ai/run/x/state.json > /tmp/out\"}}"
 
 case_ "Bash npm test passes (no blast-radius on Bash by design)" 0 \
   "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"npm test\"}}"
-
-echo "ok   [KNOWN GAP] Bash writing state.json via a non-listed verb (node -e) is not blocked - documented, not fixed by this patch:"
-case_ "  node -e writeFileSync on a run's state.json" 0 \
-  "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"node -e \\\"require('fs').writeFileSync('.ai/run/x/state.json','{}')\\\"\"}}"
 
 echo "ok   [FIXED] previously-allowed Bash bypasses of gate-scope files (delta table, §1.1):"
 for cmd in \

@@ -1,53 +1,26 @@
 #!/usr/bin/env node
-// PreToolUse guard. The frontmatter declares a budget; this makes it real.
-// Sole writer of .ai/run/<slug>/state.json - enforced below, not just stated.
-// Fails OPEN on anything unexpected - a guard that blocks every edit on a
-// schema change is worse than no guard.
+// PreToolUse guard for Edit, Write, MultiEdit and NotebookEdit. It makes a run's declared budget
+// and blast radius real, and is the sole writer of .ai/run/<slug>/state.json.
+// Fails OPEN on anything unexpected: a guard that blocks every edit on a schema change is worse
+// than no guard.
 //
-// v4.2 remediation (docs/reviews/harness-v4.2-implementation-audit-2026-09-08.md):
-// R1 - the active run's own directory is now always in scope (was locking the
-// agent out of its own brief.md, which made `rm state.json` the routine
-// workaround - and each deletion silently zeroed the budget it exists to
-// enforce); Bash is now scanned, not just Edit/Write/MultiEdit/NotebookEdit;
-// files_touched is derived from git, not accumulated from tool interception,
-// so it counts deletions and moves; state.json is single-writer in practice,
-// not just in the docs.
-// R3 - GATE_SCOPE is now emitted to .ai/harness/gate-scope.json on every
-// invocation: one owner for a list that had drifted to six hand-kept copies,
-// one of them (the cheatsheet) already missing an entry silently.
+// What it enforces, in order:
+//   1. Door 7: a direct edit of a GATE_SCOPE file, or of .ai/MODEL.md, is blocked, run or no run.
+//   2. state.json, once created by open-run.sh, is never edited by any other tool call.
+//   3. While a run is active, an undisclosed protected-path diff against the run's base_commit
+//      (lib.mjs's gateDiff) blocks every edit outside the run's own directory until it is
+//      disclosed in door-crossings.md or reverted. This is how a Bash-mediated bypass is caught:
+//      the hook cannot see what a shell command will do, so it checks the tree on the next edit,
+//      and verify.sh's preflight makes the same check before any tier runs.
+//   4. While a run is active, the file must be inside allowed_paths, and the run's files_touched
+//      (lib.mjs's runTouched: git against base_commit, minus the run's own paperwork) and elapsed
+//      minutes must be inside the budget. The run's own directory is always in scope.
+// It emits the live GATE_SCOPE to .ai/harness/gate-scope.json on every invocation.
 //
-// v4.3 remediation (docs/reviews/vibe-harness-v4.3-delta-2026-09-10.md §1.1/
-// §1.3): the Bash guard used to scan the whole command string for a write
-// verb ANYWHERE plus a protected name ANYWHERE - so `node -e "...writeFile
-// Sync('jest.config.js', ...)"`, `python3 -c "open('angular.json','w')"`,
-// `git apply` and a dozen other shapes went straight through (verified live,
-// six of six), while `cp angular.json /tmp/x` (a READ) or a command that
-// merely *mentioned* a protected path in prose got blocked. That check is
-// gone. In its place: .ai/harness/lib.mjs's gateDiff() compares the actual
-// tree against the run's base_commit (or HEAD with no run) and flags any
-// protected path that changed and isn't named in the run's door-crossings.md
-// - this is a git-diff, so it sees a write from ANY tool, not just the verbs
-// a regex happened to list. It can't prevent the write (this hook runs
-// before the tool call, and a Bash command's effect isn't knowable without
-// running it), so instead: once an undisclosed protected diff exists, every
-// subsequent Edit/Write/MultiEdit/NotebookEdit OUTSIDE the active run's own
-// directory is refused until it's disclosed (door-crossings.md) or reverted
-// (git checkout -- <path>, via Bash - Bash itself is never blocked by this
-// sweep, since it's the only tool that can revert). verify.sh's preflight
-// (companion patch) turns an undisclosed diff into a hard failure before any
-// tier runs, so a crossing that slips through a single missed hook call
-// still can't produce a green gate.
-// Also fixed: budget.mjs's own files-touched ruler now comes from lib.mjs's
-// runTouched(state), which counts from the run's base_commit and excludes
-// run artifacts - the old `git diff --name-only HEAD` reset to near-zero on
-// every WIP commit, which the harness itself mandates on every green step,
-// so a compliant run could never hit budget_spent (delta §1.3).
-// Scope note: the protected-diff sweep only runs while a run is genuinely
-// ACTIVE - there's nowhere to disclose a crossing without a run directory,
-// and "tiny"/ad-hoc work with no run open was never meant to carry this
-// machinery. The direct per-file checks below (an Edit/Write whose OWN
-// target is a protected path) are unconditional either way, run or no run -
-// that part of door 7 doesn't change.
+// Bash is deliberately not guarded, and settings.json's matcher leaves it out. The old command-text
+// check for a write to a run's state file blocked reads that merely named it and missed writes made
+// through any verb it didn't list, and no fix could hold both directions. The backstop is that
+// close-run.sh and the gate derive their numbers from git, not from that file.
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { hit, runTouched, gateDiff } from '../../.ai/harness/lib.mjs';
@@ -68,7 +41,6 @@ try {
 } catch { ok(); }
 if (!parsed) ok();
 
-const toolName = parsed.tool_name ?? '';
 const input = parsed.tool_input ?? {};
 
 // --- Door 7: gate-scope config. Always on, run or no run. ----------------
@@ -157,36 +129,7 @@ if (existsSync(runsDir)) {
   }
 }
 
-// --- Bash: only the state.json single-writer regex remains here. ---------
-// The whole-command-string door-7/MODEL.md scans are gone (see header) -
-// replaced by the protected-diff sweep below, which runs for every tool
-// including the Bash call that comes AFTER whichever command did the write.
-// This regex stays narrow and path-specific enough that the delta note
-// recommended keeping it as-is; it has the same "only fires behind a write-
-// verb match" gap as the checks that were removed (e.g. a plain `node -e
-// "...writeFileSync('.../state.json', ...)"` isn't caught here), which is a
-// known, documented limitation - not fixed by this patch. A deliberate
-// tamper via a non-listed write verb is out of reach of a command-text
-// check regardless; the real backstop for state.json is that nothing else
-// reads it as evidence without cross-checking git (HARNESS.md's own "never
-// trust" section).
-const WRITE_VERB_RE = /(^|[\s;&|`(])(>{1,2}|tee\b|sed\s+-i|mv\b|cp\b|rm\b|truncate\b|dd\b|git\s+checkout\s+--|git\s+restore\b)/;
-
-if (toolName === 'Bash') {
-  const cmd = input.command ?? '';
-  if (cmd && WRITE_VERB_RE.test(cmd) && /\.ai\/run\/[^/\s]+\/state\.json/.test(cmd)) {
-    if (!DOOR_OPEN) {
-      block(`state.json is single-writer (this hook) - a shell command targets it:
-      ${cmd.trim()}
-      Deleting state.json to get past the blast-radius guard silently zeroes the
-      budget it exists to enforce - the run directory is always allowed below,
-      so editing brief.md or journal.md directly no longer needs this.`);
-    }
-  }
-  ok();
-}
-
-// --- Everything below is file-path-based (Edit/Write/MultiEdit/NotebookEdit) ---
+// A payload with no file path (Bash, if a matcher ever sends it) has nothing to check.
 const file = input.file_path ?? input.path ?? input.notebook_path;
 if (!file) ok();
 const rel = file.startsWith(ROOT) ? file.slice(ROOT.length + 1) : file;

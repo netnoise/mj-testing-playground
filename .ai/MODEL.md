@@ -33,8 +33,8 @@ is wrong and neither will tell you which.
   number. `.claude/hooks/budget.mjs`'s `GATE_SCOPE` array is the sole owner and
   enforcer; it emits the live list to `.ai/harness/gate-scope.json` on every
   invocation, so nothing else needs to hand-keep a copy.
-- `state.json` is single-writer: created once by `/understand`, never edited by
-  any other tool call while a run is active.
+- `state.json` is single-writer: created once by `open-run.sh` when `/implement`
+  opens the run, never edited by any other tool call while a run is active.
 - Nothing that matters lives only in a context window.
 
 ## Runtime oracle
@@ -45,7 +45,7 @@ process of unknown provenance, which is what produced a wrong "all tests pass"
 report once (decision 0005 / the `ui-shell-redesign` retro). `smoke` is a
 generic route-mount check (both routes, no uncaught error, no console error,
 no horizontal overflow) meant to run inside the fix loop; `deep` adds the
-feature-driving spec (`e2e/app.spec.ts`) and stays reserved for hand-back. New
+feature-driving specs (the rest of `e2e/`) and stays reserved for hand-back. New
 features should extend `e2e/` rather than relying on the existing specs alone.
 
 ## Known drift
