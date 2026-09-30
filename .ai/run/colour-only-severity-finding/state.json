@@ -1,5 +1,5 @@
 {
-  "status": "active",
+  "status": "done",
   "opened_by": "open-run.sh",
   "started_at": "2026-09-30T18:18:15.608Z",
   "base_commit": "e56bed43f0f59b728be28d9bdf74edc1cd8cec44",
@@ -13,6 +13,11 @@
   ],
   "max_files": 10,
   "max_minutes": 60,
-  "files_touched": [],
-  "type": "feature"
+  "files_touched": [
+    "docs/design/klaxon/README.md",
+    "docs/design/klaxon/findings/colour-only-severity.json",
+    "docs/design/klaxon/findings/colour-only-severity.md"
+  ],
+  "type": "feature",
+  "head_commit": "6c4ea0b6fd2a20020bf6ae9e0ece3316980c1726"
 }
