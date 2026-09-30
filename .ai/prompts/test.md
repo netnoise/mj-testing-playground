@@ -1,8 +1,8 @@
 ---
 skill: test
-needs: [understand]
+needs: [understand]      # flow `full` only; the default flow folds this into implement
 reads: [.ai/run/<slug>/brief.md, src/**]
-writes: ["src/**/*.spec.ts", .ai/run/<slug>/test.json]
+writes: ["src/**/*.spec.ts"]
 model: large
 budget: 30m
 stop_on: [enforced: blast_radius_exceeded, advisory: cannot_express_the_invariant]
@@ -22,12 +22,10 @@ Turn the brief's hypothesis into assertions.
   will never reach 80%, so that target gets disabled and takes the harness with it.
 
 **A passing test is not evidence.** Before you finish, read your own test diff
-and ask of each spec: what would have to break for this to fail? The repo's own
-`src/app/app.component.spec.ts:24` is `expect(app).toBeTruthy()` — it passes,
-looks like diligence, and verifies nothing. Report vacuous specs in `test.json`
-as `vacuous: N`; zero specs added is `vacuous: null`, never a pass — **except for a
-refactor**, where zero specs added is the correct outcome and `vacuous: null` reads
-as intended, not as a gap.
+and ask of each spec: what would have to break for this to fail? An
+`expect(app).toBeTruthy()` spec passes, looks like diligence, and verifies nothing.
+Say in the journal how many specs are vacuous; zero specs added is never a pass —
+**except for a refactor**, where it is the correct outcome.
 
 Never weaken, skip, or delete an existing test to get green — door 4. Never widen
 or narrow a config that defines what the gate measures — door 7.

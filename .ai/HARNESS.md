@@ -1,30 +1,31 @@
 # The harness
 
-One page. Everything an agent needs to work in this repo. Read it before any
-non-trivial change.
-
+Rules only; history and reasoning live in `docs/reviews/`, commands and conventions in `CLAUDE.md`.
+**One owner per fact:** never restate a convention inside `.ai/`.
 **The one rule:** nothing valuable lives only in a context window.
 
 ## The loop
 
-The sequence lives in one place: `flows` in `.ai/harness/config.yml` (`fix` for a
-change, `idea` for open-ended thinking, `tiny` for a provable one-liner).
+The sequence lives in one place: `flows` in `.ai/harness/config.yml`.
 
-**Ask first, then walk away.** `/intake` is the one place where asking the human is
-normal: at most four questions, one round, only for product intent the repo can't
-answer. Once `/implement` opens the run, assume the human has left. From there you
-run to the end without asking, the human reads the digest afterwards, and the only
-thing that stops you is a door.
+- `fix` (default): `/brief`, `/implement`, `verify`, `/digest`, and `/retro` when the run was long,
+  odd or the harness got in the way. One run may hold several experiments that share a blast radius.
+- `full`: the older eight steps (`/intake`, `/understand`, `/test`, `/record` added), for vague
+  input, an unfamiliar area or multi-day work.
+- `tiny`: `implement`, `verify`, for a provable one-liner. Unsure? It isn't tiny; run `fix`.
+- `idea`: `/ideate`, then `/brief` on the pitch picked.
+
+**Ask first, then walk away.** Questions belong to `/brief` (or `/intake`): at most four, one round,
+only for product intent the repo can't answer. Once `/implement` opens the run, assume the human has
+left: no questions, only doors.
+
+**Publish, don't merge.** A finished run ends with a push offer; stack the next run on the branch.
 
 ## Doors
 
-Two-way — **run, report after.** Any edit on a branch that is not pushed to a shared
-ref; tests, refactors, renames; reading anything; new files inside the declared blast
-radius. The undo is `git branch -D`.
-
-One-way — **stop and write down the question.** Do not ask permission; state the door,
-both sides, your default, and the cost of being wrong, then continue with everything
-that does not depend on the answer.
+Two-way (run, report after): any edit on an unpushed branch, tests, refactors, new files inside the
+blast radius. The undo is `git branch -D`. One-way (stop and write down the question: door, both
+sides, your default, the cost of being wrong; continue with what doesn't depend on it):
 
 1. Adding, removing or bumping a dependency
 2. Schema or data migration
@@ -32,18 +33,17 @@ that does not depend on the answer.
 4. Deleting or weakening an existing test
 5. Anything under auth, secrets, payments
 6. Writing outside the repo; pushing to a shared branch; rewriting history
-7. **Editing the config that defines a gate's own scope** — one owner:
-   `.claude/hooks/budget.mjs`'s `GATE_SCOPE` array, which is also the sole
-   enforcer. It emits the live list to `.ai/harness/gate-scope.json` on every
-   invocation — read that file for what is actually guarded. Do not re-state the
-   list here: this line was a hand-kept copy until 2026-09-09 and had already gone
-   stale, omitting `.claude/settings.json` for two days after the hook began
-   blocking it. `.ai/MODEL.md` is a related but separate, older door (human-owned
-   structure, not a gate's own scope) protected by the same tree-diff mechanism —
-   see Budgets below for how enforcement actually works, including for Bash.
+7. Editing the config that defines a gate's own scope. The list has one owner,
+   `.claude/hooks/budget.mjs`'s `GATE_SCOPE`, emitted live to `.ai/harness/gate-scope.json`; read
+   that, never copy it here. `.ai/MODEL.md` is a separate human-owned door with the same protection.
 
-Door 7 exists because the symptom is a *better* number. A gate metric that improves
-after the gate's own config was edited is not evidence.
+Door 7 exists because its symptom is a *better* number, which is not evidence.
+
+**At a door-7 stop**, propose a patch (`git diff --no-index <live> <proposed>` into the run
+directory) and put the apply and verify commands inline in the final message, one per block, ending
+on a question. `HARNESS_DOOR_OPEN=1` works only if the human sets it for a whole session or runs
+`verify.sh` with it themselves; a prefix on one Bash call is invisible to the hook. **Apply, then
+commit, then verify** — the preflight fails on an uncommitted diff to a protected file.
 
 ## Gates
 
@@ -51,181 +51,60 @@ after the gate's own config was edited is not evidence.
 
 | tier | runs | when |
 |---|---|---|
-| `fast` | lint (eslint) | after a unit of work |
+| `fast` | lint | after a unit of work |
 | `full` | fast + `jest --ci` + `hook-test.sh` | before every commit |
 | `smoke` | full + production build + `e2e/smoke.spec.ts` | at a checkpoint mid-`implement` |
 | `deep` | smoke + the full e2e suite | once before handing back |
 
-`smoke` and `deep` are both genuine runtime oracles, and both run against the actual
-**production build** (`npm run build`'s `dist/`, served by `e2e/serve-dist.mjs`), not
-`ng serve` — `ng serve` may be a leftover process of unknown provenance, which is the
-mechanism behind a report that once reached a human as "all tests pass" and was wrong.
-
-They check different things. `smoke` is generic and cheap: every route mounts, no
-uncaught error, no horizontal overflow — it breaks only when the app is actually
-broken, so it belongs inside the fix loop (`implement.md`), not just at hand-back.
-`deep` adds the feature-driving spec (`e2e/app.spec.ts`) — a real acceptance test and
-a much narrower regression net, since it breaks on any copy or layout change too.
-A green `deep` (or `smoke`) means something actually executed, not just compiled —
-the `unverified_at_runtime` state this section used to warn about no longer applies
-to either. It still applies to anything that only ran `fast` or `full` and is being
-reported as if the app had been exercised.
+`smoke` and `deep` run against the production build (`e2e/serve-dist.mjs`), never `ng serve`, so
+green means the shipped bundle executed. Both need **port 4200 free**; run a dev server on 4300
+alongside. `smoke` is generic and cheap (routes mount, no error, no overflow) and catches nothing
+about text or behaviour, so a green `smoke` is not a green feature. Anything that ran only `fast`
+or `full` and is reported as exercised is `unverified_at_runtime`; say so.
 
 ## Never trust
 
-- **`VERIFY: PASS`** on its own. Read the test diff. A spec whose only assertion is
-  `expect(x).toBeTruthy()` passes, looks like diligence and verifies nothing —
-  `src/app/app.component.spec.ts:24` is that shape.
-- **`status: completed`.** Compare against `git diff --stat`. A clean exit with zero
-  edits is a failed run wearing a success label.
+- **`VERIFY: PASS`** alone. Read the test diff: a spec whose only assertion is `toBeTruthy()` passes
+  and verifies nothing.
+- **`status: completed`.** Compare against `git diff --stat`; a clean exit with no edits is a failed
+  run wearing a success label.
 - **A metric that improved after you edited its config.** See door 7.
 - **An empty list.** "Nothing failed" over zero checks is a vacuous pass.
 
-## Budgets
+## Runs and budgets
 
-Declared in each prompt's frontmatter, tagged `enforced:` (a hook checks it) or
-`advisory:` (only you can trigger it — say so when you do). Enforced limits live in
-`.ai/run/<slug>/state.json`, opened once by `sh .ai/harness/open-run.sh` (called from
-`implement.md`, so the clock starts when the questions stop; never written by hand — see `.ai/harness/lib.mjs`'s header for why a
-model-typed `started_at` isn't trustworthy). The hook blocks any other write to an
-existing `state.json`, creation included, including a shell write followed by a
-rewrite. The active run's own `.ai/run/<slug>/**` is always inside blast radius, so a
-brief needing a mid-run correction is a normal edit, not a reason to touch
-`state.json`.
-
-**A run has three mechanical moments, and all three are scripts, never hand-edits:**
+A run is `.ai/run/<slug>/`: input, brief, journal, digest, retro, state. Three mechanical moments,
+all scripts, never hand-edits:
 
 | | |
 |---|---|
-| `open-run.sh <slug> [--type refactor\|redesign] <files> <minutes> <paths>...` | `/implement`. Stamps the clock and the ruler. Once per run. Default type `feature`. |
-| `revise-run.sh <slug> --add-path \| --extend` | Mid-run, when the allowlist or budget turns out too narrow. Max 3, each with a `--reason`. |
-| `close-run.sh <slug> [done\|dead]` | After `/digest`. Flips status, records `head_commit`, and **refuses to close a `done` run whose digest never mentions a revision or door-7 crossing it recorded.** |
+| `open-run.sh <slug> [--type refactor\|redesign] <files> <minutes> <paths>...` | `/implement`, once. Stamps clock and ruler. Default type `feature`, 30 files, 90 minutes. |
+| `revise-run.sh <slug> --add-path \| --extend --reason <text>` | Mid-run, when the allowlist or budget was too narrow. Three per run, then it refuses. |
+| `close-run.sh <slug> [done\|dead]` | After `/digest`. Refuses a `done` close if a revision or door-7 crossing is missing from the digest, if digest or retro has a BAD citation, or if a `refactor` run changed a `*.spec.ts`. |
 
-**Widening is disclosed, not forbidden.** A blast radius is a prediction about
-existing code, and predictions about existing code are incomplete — a refactor finds
-the next caller, a redesign finds the sibling component. That is not the same as the
-brief being wrong, and it should not cost a handoff. `revise-run.sh` widens on the
-record: `state.json` keeps the entry, `journal.md` gets the line, the digest has to
-name it, and `close-run.sh` enforces that. **The cap is the guard** — three revisions,
-then it refuses, and running out is the evidence-backed version of
-`blast_radius_exceeded`.
+Escape flags exist for each refusal (`--no-disclosure-check`, `--skip-citation-check`,
+`--skip-refactor-check`) and are disclosed in the digest.
 
-Do **not** widen by doing the edit through Bash instead. The allowlist and budget only
-cover Edit/Write; the hook returns before either check on the Bash path
-(`.claude/hooks/budget.mjs:175-187`), so a shell edit succeeds silently and nothing
-records it. Every run here before `revise-run.sh` existed took that route
-(`.ai/run/vehicle-selection/journal.md:9-13`, `:19-21`).
-
-**A declared refactor (`--type refactor`) may not change a test.** `close-run.sh` refuses
-to close a `done` refactor run if any `*.spec.ts` file differs from `base_commit` —
-door 4 (`test_deleted_or_weakened`)'s first actual enforcement, since "weakened" isn't
-mechanically checkable but "no test edit at all" is. It refuses to *assert* rather than
-pass on two cases that would otherwise be a rubber stamp: a spec already dirty when the
-run opened (invisible to the ruler either way it went), and git itself not answering. The
-escape hatch is `--skip-refactor-check`, same shape as `--no-disclosure-check`. Not a
-gate — `verify.sh` is "the only gate contract" and stays untouched; this blocks *closing*
-a run that made a specific claim, checked at the one point the whole run's diff exists.
-
-`files_touched` is `.ai/harness/lib.mjs`'s `runTouched(state)`: everything that
-differs from the run's `base_commit` (stamped once at open, not a moving `HEAD`),
-plus untracked files, minus the run's own paperwork under `.ai/run/**` and anything
-already dirty before the run started. Not accumulated from which tool you happened to
-use — a deletion, a shell edit, or a file committed mid-run (this harness's own
-"commit WIP on green" rule) all still count, because the ruler is git against a fixed
-point, not the working tree against itself.
-
-Bash is not scanned for write verbs against door-7 file *names* any more — that
-whole-command-string check let a write through whenever it didn't use one of a fixed
-verb list (`node -e`, `python3 -c`, `git apply`, …), while blocking unrelated commands
-that merely *mentioned* a protected path. In its place: `.ai/harness/lib.mjs`'s
-`gateDiff` compares the actual tree against `base_commit` (or `HEAD` with no run open)
-on every guarded call. It can't prevent a Bash write before it happens, so instead —
-once an undisclosed door-7 (or `.ai/MODEL.md`) diff exists, every subsequent
-`Edit`/`Write`/`MultiEdit`/`NotebookEdit` **outside the active run's own directory**
-is refused until it's disclosed (`.ai/run/<slug>/door-crossings.md`, naming the file)
-or reverted (`git checkout -- <path>`, via Bash — Bash itself is never blocked by
-this, since it's the only way to revert). `verify.sh`'s preflight makes the same
-check before any tier runs, so an undisclosed crossing can't produce a green gate even
-if it slips past a single missed hook call. This sweep only runs while a run is
-genuinely active — there's nowhere to disclose into otherwise, and a committed (not
-just uncommitted) crossing with no run open is a real, undetected gap; ad-hoc/`tiny`
-work was never meant to carry this machinery, and a direct edit whose own target is a
-door-7 file is still blocked unconditionally either way.
-
-**The `HARNESS_DOOR_OPEN=1` override does not work as a prefix on one Bash call.** The
-hook reads its own process environment, not the environment of the command it's
-checking — a value set mid-conversation, or prefixed onto a single shell command, is
-invisible to it. The two forms that actually work: the human sets it for the *entire
-session* before it starts (not available in the Claude Code desktop app — there is no
-path to it there; go straight to a patch for the human), or the human runs
-`HARNESS_DOOR_OPEN=1 sh .ai/harness/verify.sh` themselves. If a gate-scope edit is
-needed, propose it as a patch (a unified diff — `git diff --no-index <live> <proposed>
-> x.patch` in the run directory, so a human reviews a diff, not a full-file
-replacement) and say so in the digest; don't chase the override.
-
-**When you (the human) apply a gate-scope patch, commit it before running `verify.sh`
-— not after.** `verify.sh`'s own preflight diffs the tree against `HEAD` when no run
-is active and fails on an undisclosed protected-file diff; applying a patch (`cp` or
-`git apply`) is exactly that kind of diff. Copy the file(s) in, commit, then verify —
-found live applying the v4.3 door-7 patch itself.
-
-Run `sh .ai/harness/hook-test.sh` (part of `verify.sh full`) — now built entirely
-inside a throwaway `mktemp` git repo, never the live `.ai/run` — to confirm the guard
-itself is firing rather than silently passing everything through.
+The hook (`.claude/hooks/budget.mjs`) enforces the allowlist and the file and minute budgets on
+Edit/Write, and is `state.json`'s only writer. `files_touched` comes from git against the run's
+`base_commit`, minus the run's own paperwork, so a shell edit or a WIP commit still counts. The
+active run's own directory is always in scope. **Widening is disclosed, not forbidden:** the digest
+must name every revision. A block is either "the brief's model was wrong" (stop, write the handoff)
+or normal discovery (revise). Never route around a block through Bash: the gate can't see it.
 
 Stop conditions: `one_way_door`, `hypothesis_falsified`, `runtime_falsified`,
-`blast_radius_exceeded`, `budget_spent`. Every stop writes a handoff, leaves the
-branch, exits clean.
+`blast_radius_exceeded`, `budget_spent`. Every stop writes a handoff, leaves the branch, exits clean.
+`hypothesis_falsified` is a success: the code said the brief was wrong.
 
-## Durability
+A declared refactor may not change a test; `close-run.sh` is door 4's only mechanical tooth.
 
-Journal a step if redoing it costs more than recording it, or if it changed the
-working tree. Intent line first, result appended. Commit WIP on green.
+## Durability and layout
 
-If you are interrupted, `bash .ai/harness/handoff.sh <slug>` writes `HANDOFF.md` with
-no model call — that is the path that still works at a usage limit.
+Journal a step if redoing it costs more than recording it, or if it changed the tree: intent first,
+result appended. Commit WIP on green. If interrupted, `bash .ai/harness/handoff.sh <slug>` writes
+`HANDOFF.md` with no model call; the Stop hook writes one on every stop while a run is active, so
+**do not delete it.** `.ai/run/<slug>/` is one run, `.ai/run/<YYYY-MM-DD>-<topic>/` a standalone
+ideate or retro, `.ai/decisions/` permanent why, `.ai/bank/` human-curated lessons, `.ai/MODEL.md`
+human-owned structure, `.ai/harness/OWED.md` the open list and its freeze rule.
 
-**A `HANDOFF.md` appearing while a run is still active is expected, not a signal
-something went wrong — do not delete it.** The Stop hook writes one on every stop
-while `state.json` is `active`, including an ordinary turn end, not just a real
-interruption. It is stamped `ACTIVE — mid-run snapshot, not a final state` for
-exactly this reason. Deleting it to keep the run directory tidy destroys the one
-artifact this durability layer exists to guarantee, for no benefit — the file is
-overwritten on the next stop regardless.
-
-## Where things live
-
-`.ai/run/<slug>/` input, brief, journal, state, emits, digest, retro (hours) ·
-`.ai/run/<YYYY-MM-DD>-<topic>/` standalone ideate or retro — no state, no budget ·
-`.ai/decisions/` why a change happened (permanent) ·
-`.ai/bank/` lessons that outlive this repo (human-curated) ·
-`.ai/MODEL.md` structure and invariants (human-owned) ·
-`CLAUDE.md` commands and conventions.
-
-`emits` (`.ai/run/<slug>/<skill>.json`) are written by `.ai/harness/emit.sh`, not
-by hand — mechanical, no model call, same reason as `handoff.sh`. `retro.md` is
-the process critique: what the agent got wrong, distinct from `digest.md`'s
-technical summary, which has no section where the agent is the subject.
-
-## Right-sizing the loop
-
-Not every piece of work is `flows.fix`. An open question with no job yet is
-`flows.idea`: `/ideate`, then `/intake` on the pitch the human picks.
-`.ai/harness/config.yml`'s `flows.tiny` (`implement → verify`) is for a change
-that is provably local and small enough that a brief would cost more than it
-saves — a typo, a one-line config value already covered by an existing test, a
-comment fix. If you're unsure whether a change qualifies, it doesn't: run the
-full loop. Ceremony sized to a task this small is a real cost — see the
-`ui-shell-redesign` retro's own closing observation — but the failure mode of
-skipping the loop on something that wasn't actually tiny is worse than the
-ceremony it would have cost.
-
-**One owner per fact.** Never restate a convention inside `.ai/`.
-
-## After editing any prompt, hook or command file
-
-Say so, and tell the human to restart the session. Hooks and settings are the reliable
-case for this: a hook that never fires reports nothing at all. New `.claude/commands/`
-files have been seen appearing mid-session (`harness-v44-intake`'s journal), and a prompt's
-body is read when it's invoked, but don't count on either — restarting costs less than
-chasing a stale file.
+After editing a prompt, hook or command file, say so and tell the human to restart the session.

@@ -12,6 +12,10 @@
 # doesn't go permanently red; and the fail-marker file is now a per-run mktemp,
 # not a fixed /tmp path two concurrent checks could stomp on each other with.
 #
+# A backticked path followed by ` (new)` is a declared forward reference - a file
+# the run is about to create - and is not checked. predictions.md is frozen once
+# committed and cannot be edited to satisfy the bare-path rule, so that rule skips it.
+#
 # usage: check-citations.sh <file>...   (default: newest run's markdown)
 set -e
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
@@ -87,8 +91,9 @@ for doc in "$@"; do
   # and this is the shape that let a reference to a deleted file read clean:
   # .ai/MODEL.md once cited src/app/vehicle/vehicle.service.ts, undetected,
   # after the file itself was deleted.
-  grep -oE '`[A-Za-z0-9_.][A-Za-z0-9_./-]*/[A-Za-z0-9_./-]*\.[A-Za-z]+`' "$doc" 2>/dev/null \
-    | tr -d '`' | grep -vE ':[0-9]+$' | sort -u | while IFS= read -r path; do
+  BARE_DOC="$doc"; [ "$(basename "$doc")" = "predictions.md" ] && BARE_DOC=/dev/null
+  grep -oE '`[A-Za-z0-9_.][A-Za-z0-9_./-]*/[A-Za-z0-9_./-]*\.[A-Za-z]+`( \(new\))?' "$BARE_DOC" 2>/dev/null \
+    | grep -v '(new)$' | tr -d '`' | grep -vE ':[0-9]+$' | sort -u | while IFS= read -r path; do
     echo x >> "$COUNT_MARK"
     if ! path_exists "$path"; then
       echo "BAD  $doc -> $path (no such file$([ -n "$BASE" ] && echo " at $BASE")) [bare path]"; echo x >> "$FAIL_MARK"

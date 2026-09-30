@@ -29,12 +29,18 @@
 # (test_deleted_or_weakened, config.yml:8) its first tooth: nothing anywhere
 # else enforces it.
 #
-# usage: close-run.sh <slug> [done|dead] [--no-disclosure-check] [--skip-refactor-check]
+# And it is where a digest's or retro's citations are checked. The documented
+# loop runs verify before digest, so no tier ever sees the digest a run is about
+# to close on: klaxon-claims-correction closed `done` with two unresolvable
+# citations and left `deep` red on the trunk. Same reasoning again - not gate
+# scope, and the finished document only exists at this point.
+#
+# usage: close-run.sh <slug> [done|dead] [--no-disclosure-check] [--skip-refactor-check] [--skip-citation-check]
 set -e
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
 cd "$ROOT"
 
-USAGE='usage: close-run.sh <slug> [done|dead] [--no-disclosure-check] [--skip-refactor-check]'
+USAGE='usage: close-run.sh <slug> [done|dead] [--no-disclosure-check] [--skip-refactor-check] [--skip-citation-check]'
 
 SLUG="${1:?$USAGE}"
 shift
@@ -44,10 +50,12 @@ case "${1:-}" in
 esac
 CHECK=1
 SKIP_REFACTOR=0
+SKIP_CITATIONS=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --no-disclosure-check) CHECK=0; shift ;;
     --skip-refactor-check) SKIP_REFACTOR=1; shift ;;
+    --skip-citation-check) SKIP_CITATIONS=1; shift ;;
     *) echo "close-run: unknown argument: $1" >&2; echo "$USAGE" >&2; exit 1 ;;
   esac
 done
@@ -85,6 +93,23 @@ if [ "$CHECK" = "1" ] && [ "$STATUS" = "done" ]; then
       echo "close-run: deliberate exception? re-run with --no-disclosure-check." >&2
       exit 1
     fi
+  fi
+fi
+
+# Citation gate. `dead` runs are exempt for the same reason as above.
+if [ "$STATUS" = "done" ] && [ "$SKIP_CITATIONS" = "0" ]; then
+  DOCS=""
+  for f in digest.md retro.md; do
+    if [ -f ".ai/run/$SLUG/$f" ]; then DOCS="$DOCS .ai/run/$SLUG/$f"; fi
+  done
+  # Only a BAD line refuses the close: check-citations.sh also exits non-zero for
+  # a document with no citations at all, which is a short digest, not a fault.
+  CITE_OUT=$(sh .ai/harness/check-citations.sh $DOCS 2>&1 || true)
+  if printf '%s\n' "$CITE_OUT" | grep -q '^BAD'; then
+    printf '%s\n' "$CITE_OUT" | grep '^BAD' >&2
+    echo "close-run: $SLUG has a citation that does not resolve." >&2
+    echo "close-run: fix the citation, or re-run with --skip-citation-check to close anyway (disclosed)." >&2
+    exit 1
   fi
 fi
 
