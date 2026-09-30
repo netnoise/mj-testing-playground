@@ -7,13 +7,6 @@ and it fixes only that. Everything below is parked until it bites. Every entry i
 with a trigger or a source; no tallies, no narrative (that is what `retro.md` is for). Agents propose
 an entry when they find one; a human strikes it when applied.
 
-## Pending human application (door 7)
-
-- **The `harness-v5-slim` patch** (`.ai/run/harness-v5-slim/patch/`): drop the Bash `state.json`
-  guard and `Bash` from the hook matcher, stop `deep` running smoke twice, add a port 4200 message,
-  stop `deep`'s citation step falling back to a closed run, and correct `.ai/MODEL.md`'s stale
-  `state.json` and e2e-spec lines. Apply, commit, then run `verify.sh`.
-
 ## Parked, with the trigger that un-parks it
 
 - **`emit.sh` and `ledger.sh` are inert** since no prompt writes emits. Delete both, plus the comments
