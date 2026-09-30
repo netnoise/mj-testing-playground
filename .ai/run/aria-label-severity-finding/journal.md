@@ -1,3 +1,7 @@
 - 18:45Z intent: baseline verify deep on 9db523f (src/ and e2e/ unchanged since 59631ef)
 - 18:45Z result: baseline deep FAILED once: e2e board.spec.ts 'is operable by keyboard alone' (All filter not focused after Tab). Not a green baseline. intent: rerun to tell flake from regression
 - 18:48Z result: cause found. keyboard e2e failed 2/4 deep runs, 5/20 and 14/20 in isolation while the in-app Browser pane had tabs open (my file:// view of findings.html); 20/20 and 2/2 deep after closing them. A local-environment interaction, not the repo; pane stays closed for this run. baseline-deep.txt is the green rerun; the failed first run is in this journal only
+- 18:48Z result: predictions.md committed before the patch exists
+- 18:49Z intent: measure badge before/after (M3 applied via patch, then reverted); browser pane stays closed
+- 18:49Z result: badge metrics saved (text empty, name kept CRIT, 12 found by role+name, colour equal). intent: replay.sh --record
+- 18:51Z result: replay exit 0, negative control exit 1; record md+json, README and wireframe pointer written; src/e2e diff empty. intent: verify full, digest, commit, close

@@ -1,0 +1,6 @@
+19c19
+< M3-aria-label-severity	jest	board.spec.ts	Board lists every incident in a table with column headers, and shows severity as visible text	pass
+---
+> M3-aria-label-severity	jest	board.spec.ts	Board lists every incident in a table with column headers, and shows severity as visible text	fail
+replay: outcomes differ from /tmp/falsified3.tsv (diff above)
+negative-control exit=1
