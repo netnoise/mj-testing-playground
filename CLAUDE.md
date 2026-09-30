@@ -46,7 +46,7 @@ These come from `eslint.config.js` / `angular.json` and will fail lint/build if 
 ## Layout notes
 
 - `src/app/` — root component (`App`), `app.config.ts`, `app.routes.ts` (exported so `smoke-routes.spec.ts` can check it against `e2e/smoke-routes.ts`). New features are standalone components generated here.
-- `src/app/board/` — the Klaxon incident board (`Board`, route `/board`); `src/app/incidents/` — the `Incident` model, a fixed-clock fixture and `IncidentSource`. `?scenario=loading|empty|failed|stale` drives the board into each non-happy state on any build; it is a fixtures-only test seam.
+- `src/app/board/` — the Klaxon incident board (`Board`, route `/board`); `src/app/incidents/` — the `Incident` model, a fixed-clock fixture and `IncidentSource`. `?scenario=loading|empty|failed|stale` drives the board into each non-happy state on any build, and `?scenario=ack-failed` makes Acknowledge fail after a short delay so the optimistic update is rolled back; it is a fixtures-only test seam.
 - `public/` — static assets served as-is (Angular 21 replaces `src/assets/`). There is no `src/environments/` and no `fileReplacements`.
 - `e2e/` — Playwright specs (`*.spec.ts`).
 - `tsconfig.app.json` (app build) and `tsconfig.spec.json` (Jest) both extend the root `tsconfig.json`.
