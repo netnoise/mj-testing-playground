@@ -1,5 +1,5 @@
 {
-  "status": "active",
+  "status": "done",
   "opened_by": "open-run.sh",
   "started_at": "2026-09-30T20:03:31.138Z",
   "base_commit": "e05c4375990723181c4f0dde3fe7be5a5cc6ff96",
@@ -11,5 +11,6 @@
   "max_files": 3,
   "max_minutes": 30,
   "files_touched": [],
-  "type": "feature"
+  "type": "feature",
+  "head_commit": "f2b1c2fe146f321b32c42e72df718339f03eebec"
 }
