@@ -1,5 +1,5 @@
 {
-  "status": "active",
+  "status": "done",
   "opened_by": "open-run.sh",
   "started_at": "2026-09-30T18:45:02.141Z",
   "base_commit": "9db523f2aecb92b2138ec8d71f0db84d448baf73",
@@ -14,6 +14,12 @@
   ],
   "max_files": 10,
   "max_minutes": 60,
-  "files_touched": [],
-  "type": "feature"
+  "files_touched": [
+    "docs/design/klaxon/README.md",
+    "docs/design/klaxon/findings/aria-label-severity.json",
+    "docs/design/klaxon/findings/aria-label-severity.md",
+    "docs/design/klaxon/wireframes/findings.html"
+  ],
+  "type": "feature",
+  "head_commit": "fae216aa3ae797635667e3843857f98b6c69dca9"
 }
