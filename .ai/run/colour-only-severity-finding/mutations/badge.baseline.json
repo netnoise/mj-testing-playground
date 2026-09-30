@@ -1,0 +1,146 @@
+{
+  "firstCellAccessibility": {
+    "role": "gridcell",
+    "name": "CRIT",
+    "children": [
+      {
+        "role": "text",
+        "name": "CRIT"
+      }
+    ]
+  },
+  "badges": [
+    {
+      "incident": "INC-2891",
+      "className": "sev sev-critical",
+      "text": "CRIT",
+      "ariaLabel": null,
+      "ariaLabelledby": null,
+      "title": null,
+      "color": "rgb(239, 68, 68)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "width": 46.81
+    },
+    {
+      "incident": "INC-2890",
+      "className": "sev sev-major",
+      "text": "MAJ",
+      "ariaLabel": null,
+      "ariaLabelledby": null,
+      "title": null,
+      "color": "rgb(245, 158, 11)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "width": 39.61
+    },
+    {
+      "incident": "INC-2889",
+      "className": "sev sev-minor",
+      "text": "MIN",
+      "ariaLabel": null,
+      "ariaLabelledby": null,
+      "title": null,
+      "color": "rgb(148, 163, 184)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "width": 39.61
+    },
+    {
+      "incident": "INC-2888",
+      "className": "sev sev-critical",
+      "text": "CRIT",
+      "ariaLabel": null,
+      "ariaLabelledby": null,
+      "title": null,
+      "color": "rgb(239, 68, 68)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "width": 46.81
+    },
+    {
+      "incident": "INC-2887",
+      "className": "sev sev-minor",
+      "text": "MIN",
+      "ariaLabel": null,
+      "ariaLabelledby": null,
+      "title": null,
+      "color": "rgb(148, 163, 184)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "width": 39.61
+    },
+    {
+      "incident": "INC-2886",
+      "className": "sev sev-major",
+      "text": "MAJ",
+      "ariaLabel": null,
+      "ariaLabelledby": null,
+      "title": null,
+      "color": "rgb(245, 158, 11)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "width": 39.61
+    },
+    {
+      "incident": "INC-2885",
+      "className": "sev sev-minor",
+      "text": "MIN",
+      "ariaLabel": null,
+      "ariaLabelledby": null,
+      "title": null,
+      "color": "rgb(148, 163, 184)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "width": 39.61
+    },
+    {
+      "incident": "INC-2884",
+      "className": "sev sev-major",
+      "text": "MAJ",
+      "ariaLabel": null,
+      "ariaLabelledby": null,
+      "title": null,
+      "color": "rgb(245, 158, 11)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "width": 39.61
+    },
+    {
+      "incident": "INC-2883",
+      "className": "sev sev-critical",
+      "text": "CRIT",
+      "ariaLabel": null,
+      "ariaLabelledby": null,
+      "title": null,
+      "color": "rgb(239, 68, 68)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "width": 46.81
+    },
+    {
+      "incident": "INC-2882",
+      "className": "sev sev-minor",
+      "text": "MIN",
+      "ariaLabel": null,
+      "ariaLabelledby": null,
+      "title": null,
+      "color": "rgb(148, 163, 184)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "width": 39.61
+    },
+    {
+      "incident": "INC-2881",
+      "className": "sev sev-major",
+      "text": "MAJ",
+      "ariaLabel": null,
+      "ariaLabelledby": null,
+      "title": null,
+      "color": "rgb(245, 158, 11)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "width": 39.61
+    },
+    {
+      "incident": "INC-2879",
+      "className": "sev sev-minor",
+      "text": "MIN",
+      "ariaLabel": null,
+      "ariaLabelledby": null,
+      "title": null,
+      "color": "rgb(148, 163, 184)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "width": 39.61
+    }
+  ]
+}

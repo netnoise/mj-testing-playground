@@ -94,5 +94,7 @@ old `app.component.spec.ts` (write-up §01, `.ai/run/klaxon-claims-correction/ev
 cells on the old scaffold's e2e layer and form validators
 (`.ai/run/old-baseline-findings/evidence.md`); and the first finding on the Klaxon board itself,
 [`findings/heading-demotion.md`](findings/heading-demotion.md) (36 cells, 2 caught), with its
-companion [`findings/harmless-refactors.md`](findings/harmless-refactors.md) (105 cells, none flagged). The
+companion [`findings/harmless-refactors.md`](findings/harmless-refactors.md) (105 cells, none flagged); and the colour-only
+severity mutation, [`findings/colour-only-severity.md`](findings/colour-only-severity.md) (37 cells, 2 caught; the
+"0 of 5" prediction above was falsified for Jest). The
 write-up's matrix and the claude.ai artifacts haven't been updated to match.

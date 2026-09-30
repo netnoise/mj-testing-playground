@@ -1,0 +1,1 @@
+replay: every outcome matches .ai/run/colour-only-severity-finding/mutations/results.tsv

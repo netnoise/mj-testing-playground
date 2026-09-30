@@ -1,1 +1,6 @@
 - 18:18Z intent: baseline verify deep on e56bed4 (src/ and e2e/ unchanged since 59631ef) before any mutation
+- 18:19Z result: baseline deep green (24 jest, 8 e2e); predictions.md committed before the patch exists
+- 18:19Z intent: measure badge before/after (baseline build, then M2 applied via patch, then reverted)
+- 18:20Z result: badge metrics saved (text+accessible name gone, colour equal). intent: replay.sh --record (baseline + M2, all layers)
+- 18:20Z result: recorded 70 rows; exactly 2 caught (jest table test, layout snapshot), all as predicted. intent: replay compare + negative control
+- 18:22Z result: replay reproduces (exit 0), negative control exits 1; record md+json and README sentence written; src/e2e diff empty. intent: verify full, digest, commit, close

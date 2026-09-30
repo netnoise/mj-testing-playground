@@ -1,0 +1,6 @@
+19c19
+< M2-colour-only-severity	jest	board.spec.ts	Board lists every incident in a table with column headers, and shows severity as visible text	pass
+---
+> M2-colour-only-severity	jest	board.spec.ts	Board lists every incident in a table with column headers, and shows severity as visible text	fail
+replay: outcomes differ from /tmp/falsified.tsv (diff above)
+negative-control exit=1

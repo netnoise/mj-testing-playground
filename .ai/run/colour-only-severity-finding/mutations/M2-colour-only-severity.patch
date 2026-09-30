@@ -1,0 +1,34 @@
+diff --git a/src/app/board/board.html b/src/app/board/board.html
+index c34b036..ae2616e 100644
+--- a/src/app/board/board.html
++++ b/src/app/board/board.html
+@@ -44,7 +44,7 @@
+           <tbody>
+             @for (incident of rows(); track incident.id) {
+               <tr [class.selected]="incident.id === selected()?.id">
+-                <td><span class="sev sev-{{ incident.severity }}">{{ severityLabel[incident.severity].short }}</span></td>
++                <td><span class="sev sev-{{ incident.severity }}"></span></td>
+                 <td>
+                   <button type="button" class="row-button" [attr.aria-pressed]="incident.id === selected()?.id" (click)="select(incident.id)">
+                     {{ incident.id }}
+diff --git a/src/app/board/board.scss b/src/app/board/board.scss
+index bdaa087..47c3888 100644
+--- a/src/app/board/board.scss
++++ b/src/app/board/board.scss
+@@ -123,12 +123,10 @@ tr.selected {
+ 
+ .sev {
+   display: inline-block;
+-  padding: 2px 8px;
+-  border: 1px solid currentColor;
+-  border-radius: 4px;
+-  font-family: var(--font-mono);
+-  font-size: 12px;
+-  font-weight: 600;
++  width: 14px;
++  height: 14px;
++  border-radius: 50%;
++  background: currentColor;
+ }
+ 
+ .sev-critical {
