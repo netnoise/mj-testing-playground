@@ -1,7 +1,7 @@
-## Klaxon second finding: colour-only severity   claude/klaxon-colour-severity · verify deep ✓ · ~4m · 3 files (all docs)
+## Klaxon second finding: colour-only severity   claude/klaxon-colour-severity · verify deep ✓ · ~5m · 3 files (all docs)
 
 ### One decision for you
-Three places still describe this mutation as a pending hypothesis: `docs/design/klaxon/README.md:48` ("predicted 0 of 5, not run"), its "Planned mutation" section (`docs/design/klaxon/README.md:71`), and `wireframes/findings.html` with the two claude.ai artifacts. **Default: leave them**; the README's recorded-results sentence now says the "0 of 5" prediction was falsified for Jest. **Cost:** a reader of the top of the README or the artifacts sees a stale claim until a docs pass. **Reversible:** yes, doc-only; the artifacts are outside the repo and yours to republish.
+Three places still describe this mutation as a pending hypothesis: `docs/design/klaxon/README.md:48` ("predicted 0 of 5, not run"), its "Planned mutation" section (`docs/design/klaxon/README.md:71`), and `docs/design/klaxon/wireframes/findings.html` with the two claude.ai artifacts. **Default: leave them**; the README's recorded-results sentence now says the "0 of 5" prediction was falsified for Jest. **Cost:** a reader of the top of the README or the artifacts sees a stale claim until a docs pass. **Reversible:** yes, doc-only; the artifacts are outside the repo and yours to republish.
 
 ### What surprised me
 Two things. The mutation was caught by a test that was written to catch it: `src/app/board/board.spec.ts:23` is titled "…shows severity as visible text", so the README's "0 of 5" was wrong before it was ever run, and this is not a blind result. And the layout snapshot, which flagged exactly one element for the heading demotion, flags 123 of 162 here, because a narrower badge reflows every column; it catches the defect but does not say what the defect was.
