@@ -1,0 +1,1 @@
+- 18:18Z intent: baseline verify deep on e56bed4 (src/ and e2e/ unchanged since 59631ef) before any mutation

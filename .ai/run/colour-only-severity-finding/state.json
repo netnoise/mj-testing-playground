@@ -1,0 +1,18 @@
+{
+  "status": "active",
+  "opened_by": "open-run.sh",
+  "started_at": "2026-09-30T18:18:15.608Z",
+  "base_commit": "e56bed43f0f59b728be28d9bdf74edc1cd8cec44",
+  "dirty_at_start": [],
+  "allowed_paths": [
+    "src/app/board/board.html",
+    "src/app/board/board.scss",
+    "docs/design/klaxon/findings/**",
+    "docs/design/klaxon/README.md",
+    ".ai/run/colour-only-severity-finding/**"
+  ],
+  "max_files": 10,
+  "max_minutes": 60,
+  "files_touched": [],
+  "type": "feature"
+}
