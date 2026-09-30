@@ -59,28 +59,6 @@ STATUS=$(node -e "try{console.log(JSON.parse(require('node:fs').readFileSync('.a
   git diff --stat HEAD
   echo '```'
   echo
-  echo "## Last emit"
-  echo '```'
-  # Picked by the emit's own "at" field (real timestamp, docs/reviews/vibe-
-  # harness-v4.3-delta-2026-09-10.md §1.4), not by file mtime - an emit
-  # rewritten or copied by a later step would otherwise outrank a newer one
-  # that simply wasn't touched again.
-  LAST_EMIT=$(node -e "
-    const fs=require('node:fs');
-    const dir='.ai/run/$SLUG';
-    let best=null, bestAt='';
-    for (const f of fs.readdirSync(dir)) {
-      if (!f.endsWith('.json') || f === 'state.json') continue;
-      try {
-        const e = JSON.parse(fs.readFileSync(dir + '/' + f, 'utf8'));
-        if (e.at && e.at > bestAt) { bestAt = e.at; best = dir + '/' + f; }
-      } catch {}
-    }
-    if (best) console.log(best);
-  " 2>/dev/null || true)
-  if [ -n "$LAST_EMIT" ]; then cat "$LAST_EMIT"; else echo "(none with an \"at\" field - emit.sh hasn't been called since this fix, or not at all for this run)"; fi
-  echo '```'
-  echo
   echo "## Resume"
   echo '```'
   echo "git checkout $(git rev-parse --abbrev-ref HEAD 2>/dev/null) && /resume $SLUG"

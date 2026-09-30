@@ -1,0 +1,9 @@
+# Journal — harness-v5-slim
+- 16:36Z (from the run record) run opened on branch harness/v5-slim, 30 files / 90 min. Order: scripts (close-run, check-citations, handoff/emit/ledger) → prompts + config → HARNESS.md → OWED/CLAUDE.md → agent → door-7 patch.
+- done: close-run.sh refuses `done` on a BAD citation in digest/retro (`--skip-citation-check`); check-citations.sh skips `(new)` refs and predictions.md bare paths (tested on a temp doc); handoff.sh no longer prints an emit block.
+- DEVIATION from brief item 6: emit.sh and ledger.sh are NOT deleted. ledger.sh is outside the blast radius, and lib.mjs (door 7) names them in comments. Prompts stop requiring emits, which is the token saving; the two scripts are inert. Listed in OWED as a delete candidate for the next door-7 patch.
+- NOTE: budget.mjs's Bash state.json regex blocked a heredoc that merely quoted the filename in prompt text — live repro of the false positive the door-7 patch removes. Switched to Write/Edit.
+- done: prompts (brief new + command, implement rewritten to ~3KB, digest push offer, test/understand emits dropped), config.yml flows fix=4 steps, full=old 8.
+- done: HARNESS.md 110 lines (rules only), OWED.md open items + freeze rule, CLAUDE.md flow line + status, defect-planter agent, docs/reviews/harness-v5-slim-2026-09-30.md. Next: door-7 patch (budget.mjs, settings.json, verify.sh, MODEL.md) + hook-test.sh update, then verify.
+- door-7 patch built and tested in a throwaway worktree (deep green; port preflight fires; 2 changed hook-test cases red on old hook = negative control). door-crossings.md records it as proposed, not applied.
+- removed door-crossings.md: nothing was crossed, the patch is only proposed; the digest states it instead. Next: verify full, then deep with the untracked-file tidy, commit, digest.

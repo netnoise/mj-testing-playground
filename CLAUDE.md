@@ -8,7 +8,7 @@ Angular testing playground (`mj-testing-playground`): Angular 21.2 LTS, standalo
 
 The old Angular 14 NgModule app, its specs and its Storybook are at the git tag `scaffold-ng14`. Storybook and Compodoc were dropped in the regen and are not installed.
 
-**Klaxon** (an on-call incident board that hosts planted defects for testing experiments) is the direction: see `docs/design/klaxon/` and decisions `.ai/decisions/0006`–`0008`. The regen and the board (fixture-backed, with its baseline tests) are done; planting and recording the heading-demotion defect is the next run. Generate via `ng generate` rather than building parallel structures.
+**Klaxon** (an on-call incident board that hosts planted defects for testing experiments) is the direction: see `docs/design/klaxon/` and decisions `.ai/decisions/0006`–`0008`. The regen, the board (fixture-backed, with its baseline tests) and the first recorded findings (`docs/design/klaxon/findings/`) are done. Generate via `ng generate` rather than building parallel structures.
 
 ## Commands
 
@@ -75,6 +75,9 @@ not sufficient. For any language in this repo:
 This repo uses the `.ai` harness. Read `.ai/HARNESS.md` before any non-trivial
 change, and follow it. Structure and invariants live in `.ai/MODEL.md`; runnable
 prompts in `.ai/prompts/`; the design write-up in `docs/vibe-harness.html`.
+
+The default flow is `/brief`, `/implement`, `verify`, `/digest`; the flows are in
+`.ai/harness/config.yml`.
 
 The gate is `bash .ai/harness/verify.sh [fast|full|smoke|deep]` — it is the only gate
 contract.

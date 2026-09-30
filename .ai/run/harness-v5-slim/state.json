@@ -1,0 +1,49 @@
+{
+  "status": "done",
+  "opened_by": "open-run.sh",
+  "started_at": "2026-09-30T16:36:22.135Z",
+  "base_commit": "feab96454c36d54ecdcbfcde4cf854e752b42631",
+  "dirty_at_start": [
+    "patchgen/",
+    "pg2/"
+  ],
+  "allowed_paths": [
+    ".ai/HARNESS.md",
+    ".ai/prompts/**",
+    ".ai/harness/config.yml",
+    ".ai/harness/OWED.md",
+    ".ai/harness/close-run.sh",
+    ".ai/harness/check-citations.sh",
+    ".ai/harness/handoff.sh",
+    ".ai/harness/emit.sh",
+    ".ai/harness/hook-test.sh",
+    ".ai/decisions/**",
+    ".claude/commands/**",
+    ".claude/agents/**",
+    "CLAUDE.md",
+    "docs/reviews/**",
+    "docs/vibe-harness.html",
+    ".ai/run/harness-v5-slim/**"
+  ],
+  "max_files": 30,
+  "max_minutes": 90,
+  "files_touched": [
+    ".ai/HARNESS.md",
+    ".ai/harness/OWED.md",
+    ".ai/harness/check-citations.sh",
+    ".ai/harness/close-run.sh",
+    ".ai/harness/config.yml",
+    ".ai/harness/handoff.sh",
+    ".ai/prompts/brief.md",
+    ".ai/prompts/digest.md",
+    ".ai/prompts/implement.md",
+    ".ai/prompts/test.md",
+    ".ai/prompts/understand.md",
+    ".claude/agents/defect-planter.md",
+    ".claude/commands/brief.md",
+    "CLAUDE.md",
+    "docs/reviews/harness-v5-slim-2026-09-30.md"
+  ],
+  "type": "feature",
+  "head_commit": "e78bf4dcfc84bc6c93fa2745b560cd7eaec6e0ed"
+}

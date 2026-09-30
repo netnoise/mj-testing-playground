@@ -2,7 +2,7 @@
 skill: understand
 needs: [intake]         # no Intent / Done when in the brief? run /intake first, then continue
 reads: [.ai/run/<slug>/brief.md, .ai/run/<slug>/input.md, src/**, e2e/**, CLAUDE.md, .ai/MODEL.md, .ai/bank/**]
-writes: [.ai/run/<slug>/brief.md, .ai/run/<slug>/understand.json]
+writes: [.ai/run/<slug>/brief.md]
 model: large            # overspend here - a bad brief is paid for by every step under it
 budget: 20m · 40 files read
 stop_on:
