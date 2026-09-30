@@ -45,7 +45,7 @@ no build step or server required:
 | Incident Board | [`wireframes/board.html`](wireframes/board.html) | The live table + inspector panel. Carries an in-context callout for the planned colour-only-severity mutation, linked to Findings. The markup here is a prototype (all divs, fixed widths, 10px labels): take its hierarchy and type, not its structure. |
 | Triage & Escalation | [`wireframes/triage.html`](wireframes/triage.html) | The escalation dialog: real cross-field validation (escalating to Critical requires an Incident Commander) and an unsaved-changes indicator. |
 | Incident Archive | [`wireframes/archive.html`](wireframes/archive.html) | The paginated long-table case, distinct from the live board's scrolling table. Annotated with what its `aria-live` region actually announces. |
-| Findings | [`wireframes/findings.html`](wireframes/findings.html) | The in-app defect × test-layer matrix. Featured row: severity-by-colour-only, a hypothesis (predicted 0 of 5, not run). |
+| Findings | [`wireframes/findings.html`](wireframes/findings.html) | The in-app defect × test-layer matrix. Featured row: severity-by-colour-only, recorded (2 of 37 cells caught; [`findings/colour-only-severity.md`](findings/colour-only-severity.md)). |
 
 These are static snapshots of an interactive prototype built as a Claude
 Artifact ([Klaxon Views](https://claude.ai/artifact/T8CfBzMBVpac9BCtDNfvPh)).
@@ -68,7 +68,7 @@ Dark ops-console palette, chosen deliberately, not inherited:
   timestamps, anything tabular or code-shaped) — the same pairing used in the
   two write-up artifacts, for continuity across the whole project.
 
-## Planned mutation: colour-only severity
+## Recorded mutation: colour-only severity
 
 Earlier versions of this README said the board's SEV badge conveys severity by
 colour alone. It doesn't: every badge in `wireframes/board.html` carries
@@ -77,11 +77,12 @@ visible text (`CRIT`, `MAJ`, `MIN`, and `CRITICAL` in the inspector). Decision
 this.
 
 The normal app ships **accessible severity labels**. Colour-only severity is an
-**isolated mutation**: a patch that strips the badge text, applied to a frozen
-suite, run, recorded, and reverted. The inaccessible version is never the
-default. Whether that mutation is caught depends on the assertions the suite
-actually makes. The prediction that it's "caught by 0 of 5" is a hypothesis
-until it has been run.
+**isolated mutation**: a patch that strips the badge text and accessible name,
+applied to a frozen suite, run, recorded, and reverted. The inaccessible version
+is never the default. It has been run:
+[`findings/colour-only-severity.md`](findings/colour-only-severity.md). One
+component test caught it, and it was written to; no end-to-end test did. The
+earlier "caught by 0 of 5" prediction was falsified for this suite.
 
 ## Claims and evidence
 
