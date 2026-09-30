@@ -1,5 +1,10 @@
 ## Klaxon third finding: aria-label variant   claude/klaxon-aria-label-variant · verify deep ✓ · ~6m · 4 files (all docs)
 
+> **Correction, 2026-09-30.** The browser-pane cause stated below ("One decision", "What I learned", "What I got wrong") is wrong. A controlled
+> test found no clear difference between a closed pane and an open tab: 26 of 160 failures closed, 31 of 140 open (the counts file of the harness-note-browser-pane run,
+> on `claude/harness-browser-pane-note`). The keyboard-focus test is flaky for an unknown reason, and I pushed a cause I had not tested. The body below is
+> left as written; the decision it asks about (a HARNESS.md line or a preflight) has no basis and was not taken.
+
 ### One decision for you
 `deep` and `smoke` are flaky while the desktop app's built-in browser pane has a tab open: the keyboard-focus test failed in 2 of 4 `deep` runs and in 5 and 14 of 20 isolated repeats, then passed 20 of 20 once I closed the tabs. `.ai/HARNESS.md` says only that port 4200 must be free. **Default: leave the harness alone** and keep the pane closed for runs; the finding's caveat records it. **Cost:** the next run that forgets gets a false red baseline. **Reversible:** yes; adding a line to `.ai/HARNESS.md` is a one-line edit, or a preflight check in `verify.sh`, which is door 7 and needs your patch.
 

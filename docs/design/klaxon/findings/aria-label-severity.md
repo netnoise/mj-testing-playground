@@ -57,10 +57,13 @@ gets that far. The first line does not.
 
 ## Caveats
 
-- **The first baseline run of this session failed, and it was the environment.** The keyboard-focus test in
-  `e2e/board.spec.ts:23` failed in 2 of 4 `deep` runs, and in 5 and 14 of 20 isolated repeats, while two tabs were open in the
-  desktop app's built-in browser pane. After I closed them it passed 20 of 20 and `deep` passed twice. The repo was not at fault;
-  the run's journal has the numbers. This is a recorded local-environment hazard for `deep` and `smoke`, not a property of the suite.
+- **The keyboard-focus Playwright test is flaky, and its cause is unknown.** The first baseline run failed on it: `e2e/board.spec.ts:23`
+  failed in 2 of 4 `deep` runs, and in 5 and 14 of 20 isolated repeats. This record first blamed an open tab in the desktop app's
+  built-in browser pane. **That was wrong, corrected 2026-09-30:** a controlled test (`.ai/run/harness-note-browser-pane/`, on
+  `claude/harness-browser-pane-note`) measured 26 of 160 failures with the pane closed and 31 of 140 with a tab open, no clear
+  difference. The test fails about 16% to 25% of the time on this machine either way, in clusters, for a reason not found. A flake can
+  only fake a `caught` cell, never a `missed` one, and every Playwright cell in this record passed, so the results stand; the baseline
+  was re-run until green (twice in a row), and the failed run's raw output was overwritten.
 - One run per cell, no flake check on the mutated cells; `replay.sh` reproduced every outcome a second time.
 - Axe and visual regression don't exist yet; a later iteration row never overwrites this one.
 
@@ -71,5 +74,4 @@ gets that far. The first line does not.
 - The tree after the revert is clean (`.ai/run/aria-label-severity-finding/mutations/restored-diffstat.txt` is empty) and `verify.sh deep` is green on it
   (`.ai/run/aria-label-severity-finding/mutations/output/restored.deep.txt`).
 - `sh .ai/run/aria-label-severity-finding/mutations/replay.sh` re-runs both trees and exits nonzero if any outcome differs from `results.tsv`. Negative control: with the
-  Jest catch falsified to a pass it exits 1 (`.ai/run/aria-label-severity-finding/mutations/output/negative-control.txt`). Needs ports 4200 and 4300 free, and the
-  built-in browser pane closed.
+  Jest catch falsified to a pass it exits 1 (`.ai/run/aria-label-severity-finding/mutations/output/negative-control.txt`). Needs ports 4200 and 4300 free.

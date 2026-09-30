@@ -5,3 +5,4 @@
 - 18:49Z intent: measure badge before/after (M3 applied via patch, then reverted); browser pane stays closed
 - 18:49Z result: badge metrics saved (text empty, name kept CRIT, 12 found by role+name, colour equal). intent: replay.sh --record
 - 18:51Z result: replay exit 0, negative control exit 1; record md+json, README and wireframe pointer written; src/e2e diff empty. intent: verify full, digest, commit, close
+- 20:23Z correction: the browser-pane cause above is wrong; see .ai/run/harness-note-browser-pane (26/160 closed vs 31/140 open, no clear difference; flaky for an unknown reason). Finding caveat and digest amended on this branch.
