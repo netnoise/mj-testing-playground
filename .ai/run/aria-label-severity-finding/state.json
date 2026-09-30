@@ -1,0 +1,19 @@
+{
+  "status": "active",
+  "opened_by": "open-run.sh",
+  "started_at": "2026-09-30T18:45:02.141Z",
+  "base_commit": "9db523f2aecb92b2138ec8d71f0db84d448baf73",
+  "dirty_at_start": [],
+  "allowed_paths": [
+    "src/app/board/board.html",
+    "src/app/board/board.scss",
+    "docs/design/klaxon/findings/**",
+    "docs/design/klaxon/README.md",
+    "docs/design/klaxon/wireframes/findings.html",
+    ".ai/run/aria-label-severity-finding/**"
+  ],
+  "max_files": 10,
+  "max_minutes": 60,
+  "files_touched": [],
+  "type": "feature"
+}
