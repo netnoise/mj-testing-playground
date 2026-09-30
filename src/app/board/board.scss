@@ -179,4 +179,20 @@ tr.selected {
   dd {
     margin: 0;
   }
+
+  .ack {
+    margin-top: 16px;
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--panel-raised);
+    color: var(--text);
+    font: inherit;
+    cursor: pointer;
+  }
+}
+
+.ack-error {
+  margin: 0 0 12px;
+  color: var(--critical);
 }

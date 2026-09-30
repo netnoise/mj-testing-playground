@@ -1,0 +1,3 @@
+- 20:23Z intent: baseline verify deep on 1a062a0; the keyboard e2e test is known-flaky (~16-25%), a red deep on it alone gets rerun and noted
+- 20:24Z result: wrote board-ack.spec.ts, incident-source-ack.spec.ts, e2e/board-ack.spec.ts first. intent: show them failing before any feature code
+- 20:25Z result: feature written (source.acknowledge + ACK_DELAY_MS, Board optimistic overlay + rollback + alert, button), jest 30/30 incl 6 new, lint ok. intent: commit WIP, prove the rollback test can fail, then e2e + deep

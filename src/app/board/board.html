@@ -66,6 +66,9 @@
       </div>
 
       <aside class="details" aria-label="Incident details">
+        @if (ackError(); as message) {
+          <p class="ack-error" role="alert">{{ message }}</p>
+        }
         @if (selected(); as incident) {
           <h2>{{ incident.id }}</h2>
           <p>{{ incident.title }}</p>
@@ -81,6 +84,9 @@
             <dt>Opened</dt>
             <dd class="mono">{{ age(incident) }} ago</dd>
           </dl>
+          @if (incident.status === 'live') {
+            <button type="button" class="ack" (click)="acknowledge(incident)">Acknowledge</button>
+          }
         } @else {
           <p>Select an incident to see its details.</p>
         }

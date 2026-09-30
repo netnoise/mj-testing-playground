@@ -1,0 +1,18 @@
+{
+  "status": "active",
+  "opened_by": "open-run.sh",
+  "started_at": "2026-09-30T20:23:52.540Z",
+  "base_commit": "1a062a07adbe3712022ee6ad66eff6d88f34d7c8",
+  "dirty_at_start": [],
+  "allowed_paths": [
+    "src/app/board/**",
+    "src/app/incidents/**",
+    "CLAUDE.md",
+    "e2e/board-ack.spec.ts",
+    ".ai/run/failed-ack-rollback/**"
+  ],
+  "max_files": 12,
+  "max_minutes": 90,
+  "files_touched": [],
+  "type": "feature"
+}
