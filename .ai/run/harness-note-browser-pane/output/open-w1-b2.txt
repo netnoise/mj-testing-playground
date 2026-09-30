@@ -1,0 +1,221 @@
+
+Running 20 tests using 1 worker
+
+[1A[2K[1/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[2/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[3/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[4/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[5/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K  1) [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeFocused[2m()[22m
+    Call log:
+      [2m- expect.toBeFocused with timeout 5000ms[22m
+    [2m  - waiting for getByRole('button', { name: /^All/ })[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  - waiting for getByRole('button', { name: /^All/ })[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+
+
+      26 |   await page.keyboard.press('Tab');
+      27 |   const allFilter = page.getByRole('button', { name: /^All/ });
+    > 28 |   await expect(allFilter).toBeFocused();
+         |                           ^
+      29 |   await expect(allFilter).toHaveCSS('outline-style', 'solid');
+      30 |   await expect(allFilter).toHaveCSS('outline-width', '2px');
+      31 |
+
+        at /Users/emjot/dev/projects/mj-testing-playground/e2e/board.spec.ts:28:27
+
+
+[1A[2K[6/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[7/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[8/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[9/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[10/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[11/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[12/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[13/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[14/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[15/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K  2) [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeFocused[2m()[22m
+    Call log:
+      [2m- expect.toBeFocused with timeout 5000ms[22m
+    [2m  - waiting for getByRole('button', { name: /^All/ })[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  - waiting for getByRole('button', { name: /^All/ })[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+
+
+      26 |   await page.keyboard.press('Tab');
+      27 |   const allFilter = page.getByRole('button', { name: /^All/ });
+    > 28 |   await expect(allFilter).toBeFocused();
+         |                           ^
+      29 |   await expect(allFilter).toHaveCSS('outline-style', 'solid');
+      30 |   await expect(allFilter).toHaveCSS('outline-width', '2px');
+      31 |
+
+        at /Users/emjot/dev/projects/mj-testing-playground/e2e/board.spec.ts:28:27
+
+
+[1A[2K[16/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[17/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K  3) [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeFocused[2m()[22m
+    Call log:
+      [2m- expect.toBeFocused with timeout 5000ms[22m
+    [2m  - waiting for getByRole('button', { name: /^All/ })[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  - waiting for getByRole('button', { name: /^All/ })[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+
+
+      26 |   await page.keyboard.press('Tab');
+      27 |   const allFilter = page.getByRole('button', { name: /^All/ });
+    > 28 |   await expect(allFilter).toBeFocused();
+         |                           ^
+      29 |   await expect(allFilter).toHaveCSS('outline-style', 'solid');
+      30 |   await expect(allFilter).toHaveCSS('outline-width', '2px');
+      31 |
+
+        at /Users/emjot/dev/projects/mj-testing-playground/e2e/board.spec.ts:28:27
+
+
+[1A[2K[18/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K  4) [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeFocused[2m()[22m
+    Call log:
+      [2m- expect.toBeFocused with timeout 5000ms[22m
+    [2m  - waiting for getByRole('button', { name: /^All/ })[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  - waiting for getByRole('button', { name: /^All/ })[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+
+
+      26 |   await page.keyboard.press('Tab');
+      27 |   const allFilter = page.getByRole('button', { name: /^All/ });
+    > 28 |   await expect(allFilter).toBeFocused();
+         |                           ^
+      29 |   await expect(allFilter).toHaveCSS('outline-style', 'solid');
+      30 |   await expect(allFilter).toHaveCSS('outline-width', '2px');
+      31 |
+
+        at /Users/emjot/dev/projects/mj-testing-playground/e2e/board.spec.ts:28:27
+
+
+[1A[2K[19/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K[20/20] [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator
+[1A[2K  5) [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeFocused[2m()[22m
+    Call log:
+      [2m- expect.toBeFocused with timeout 5000ms[22m
+    [2m  - waiting for getByRole('button', { name: /^All/ })[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  - waiting for getByRole('button', { name: /^All/ })[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+    [2m  -   locator resolved to <button type="button" aria-pressed="true" _ngcontent-ng-…>…</button>[22m
+    [2m  -   unexpected value "not focused"[22m
+
+
+      26 |   await page.keyboard.press('Tab');
+      27 |   const allFilter = page.getByRole('button', { name: /^All/ });
+    > 28 |   await expect(allFilter).toBeFocused();
+         |                           ^
+      29 |   await expect(allFilter).toHaveCSS('outline-style', 'solid');
+      30 |   await expect(allFilter).toHaveCSS('outline-width', '2px');
+      31 |
+
+        at /Users/emjot/dev/projects/mj-testing-playground/e2e/board.spec.ts:28:27
+
+
+[1A[2K
+  5 failed
+    [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator 
+    [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator 
+    [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator 
+    [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator 
+    [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator 
+  15 passed (33.5s)

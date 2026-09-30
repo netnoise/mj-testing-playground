@@ -1,0 +1,3 @@
+- 20:03Z intent: control arm first: pane closed, build once, keyboard test x20 via HARNESS_DEEP playwright
+- 20:04Z result: control (pane closed) 1,6,4,0,0 of 20 parallel + 1 of 20 workers=1 = 12/120 failed; failures in slow batches (8-11s) not fast (3s). intent: treatment arm, one tab open (file:// vibe-harness.html), same batches
+- 20:09Z result: treatment (one tab open) 17/100 parallel + 14/40 workers=1; control 11/100 + 15/60. No clear difference; test fails with pane closed = brief's falsifier. Earlier 'closing the pane fixed it' was wrong (two quiet batches). No HARNESS.md sentence added. Note: batch duration is not a load signal (failures cost 5s timeouts each).
