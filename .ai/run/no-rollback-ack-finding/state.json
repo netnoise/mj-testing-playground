@@ -1,0 +1,18 @@
+{
+  "status": "active",
+  "opened_by": "open-run.sh",
+  "started_at": "2026-10-26T23:26:11.730Z",
+  "base_commit": "8eaab01d6aecddd45ff864f2531d3678b882d585",
+  "dirty_at_start": [],
+  "allowed_paths": [
+    "src/app/board/board.ts",
+    "docs/design/klaxon/findings/**",
+    "docs/design/klaxon/README.md",
+    "docs/design/klaxon/wireframes/findings.html",
+    ".ai/run/no-rollback-ack-finding/**"
+  ],
+  "max_files": 10,
+  "max_minutes": 90,
+  "files_touched": [],
+  "type": "feature"
+}

@@ -1,0 +1,2 @@
+- 23:26Z intent: baseline verify deep on 8eaab01 (pane closed, ports 4200/4300 free)
+- 23:26Z result: baseline deep NOT green: playwright 1.30 wants chromium-1045, absent from ~/Library/Caches/ms-playwright (only 1217/1234/1248 exist). Installing would download and write outside the repo (door 6), so not done. intent: try PW_CHROMIUM (the config's existing seam) at the cached chromium-1248; browser version then differs from the earlier findings and must be disclosed
