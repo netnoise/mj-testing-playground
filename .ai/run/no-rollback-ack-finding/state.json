@@ -1,5 +1,5 @@
 {
-  "status": "active",
+  "status": "done",
   "opened_by": "open-run.sh",
   "started_at": "2026-10-26T23:26:11.730Z",
   "base_commit": "8eaab01d6aecddd45ff864f2531d3678b882d585",
@@ -13,6 +13,12 @@
   ],
   "max_files": 10,
   "max_minutes": 90,
-  "files_touched": [],
-  "type": "feature"
+  "files_touched": [
+    "docs/design/klaxon/README.md",
+    "docs/design/klaxon/findings/no-rollback-ack.json",
+    "docs/design/klaxon/findings/no-rollback-ack.md",
+    "docs/design/klaxon/wireframes/findings.html"
+  ],
+  "type": "feature",
+  "head_commit": "d0a4af13299184a3ddf33e4fd5982092f04e0400"
 }
