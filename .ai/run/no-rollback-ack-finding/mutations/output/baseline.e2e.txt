@@ -1,0 +1,16 @@
+
+Running 10 tests using 5 workers
+
+  ✓  5 [chromium] › board.spec.ts:52:7 › non-happy states are reachable by URL and raise no errors › loading (778ms)
+  ✓  4 [chromium] › board-ack.spec.ts:18:5 › acknowledging a live incident shows it as acknowledged, with no error (1.0s)
+  ✓  2 [chromium] › board.spec.ts:9:5 › filters by severity and shows the details of a clicked incident (1.1s)
+  ✓  6 [chromium] › board.spec.ts:60:7 › non-happy states are reachable by URL and raise no errors › empty (301ms)
+  ✓  3 [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator (1.2s)
+  ✓  7 [chromium] › board.spec.ts:68:7 › non-happy states are reachable by URL and raise no errors › failed (373ms)
+  ✓  8 [chromium] › board.spec.ts:76:7 › non-happy states are reachable by URL and raise no errors › stale keeps the table and says how old it is (394ms)
+  ✓  9 [chromium] › smoke.spec.ts:30:7 › / mounts with no uncaught error and a non-empty root (411ms)
+  ✓  10 [chromium] › smoke.spec.ts:30:7 › /board mounts with no uncaught error and a non-empty root (381ms)
+  ✓  1 [chromium] › board-ack.spec.ts:29:5 › a failed acknowledgement is rolled back and reported (2.2s)
+
+
+  10 passed (3.2s)

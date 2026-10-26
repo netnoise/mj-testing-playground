@@ -1,0 +1,7 @@
+
+Test Suites: 7 passed, 7 total
+Tests:       30 passed, 30 total
+Snapshots:   0 total
+Time:        1.256 s
+Ran all test suites.
+Test results written to: ../../../../../var/folders/8_/bxmfjzlx1px1g47d4p6vnyxh0000gn/T/tmp.XuH0Zq5IE9/jest.json

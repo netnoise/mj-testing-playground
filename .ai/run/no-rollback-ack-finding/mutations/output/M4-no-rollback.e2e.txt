@@ -1,0 +1,59 @@
+
+Running 10 tests using 5 workers
+
+  ✓  5 [chromium] › board.spec.ts:52:7 › non-happy states are reachable by URL and raise no errors › loading (690ms)
+  ✓  2 [chromium] › board-ack.spec.ts:18:5 › acknowledging a live incident shows it as acknowledged, with no error (726ms)
+  ✓  4 [chromium] › board.spec.ts:23:5 › is operable by keyboard alone, with a visible focus indicator (905ms)
+  ✓  1 [chromium] › board.spec.ts:9:5 › filters by severity and shows the details of a clicked incident (969ms)
+  ✓  6 [chromium] › board.spec.ts:60:7 › non-happy states are reachable by URL and raise no errors › empty (296ms)
+  ✓  7 [chromium] › board.spec.ts:68:7 › non-happy states are reachable by URL and raise no errors › failed (270ms)
+  ✓  8 [chromium] › board.spec.ts:76:7 › non-happy states are reachable by URL and raise no errors › stale keeps the table and says how old it is (406ms)
+  ✓  10 [chromium] › smoke.spec.ts:30:7 › /board mounts with no uncaught error and a non-empty root (320ms)
+  ✓  9 [chromium] › smoke.spec.ts:30:7 › / mounts with no uncaught error and a non-empty root (348ms)
+  ✘  3 [chromium] › board-ack.spec.ts:29:5 › a failed acknowledgement is rolled back and reported (6.8s)
+
+
+  1) [chromium] › board-ack.spec.ts:29:5 › a failed acknowledgement is rolled back and reported ====
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected string: [32m"LIVE"[39m
+    Received string: [31m"CRIT INC-2891 Checkout API returning 5xx on payment capturecheckout-apiR. Byrne3mACKED"[39m
+    Call log:
+      [2m- expect.toContainText with timeout 5000ms[22m
+    [2m  - waiting for getByRole('row').filter({ hasText: 'INC-2891' })[22m
+    [2m  -   locator resolved to <tr class="selected" _ngcontent-ng-c1526245863="">…</tr>[22m
+    [2m  -   unexpected value "CRIT INC-2891 Checkout API returning 5xx on payment capturecheckout-apiR. Byrne3mACKED"[22m
+    [2m  - waiting for getByRole('row').filter({ hasText: 'INC-2891' })[22m
+    [2m  -   locator resolved to <tr class="selected" _ngcontent-ng-c1526245863="">…</tr>[22m
+    [2m  -   unexpected value "CRIT INC-2891 Checkout API returning 5xx on payment capturecheckout-apiR. Byrne3mACKED"[22m
+    [2m  -   locator resolved to <tr class="selected" _ngcontent-ng-c1526245863="">…</tr>[22m
+    [2m  -   unexpected value "CRIT INC-2891 Checkout API returning 5xx on payment capturecheckout-apiR. Byrne3mACKED"[22m
+    [2m  -   locator resolved to <tr class="selected" _ngcontent-ng-c1526245863="">…</tr>[22m
+    [2m  -   unexpected value "CRIT INC-2891 Checkout API returning 5xx on payment capturecheckout-apiR. Byrne3mACKED"[22m
+    [2m  -   locator resolved to <tr class="selected" _ngcontent-ng-c1526245863="">…</tr>[22m
+    [2m  -   unexpected value "CRIT INC-2891 Checkout API returning 5xx on payment capturecheckout-apiR. Byrne3mACKED"[22m
+    [2m  -   locator resolved to <tr class="selected" _ngcontent-ng-c1526245863="">…</tr>[22m
+    [2m  -   unexpected value "CRIT INC-2891 Checkout API returning 5xx on payment capturecheckout-apiR. Byrne3mACKED"[22m
+    [2m  -   locator resolved to <tr class="selected" _ngcontent-ng-c1526245863="">…</tr>[22m
+    [2m  -   unexpected value "CRIT INC-2891 Checkout API returning 5xx on payment capturecheckout-apiR. Byrne3mACKED"[22m
+    [2m  -   locator resolved to <tr class="selected" _ngcontent-ng-c1526245863="">…</tr>[22m
+    [2m  -   unexpected value "CRIT INC-2891 Checkout API returning 5xx on payment capturecheckout-apiR. Byrne3mACKED"[22m
+    [2m  -   locator resolved to <tr class="selected" _ngcontent-ng-c1526245863="">…</tr>[22m
+    [2m  -   unexpected value "CRIT INC-2891 Checkout API returning 5xx on payment capturecheckout-apiR. Byrne3mACKED"[22m
+
+
+      36 |
+      37 |   await expect(page.getByRole('alert')).toContainText('INC-2891');
+    > 38 |   await expect(row).toContainText('LIVE');
+         |                     ^
+      39 |   await expect(page.getByRole('complementary', { name: 'Incident details' }).getByRole('button', { name: 'Acknowledge' })).toBeVisible();
+      40 |   expect(errors).toEqual([]);
+      41 | });
+
+        at /Users/emjot/dev/projects/mj-testing-playground/e2e/board-ack.spec.ts:38:21
+
+
+  1 failed
+    [chromium] › board-ack.spec.ts:29:5 › a failed acknowledgement is rolled back and reported =====
+  9 passed (7.6s)

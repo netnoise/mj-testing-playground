@@ -1,0 +1,5 @@
+2c2
+< M4-no-rollback	e2e	board-ack.spec.ts	a failed acknowledgement is rolled back and reported	pass
+---
+> M4-no-rollback	e2e	board-ack.spec.ts	a failed acknowledgement is rolled back and reported	fail
+replay: outcomes differ from /tmp/control.tsv (diff above)

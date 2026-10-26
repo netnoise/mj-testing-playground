@@ -98,5 +98,6 @@ cells on the old scaffold's e2e layer and form validators
 companion [`findings/harmless-refactors.md`](findings/harmless-refactors.md) (105 cells, none flagged); and the colour-only
 severity mutation, [`findings/colour-only-severity.md`](findings/colour-only-severity.md) (37 cells, 2 caught; the
 "0 of 5" prediction above was falsified for Jest); and its aria-label variant,
-[`findings/aria-label-severity.md`](findings/aria-label-severity.md) (37 cells, 2 caught, identical to colour-only). The
-write-up's matrix and the claude.ai artifacts haven't been updated to match.
+[`findings/aria-label-severity.md`](findings/aria-label-severity.md) (37 cells, 2 caught, identical to colour-only); and the planted
+no-rollback defect on acknowledge, [`findings/no-rollback-ack.md`](findings/no-rollback-ack.md) (the two specs written for
+the rollback caught it, nothing else did). The write-up's matrix and the claude.ai artifacts haven't been updated to match.

@@ -146,12 +146,12 @@
 
           <div style="display:grid; grid-template-columns:1fr 64px 64px 64px 64px 64px 1.1fr; gap:10px; padding:11px 16px; align-items:center; border-bottom:1px solid #1c1f27;">
             <div style="font-size:12.5px;">Optimistic ack not rolled back on 500</div>
-            <div style="text-align:center; justify-self:center; min-width:30px; padding:1px 0; border:1px dashed #33373f; border-radius:3px; font-size:12px; color:#7c8797;">&middot;?</div>
-            <div style="text-align:center; justify-self:center; min-width:30px; padding:1px 0; border:1px dashed #33373f; border-radius:3px; font-size:12px; color:#9ba0ab;">&check;?</div>
-            <div style="text-align:center; justify-self:center; min-width:30px; padding:1px 0; border:1px dashed #33373f; border-radius:3px; font-size:12px; color:#9ba0ab;">&check;?</div>
-            <div style="text-align:center; color:#3a3f4b;">&ndash;</div>
-            <div style="text-align:center; justify-self:center; min-width:30px; padding:1px 0; border:1px dashed #33373f; border-radius:3px; font-size:12px; color:#7c8797;">&middot;?</div>
-            <div style="font-size:11.5px; color:#7c8797;">Does the suite have a fake that can fail?</div>
+            <div style="text-align:center; justify-self:center; min-width:30px; padding:1px 0; border:1px dashed #33373f; border-radius:3px; background:transparent; color:#7c8797; font-weight:700; font-size:12px;" title="Not applicable: the unit specs never render the board">&ndash;</div>
+            <div style="text-align:center; justify-self:center; min-width:30px; padding:1px 0; border:1px solid rgba(251,191,36,0.5); border-radius:3px; background:rgba(251,191,36,0.12); color:#fbbf24; font-weight:700; font-size:12px;" title="Recorded 2026-10-27, with a caveat: the Board component test for the failed acknowledgement fails, and it was written to (no-rollback-ack.md)">!</div>
+            <div style="text-align:center; justify-self:center; min-width:30px; padding:1px 0; border:1px solid rgba(251,191,36,0.5); border-radius:3px; background:rgba(251,191,36,0.12); color:#fbbf24; font-weight:700; font-size:12px;" title="Recorded 2026-10-27, with a caveat: the Playwright test for the failed acknowledgement fails, and it was written to (no-rollback-ack.md)">!</div>
+            <div style="text-align:center; justify-self:center; min-width:30px; padding:1px 0; border:1px dashed #33373f; border-radius:3px; background:transparent; color:#7c8797; font-weight:700; font-size:12px;" title="Not run: axe is not installed">&middot;</div>
+            <div style="text-align:center; justify-self:center; min-width:30px; padding:1px 0; border:1px dashed #33373f; border-radius:3px; background:transparent; color:#7c8797; font-weight:700; font-size:12px;" title="Not run: no visual regression layer; the layout snapshot (not shown) did not flag it">&middot;</div>
+            <div style="font-size:11.5px; color:#f2a3a0;">Recorded: the two specs written for the rollback caught it; no other layer did. Does the suite have a fake that can fail? Now yes: <span class="mono">no-rollback-ack.md</span>.</div>
           </div>
 
           <div style="display:grid; grid-template-columns:1fr 64px 64px 64px 64px 64px 1.1fr; gap:10px; padding:11px 16px; align-items:center; border-bottom:1px solid #1c1f27;">

@@ -1,0 +1,16 @@
+[
+  {
+    "scenario": "ack-failed",
+    "alert": 1,
+    "row": "CRIT INC-2891 Checkout API returning 5xx on payment capture checkout-api R. Byrne 3m ACKED",
+    "inspectorStatus": "ACKED",
+    "acknowledgeButtons": 0
+  },
+  {
+    "scenario": "none",
+    "alert": 0,
+    "row": "CRIT INC-2891 Checkout API returning 5xx on payment capture checkout-api R. Byrne 3m ACKED",
+    "inspectorStatus": "ACKED",
+    "acknowledgeButtons": 0
+  }
+]

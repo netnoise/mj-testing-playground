@@ -1,2 +1,7 @@
 - 23:26Z intent: baseline verify deep on 8eaab01 (pane closed, ports 4200/4300 free)
 - 23:26Z result: baseline deep NOT green: playwright 1.30 wants chromium-1045, absent from ~/Library/Caches/ms-playwright (only 1217/1234/1248 exist). Installing would download and write outside the repo (door 6), so not done. intent: try PW_CHROMIUM (the config's existing seam) at the cached chromium-1248; browser version then differs from the earlier findings and must be disclosed
+- 23:27Z result: baseline deep green under PW_CHROMIUM (chrome 156). predictions.md committed before the patch exists
+- 23:27Z intent: measure ack state baseline vs M4 (measure.sh)
+- 23:28Z result: measurement confirms (ack-failed: row and inspector ACKED, alert 1, no Acknowledge button; baseline LIVE). intent: replay.sh --record
+- 23:28Z result: recorded 86 rows; M4 caught exactly 2 (jest rollback spec, e2e rollback spec), baseline all pass, restored deep green. intent: replay compare then negative control
+- 23:30Z result: replay exit 0, negative control exit 1; record md+json, README and wireframe row written; src/e2e diff empty. intent: verify full, commit, digest, close

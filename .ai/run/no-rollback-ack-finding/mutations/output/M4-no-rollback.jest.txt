@@ -1,0 +1,195 @@
+FAIL src/app/board/board-ack.spec.ts
+  ● Console
+
+    console.warn
+      DEPRECATED: DI is instantiating a token "ManualSource" that inherits its @Injectable decorator but does not provide one itself.
+      This will become an error in a future version of Angular. Please add @Injectable() to the "ManualSource" class.
+
+      16 | async function render() {
+      17 |   TestBed.configureTestingModule({ providers: [{ provide: IncidentSource, useClass: ManualSource }] });
+    > 18 |   const source = TestBed.inject(IncidentSource) as ManualSource;
+         |                          ^
+      19 |   const fixture = TestBed.createComponent(Board);
+      20 |   await fixture.whenStable();
+      21 |   const el = fixture.nativeElement as HTMLElement;
+
+      at getInheritedInjectableDef (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:287:26)
+      at getUndecoratedInjectableFactory (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1368:34)
+      at injectableDefOrInjectorDefFactory (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1359:12)
+      at providerToFactory (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1406:43)
+      at providerToRecord (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1379:21)
+      at R3Injector.processProvider (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1273:20)
+      at node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1102:55
+      at forEachSingleProvider (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1440:7)
+      at forEachSingleProvider (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1438:7)
+      at new R3Injector (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1102:5)
+      at createInjectorWithoutInjectorInstances (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:2174:10)
+      at new NgModuleRef2 (node_modules/@angular/core/fesm2022/_debug_node-chunk.mjs:9700:24)
+      at TestBedCompiler.finalize (node_modules/@angular/core/fesm2022/testing.mjs:710:26)
+      at _TestBedImpl.get testModuleRef [as testModuleRef] (node_modules/@angular/core/fesm2022/testing.mjs:1492:43)
+      at _TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1413:25)
+      at _TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1300:33)
+      at render (src/app/board/board-ack.spec.ts:18:26)
+      at Object.<anonymous> (src/app/board/board-ack.spec.ts:39:42)
+
+    console.warn
+      DEPRECATED: DI is instantiating a token "ManualSource" that inherits its @Injectable decorator but does not provide one itself.
+      This will become an error in a future version of Angular. Please add @Injectable() to the "ManualSource" class.
+
+      16 | async function render() {
+      17 |   TestBed.configureTestingModule({ providers: [{ provide: IncidentSource, useClass: ManualSource }] });
+    > 18 |   const source = TestBed.inject(IncidentSource) as ManualSource;
+         |                          ^
+      19 |   const fixture = TestBed.createComponent(Board);
+      20 |   await fixture.whenStable();
+      21 |   const el = fixture.nativeElement as HTMLElement;
+
+      at getInheritedInjectableDef (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:287:26)
+      at getUndecoratedInjectableFactory (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1368:34)
+      at injectableDefOrInjectorDefFactory (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1359:12)
+      at providerToFactory (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1406:43)
+      at providerToRecord (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1379:21)
+      at R3Injector.processProvider (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1273:20)
+      at node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1102:55
+      at forEachSingleProvider (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1440:7)
+      at forEachSingleProvider (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1438:7)
+      at new R3Injector (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1102:5)
+      at createInjectorWithoutInjectorInstances (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:2174:10)
+      at new NgModuleRef2 (node_modules/@angular/core/fesm2022/_debug_node-chunk.mjs:9700:24)
+      at TestBedCompiler.finalize (node_modules/@angular/core/fesm2022/testing.mjs:710:26)
+      at _TestBedImpl.get testModuleRef [as testModuleRef] (node_modules/@angular/core/fesm2022/testing.mjs:1492:43)
+      at _TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1413:25)
+      at _TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1300:33)
+      at render (src/app/board/board-ack.spec.ts:18:26)
+      at Object.<anonymous> (src/app/board/board-ack.spec.ts:49:47)
+
+    console.warn
+      DEPRECATED: DI is instantiating a token "ManualSource" that inherits its @Injectable decorator but does not provide one itself.
+      This will become an error in a future version of Angular. Please add @Injectable() to the "ManualSource" class.
+
+      16 | async function render() {
+      17 |   TestBed.configureTestingModule({ providers: [{ provide: IncidentSource, useClass: ManualSource }] });
+    > 18 |   const source = TestBed.inject(IncidentSource) as ManualSource;
+         |                          ^
+      19 |   const fixture = TestBed.createComponent(Board);
+      20 |   await fixture.whenStable();
+      21 |   const el = fixture.nativeElement as HTMLElement;
+
+      at getInheritedInjectableDef (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:287:26)
+      at getUndecoratedInjectableFactory (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1368:34)
+      at injectableDefOrInjectorDefFactory (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1359:12)
+      at providerToFactory (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1406:43)
+      at providerToRecord (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1379:21)
+      at R3Injector.processProvider (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1273:20)
+      at node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1102:55
+      at forEachSingleProvider (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1440:7)
+      at forEachSingleProvider (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1438:7)
+      at new R3Injector (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1102:5)
+      at createInjectorWithoutInjectorInstances (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:2174:10)
+      at new NgModuleRef2 (node_modules/@angular/core/fesm2022/_debug_node-chunk.mjs:9700:24)
+      at TestBedCompiler.finalize (node_modules/@angular/core/fesm2022/testing.mjs:710:26)
+      at _TestBedImpl.get testModuleRef [as testModuleRef] (node_modules/@angular/core/fesm2022/testing.mjs:1492:43)
+      at _TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1413:25)
+      at _TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1300:33)
+      at render (src/app/board/board-ack.spec.ts:18:26)
+      at Object.<anonymous> (src/app/board/board-ack.spec.ts:60:55)
+
+    console.warn
+      DEPRECATED: DI is instantiating a token "ManualSource" that inherits its @Injectable decorator but does not provide one itself.
+      This will become an error in a future version of Angular. Please add @Injectable() to the "ManualSource" class.
+
+      16 | async function render() {
+      17 |   TestBed.configureTestingModule({ providers: [{ provide: IncidentSource, useClass: ManualSource }] });
+    > 18 |   const source = TestBed.inject(IncidentSource) as ManualSource;
+         |                          ^
+      19 |   const fixture = TestBed.createComponent(Board);
+      20 |   await fixture.whenStable();
+      21 |   const el = fixture.nativeElement as HTMLElement;
+
+      at getInheritedInjectableDef (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:287:26)
+      at getUndecoratedInjectableFactory (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1368:34)
+      at injectableDefOrInjectorDefFactory (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1359:12)
+      at providerToFactory (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1406:43)
+      at providerToRecord (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1379:21)
+      at R3Injector.processProvider (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1273:20)
+      at node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1102:55
+      at forEachSingleProvider (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1440:7)
+      at forEachSingleProvider (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1438:7)
+      at new R3Injector (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:1102:5)
+      at createInjectorWithoutInjectorInstances (node_modules/@angular/core/fesm2022/_effect-chunk2.mjs:2174:10)
+      at new NgModuleRef2 (node_modules/@angular/core/fesm2022/_debug_node-chunk.mjs:9700:24)
+      at TestBedCompiler.finalize (node_modules/@angular/core/fesm2022/testing.mjs:710:26)
+      at _TestBedImpl.get testModuleRef [as testModuleRef] (node_modules/@angular/core/fesm2022/testing.mjs:1492:43)
+      at _TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1413:25)
+      at _TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:1300:33)
+      at render (src/app/board/board-ack.spec.ts:18:26)
+      at Object.<anonymous> (src/app/board/board-ack.spec.ts:71:55)
+
+  ● Board acknowledge › puts the incident back to live, says which one failed, and offers Acknowledge again when the fake rejects
+
+    TestingLibraryElementError: Unable to find an element with the text: LIVE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+    Ignored nodes: comments, script, style
+    [36m<tr[39m
+      [33mclass[39m=[32m"selected"[39m
+    [36m>[39m
+      [36m<td>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"sev sev-critical"[39m
+        [36m>[39m
+          [0mCRIT[0m
+        [36m</span>[39m
+      [36m</td>[39m
+      [36m<td>[39m
+        [36m<button[39m
+          [33maria-pressed[39m=[32m"true"[39m
+          [33mclass[39m=[32m"row-button"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0m INC-2891 [0m
+        [36m</button>[39m
+      [36m</td>[39m
+      [36m<td>[39m
+        [0mCheckout API returning 5xx on payment capture[0m
+      [36m</td>[39m
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m>[39m
+        [0mcheckout-api[0m
+      [36m</td>[39m
+      [36m<td>[39m
+        [0mR. Byrne[0m
+      [36m</td>[39m
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m>[39m
+        [0m3m[0m
+      [36m</td>[39m
+      [36m<td[39m
+        [33mclass[39m=[32m"mono"[39m
+      [36m>[39m
+        [0mACKED[0m
+      [36m</td>[39m
+    [36m</tr>[39m
+
+      75 |     await settle('fail');
+      76 |
+    > 77 |     expect(within(row('INC-2891')).getByText('LIVE')).toBeTruthy();
+         |                                    ^
+      78 |     expect(within(details()).getByText('LIVE')).toBeTruthy();
+      79 |     expect(getByRole(el, 'alert').textContent).toContain('INC-2891');
+      80 |     expect(within(details()).getByRole('button', { name: 'Acknowledge' })).toBeTruthy();
+
+      at Object.getElementError (node_modules/@testing-library/dom/dist/config.js:37:19)
+      at node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+      at node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+      at node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+      at Object.<anonymous> (src/app/board/board-ack.spec.ts:77:36)
+
+
+Test Suites: 1 failed, 6 passed, 7 total
+Tests:       1 failed, 29 passed, 30 total
+Snapshots:   0 total
+Time:        1.074 s
+Ran all test suites.
+Test results written to: ../../../../../var/folders/8_/bxmfjzlx1px1g47d4p6vnyxh0000gn/T/tmp.XuH0Zq5IE9/jest.json

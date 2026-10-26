@@ -1,0 +1,16 @@
+diff --git a/src/app/board/board.ts b/src/app/board/board.ts
+index 428ce65..519cbbf 100644
+--- a/src/app/board/board.ts
++++ b/src/app/board/board.ts
+@@ -86,11 +86,6 @@ export class Board {
+     try {
+       await this.source.acknowledge(incident.id, this.scenario());
+     } catch {
+-      this.optimisticStatus.update((overrides) => {
+-        const rest = { ...overrides };
+-        delete rest[incident.id];
+-        return rest;
+-      });
+       this.ackError.set(`Could not acknowledge ${incident.id}. It is still live.`);
+     }
+   }
